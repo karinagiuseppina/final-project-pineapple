@@ -18,9 +18,20 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
-@api.route("/protected", methods=["GET"])
+@api.route('/login', methods=['POST'])
+def login():
+    email = request.json.get('email', None)
+    password = request.json.get('password', None)
+    if email != 'test' or password != 'test':
+        return jsonify({"message": "User or password incorrect"}), 401
+
+        access_token = create_access_token(identity=email)
+        return jsonify(access_token=access_token)
+
+""" @api.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend"
-    }
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200  """
+
+
