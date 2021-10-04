@@ -8,6 +8,22 @@ from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get
 
 api = Blueprint('api', __name__)
 
+@api.route("/testdb", methods=['GET'])
+def fill_database():
+    f = open("/workspace/final-project-pineapple/src/api/testDatabase.JSON", "r")
+    content = f.read()
+    jsondecoded = json.loads(content)
+
+    for centro in jsondecoded['centros']:
+        new_centro = Centro(tipo = centro['tipo'], peso = centro['peso'])
+        db.session.add(new_centro)
+    
+    db.session.commit()
+    centros = Centro.query.all()
+    centros = list(map (lambda centro: centro.serialize(), centros))   
+
+    return jsonify({"msg": "OK!"})
+
 
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
