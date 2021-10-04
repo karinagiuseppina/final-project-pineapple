@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Login = () => {
-	const [loginInfo, setLoginInfo] = {}
+	const [loginInfo, setLoginInfo] = useState({});
 
 	return (
 		<>
