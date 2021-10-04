@@ -17,8 +17,9 @@ export const SignupCentros = () => {
 				<label> Sanidad Publica </label>
 				<br />
 			</form>
-			<button>Conoce tu media Piña</button>
-			<button>Saltar pregunta</button>
+			<Link to={"/list-of-women"}>
+				<button>Conoce tu media piña</button>
+			</Link>
 			{/* <Link to={"/signup-tratamientos"}>Siguiente</Link> */}
 			{/* <progress id="file" max="100" value="100">
 				{" "}

@@ -15,8 +15,12 @@ export const SignupTiempo = () => {
 				<option>2 - 5 años</option>
 				<option>Mas de 5 años</option>
 			</select>
-			<Link to={"/signup-aborto"}>Siguiente</Link>
-			<button>Saltar pregunta</button>
+			<Link to={"/signup-aborto"}>
+				<button>Siguiente</button>
+			</Link>
+			<Link to={"/list-of-women"}>
+				<button>Saltar Cuestonario</button>{" "}
+			</Link>
 			{/* <progress id="file" max="100" value="20">
 				{" "}
 				20%{" "}

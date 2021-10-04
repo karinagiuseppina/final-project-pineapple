@@ -10,10 +10,14 @@ export const SignupExplanation = () => {
 			<h1>Queremos conocerte mejor</h1>
 			<h2>
 				Sabemos que es dificil pero para encontrar tu media piña necesitamos toda la informacion que nos puedas
-				dar
+				dar. Todas Las preguntas son opcionales.
 			</h2>
-			<Link to={"/signup-tiempo"}>Siguiente</Link>
-			<Link to={"/list-of-women"}>Saltar Cuestonario</Link>
+			<Link to={"/signup-tiempo"}>
+				<button>Siguiente</button>
+			</Link>
+			<Link to={"/list-of-women"}>
+				<button>Saltar Cuestonario</button>{" "}
+			</Link>
 		</div>
 	);
 };

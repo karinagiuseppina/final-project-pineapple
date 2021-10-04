@@ -15,8 +15,12 @@ export const SignupRelacion = () => {
 				<option>Tengo una relacion con una hombre</option>
 				<option>Tengo una relacion</option>
 			</select>
-			<Link to={"/signup-tratamientos"}>Siguiente</Link>
-			<button>Saltar pregunta</button>
+			<Link to={"/signup-tratamientos"}>
+				<button>Siguiente</button>
+			</Link>
+			<Link to={"/list-of-women"}>
+				<button>Saltar Cuestonario</button>{" "}
+			</Link>
 			{/* <progress id="file" max="100" value="60">
 				{" "}
 				60%{" "}

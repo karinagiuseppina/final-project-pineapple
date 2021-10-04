@@ -19,8 +19,12 @@ export const SignupTratamientos = () => {
 				<input type="checkbox" value="Inseminacion Artificial" />
 				<label> Inseminacion Artificial</label>
 			</form>
-			<Link to={"/signup-centros"}>Siguiente</Link>
-			<button>Saltar pregunta</button>
+			<Link to={"/signup-centros"}>
+				<button>Siguiente</button>
+			</Link>
+			<Link to={"/list-of-women"}>
+				<button>Saltar Cuestonario</button>{" "}
+			</Link>
 			{/* <progress id="file" max="100" value="80">
 				{" "}
 				80%{" "}
