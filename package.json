@@ -77,8 +77,11 @@
 	},
 	"dependencies": {
 		"bootstrap": "^5.1.1",
+		"install": "^0.13.0",
+		"npm": "^7.24.1",
 		"prop-types": "^15.6.1",
 		"react": "^16.8.4",
+		"react-bootstrap": "^1.6.4",
 		"react-dom": "^16.8.4",
 		"react-polyfills": "0.0.1",
 		"react-router-dom": "^5.2.0"

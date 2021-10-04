@@ -5,10 +5,21 @@ import ScrollToTop from "./component/scrollToTop";
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
+import { Signup } from "./pages/signup";
+import { Login } from "./pages/login";
+import { SignupPassword } from "./pages/signup-password";
+import { SignupExplanation } from "./pages/signup-explicacion";
+import { SignupTiempo } from "./pages/signup-tiempo";
+import { SignupRelacion } from "./pages/signup-relacion";
+import { SignupAborto } from "./pages/signup-aborto";
+import { SignupTratamientos } from "./pages/signup-tratamientos";
+import { SignupCentros } from "./pages/signup-centros";
+
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
+import { ListOfWomen } from "./pages/List-of-women";
 
 //create your first component
 const Layout = () => {
@@ -30,6 +41,36 @@ const Layout = () => {
 						</Route>
 						<Route exact path="/single/:theid">
 							<Single />
+						</Route>
+						<Route exact path="/signup">
+							<Signup />
+						</Route>
+						<Route exact path="/login">
+							<Login />
+						</Route>
+						<Route exact path="/signup-password">
+							<SignupPassword />
+						</Route>
+						<Route exact path="/signup-explanation">
+							<SignupExplanation />
+						</Route>
+						<Route exact path="/signup-tiempo">
+							<SignupTiempo />
+						</Route>
+						<Route exact path="/signup-aborto">
+							<SignupAborto />
+						</Route>
+						<Route exact path="/signup-relacion">
+							<SignupRelacion />
+						</Route>
+						<Route exact path="/signup-tratamientos">
+							<SignupTratamientos />
+						</Route>
+						<Route exact path="/signup-centros">
+							<SignupCentros />
+						</Route>
+						<Route exact path="/list-of-women">
+							<ListOfWomen />
 						</Route>
 						<Route>
 							<h1>Not found!</h1>
