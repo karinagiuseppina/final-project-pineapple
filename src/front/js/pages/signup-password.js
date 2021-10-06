@@ -10,8 +10,6 @@ export const SignupPassword = () => {
 			<h1>Hola Nombre, lo primero es tu seguridad</h1>
 			<label>Contraseña</label>
 			<input type="password" />
-			<label>Verificar contraseña</label>
-			<input type="password" />
 
 			<Link to={"/signup-explanation"}>Siguiente</Link>
 		</div>

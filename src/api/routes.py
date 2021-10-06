@@ -26,3 +26,27 @@ def protected():
     }
 
     return jsonify(response_body), 200
+
+@api.route("/signup", methods=["POST"])
+def create_user():
+    name = request.json.get("name", None)
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+    edad = request.json.get("edad", None)
+    num_aborto = request.json.get("num_aborto", None)
+    pareja = request.json.get("pareja", None)
+    tiempo_proceso = request.json.get("tiempo_proceso", None)
+    centro = request.json.get("centro", None)
+    tratamiento = request.json.get("tratamiento", None)
+
+
+    # Query your database for username and password
+    if email is None or password is None:
+        return jsonify({"msg": "Bad username or password"}), 401
+    
+    user = User(email=email, name=name, password = password, pareja= pareja, num_aborto, tiempo_proceso = tiempo_proceso,centro = centro, tratamiento = tratamiento)
+
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify(user.serialize()), 200

@@ -1,0 +1,20 @@
+:root{
+    --yellow: #FBD50F;
+    --orange: #E0A926;
+    --light-green: #A5DD81;
+    --dark-green: #2E9414;
+    --red : #C85636;
+    --off-white : #F2F2F2;
+    --white: #ffffff;
+    --text-olive : #666632;
+}
+// <'font-style'> || <'font-variant'> || <'font-weight'> ]? <'font-size'> [ / <'line-height'> ]? <'font-family'> ]
+:root{
+    --general-font:'Poppins';
+    --title:700 36px 'Poppins';
+    --button:400 24px 'Poppins';
+    --logo:700 48px 'Poppins';
+    --text:700 24px 'poppins';
+}
+
+
