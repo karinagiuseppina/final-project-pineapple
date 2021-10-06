@@ -5,8 +5,9 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Pareja, Tratamiento, Tiempo_proceso, Centro
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
+#from sqlalchemy import select
 import json
-import bcrypt
+#import bcrypt
 
 api = Blueprint('api', __name__)
 
@@ -33,10 +34,8 @@ def fill_database():
         db.session.add(new_pareja)
     
     for user in jsondecoded['users']:
-        password = user['password'].encode('utf8')
-        salt = bcrypt.gensalt()
-        hashed_password = bcrypt.hashpw(password, salt)
-        new_user = User(name = user['name'], email = user['email'], password = hashed_password, edad = user['edad'], num_aborto = user['num_aborto'])
+
+        new_user = User(name = user['name'], email = user['email'], password = user['password'], edad = user['edad'], num_aborto = user['num_aborto'])
         db.session.add(new_user)
 
     db.session.commit()
@@ -85,14 +84,27 @@ def login():
     username = request.json.get("username", None)
     password = request.json.get("password", None)
     
-    for user in jsondecoded['users']:
-        new_user = User(name = user['name'], email = user['email'], edad = user['edad'], num_aborto = user['num_aborto'], password = user['password'])
-    
-    if username != new_user['name'] or password != new_user['password']:
-        return jsonify({"msg": "Bad username or password"}), 401
+    users = User.query.all()
+    users_output = []
 
-    access_token = create_access_token(identity=username)
-    return jsonify(access_token=access_token)
+    for user in users:
+        users_data = {}
+        users_data['id'] = user.id
+        users_data['name'] = user.name
+        users_data['password'] = user.password
+
+        users_output.append(users_data)
+    
+    print(username)
+    print(password)
+    print(users_output[1])
+
+    for user in users_output:    
+        if username == user['name'] or password == user['password']:
+            #return jsonify({"msg": "Bad username or password"}), 401
+            access_token = create_access_token(identity=username)
+            return jsonify(access_token=access_token)
+    
 
 """ @api.route("/protected", methods=["GET"])
 @jwt_required()
@@ -101,3 +113,6 @@ def protected():
     return jsonify(logged_in_as=current_user), 200  """
 
 
+"""         password = user['password'].encode('utf8')
+        salt = bcrypt.gensalt()
+        hashed_password = bcrypt.hashpw(password, salt) """
