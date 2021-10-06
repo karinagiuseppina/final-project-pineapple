@@ -1,0 +1,105 @@
+{ 
+    "users": [
+        {
+        "name": "Carla",
+        "email": "carla@email.com",
+        "edad": 34,
+        "num_aborto": 2,
+        "password": "123"
+    
+    },
+    {
+        "name": "Maria",
+        "email": "maria@email.com",
+        "edad": 50,
+        "num_aborto": 0,
+        "password": "123"
+    },
+    {
+        "name": "Johana",
+        "email": "johana@email.com",
+        "edad": 28,
+        "num_aborto": 0,
+        "password": "123"
+    },
+    {
+        "name": "Juanita",
+        "email": "juanita@email.com",
+        "edad": 43,
+        "num_aborto": 1,
+        "password": "123"
+    }
+    ],
+    
+    "centros": [
+        {
+            "tipo": "publico",
+            "peso": 1
+        },
+        {
+            "tipo": "privado",
+            "peso": 2
+        },
+        {
+            "tipo": "publico y privado",
+            "peso": 3
+        }
+    ],
+    
+    "tratamientos": [
+        {
+            "tipo": "FIV",
+            "peso": 1
+        },
+        {
+            "tipo": "ISIC",
+            "peso": 2
+        },
+        {
+            "tipo": "inseminacion artificial",
+            "peso": 3
+        }
+    ],
+    
+    "tiempo_proceso": [
+        {
+            "menor_valor": 0,
+            "mayor_valor": 1,
+            "peso": 1
+        },
+        {
+            "menor_valor": 1,
+            "mayor_valor": 2,
+            "peso": 2
+        },
+        {
+            "menor_valor": 2,
+            "mayor_valor": 5,
+            "peso": 3
+        },
+        {
+            "menor_valor": 5,
+            "mayor_valor": 5,
+            "peso": 4
+        }
+    ],
+    
+    "pareja": [
+        {
+            "opcion": "no tengo", 
+            "peso": 1
+        },
+        {
+            "opcion": "tengo una relacion con una mujer", 
+            "peso": 2
+        },
+        {
+            "opcion": "tengo una relacion con un hombre", 
+            "peso": 3
+        },
+        {
+            "opcion": "tengo una relacion", 
+            "peso": 4
+        }
+    ]
+    }
