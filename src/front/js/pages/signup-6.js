@@ -5,27 +5,27 @@ import "../../styles/home.scss";
 import { Link } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
 
-export const SignupTiempo = () => {
+export const Signup6 = () => {
 	return (
 		<div className="text-center mt-5">
-			<h1>¿Cuanto llevas en busqueda?</h1>
+			<h1>¿Tienes una relacion?</h1>
 			<select name="tiempo_proceso">
-				<option>0 - 1 año</option>
-				<option>1 - 2 años</option>
-				<option>2 - 5 años</option>
-				<option>Mas de 5 años</option>
+				<option>No</option>
+				<option>Tengo una relacion con una mujer</option>
+				<option>Tengo una relacion con una hombre</option>
+				<option>Tengo una relacion</option>
 			</select>
-			<Link to={"/signup-aborto"}>
+			<Link to={"/signup-tratamientos"}>
 				<button>Siguiente</button>
 			</Link>
 			<Link to={"/list-of-women"}>
 				<button>Saltar Cuestonario</button>{" "}
 			</Link>
-			{/* <progress id="file" max="100" value="20">
+			{/* <progress id="file" max="100" value="60">
 				{" "}
-				20%{" "}
+				60%{" "}
 			</progress> */}
-			<ProgressBar now={20} />
+			<ProgressBar now={60} />
 		</div>
 	);
 };

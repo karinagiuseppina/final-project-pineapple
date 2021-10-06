@@ -3,9 +3,8 @@ import { Context } from "../store/appContext";
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.scss";
 import { Link } from "react-router-dom";
-import { SignupPassword } from "./signup-password";
 
-export const Signup = () => {
+export const Signup1 = () => {
 	const { store, actions } = useContext(Context);
 
 	return (
@@ -17,7 +16,7 @@ export const Signup = () => {
 			<input type="number" />
 			<label>email</label>
 			<input type="email" />
-			<Link to={"/signup-password"}>Siguiente</Link>
+			<Link to={"/signup-2"}>Siguiente</Link>
 		</div>
 	);
 };

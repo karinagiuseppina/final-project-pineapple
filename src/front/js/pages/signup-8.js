@@ -5,7 +5,7 @@ import "../../styles/home.scss";
 import { Link } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
 
-export const SignupCentros = () => {
+export const Signup8 = () => {
 	return (
 		<div className="text-center mt-5">
 			<h1>¿A que centros has acudido?</h1>
