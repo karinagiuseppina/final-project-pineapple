@@ -62,19 +62,22 @@ def protected():
 
     return jsonify(response_body), 200
 
-# @api.route("/findpossiblematches", methods=["GET"])
-# @jwt_required()
-# def find_possible_matches():
+@api.route("/findpossiblematches", methods=["GET"])
+@jwt_required()
+def find_possible_matches():
+    actual_user_id = get_jwt_identity()
+    actual_user = User.query.filter_by(id=current_user_id).first()
 
-#     actual_user: 
+    result = session.query(User).filter(User.edad + 8 > actual_user.edad, User.edad - 8 > actual_user.edad)
 
-#     result = session.query(User).filter(User.edad + 5 > , User.edad <, Customers.name.like('Ra%'))
+    array_users = []
+    for user in result:
+        if actual_user.tratamiento is not None and user.tratamiento == actual_user.tratamiento):
+            array_users.append(user)
+        
+        if actual_user.tiempo_proceso is not None: 
+            if user.tiempo_proceso < 4 + actual_user.tiempo_proceso and user.tiempo_proceso > 4 - actual_user.tiempo_proceso:
+                array_users.append(user)
 
-#     for row in result:
-#         print ("ID:", row.id, "Name: ",row.name, "Address:",row.address, "Email:",row.email)
 
-#     response_body = {
-#         "message": "Hello! I'm a message that came from the backend"
-#     }
-
-#     return jsonify(response_body), 200
+    return jsonify(array_users), 200
