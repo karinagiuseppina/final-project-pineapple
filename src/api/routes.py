@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Pareja, Tratamiento, Tiempo_proceso, Centro
+from api.models import db, User, Couple, Treatment, Process, Center
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
 import json
@@ -16,27 +16,27 @@ def fill_database():
     content = f.read()
     jsondecoded = json.loads(content)
 
-    for centro in jsondecoded['centros']:
-        new_centro = Centro(tipo = centro['tipo'], peso = centro['peso'])
-        db.session.add(new_centro)
+    for center in jsondecoded['centers']:
+        new_center = Center(type = center['type'], weight = center['weight'])
+        db.session.add(new_center)
 
-    for tratamiento in jsondecoded['tratamientos']:
-        new_tratamiento = Tratamiento(tipo = tratamiento['tipo'], peso = tratamiento['peso'])
-        db.session.add(new_tratamiento)
+    for treatment in jsondecoded['treatments']:
+        new_treatment = Treatment(type = treatment['type'], weight = treatment['weight'])
+        db.session.add(new_treatment)
 
-    for rango_tiempo_proceso in jsondecoded['tiempo_proceso']:
-        new_tiempo = Tiempo_proceso(menor_valor = rango_tiempo_proceso['menor_valor'], mayor_valor = rango_tiempo_proceso['mayor_valor'], peso = rango_tiempo_proceso['peso'])
-        db.session.add(new_tiempo)
+    for time_slot in jsondecoded['process_time_slots']:
+        new_time = Process(min_value = time_slot['min_value'], max_value = time_slot['max_value'], weight = time_slot['weight'])
+        db.session.add(new_time)
 
-    for pareja in jsondecoded['pareja']:
-        new_pareja = Pareja(opcion = pareja['opcion'], peso = pareja['peso'])
-        db.session.add(new_pareja)
+    for couple in jsondecoded['couples']:
+        new_couple = Couple(option = couple['option'], weight = couple['weight'])
+        db.session.add(new_couple)
     
     for user in jsondecoded['users']:
         password = user['password'].encode('utf8')
         salt = bcrypt.gensalt()
         hashed_password = bcrypt.hashpw(password, salt)
-        new_user = User(name = user['name'], email = user['email'], password = hashed_password, edad = user['edad'], num_aborto = user['num_aborto'])
+        new_user = User(name = user['name'], email = user['email'], password = hashed_password, age = user['age'], abortion_num = user['abortion_num'])
         db.session.add(new_user)
 
     db.session.commit()
@@ -44,40 +44,100 @@ def fill_database():
     return jsonify({"msg": "OK!"})
 
 
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
-
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend"
-    }
-
-    return jsonify(response_body), 200
-
-@api.route("/protected", methods=["GET"])
-@jwt_required()
-def protected():
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend"
-    }
-
-    return jsonify(response_body), 200
-
 @api.route("/findpossiblematches", methods=["GET"])
 @jwt_required()
 def find_possible_matches():
     actual_user_id = get_jwt_identity()
     actual_user = User.query.filter_by(id=current_user_id).first()
 
-    result = session.query(User).filter(User.edad + 8 > actual_user.edad, User.edad - 8 > actual_user.edad)
+    result = session.query(User).filter(User.age + 8 > actual_user.age, User.age - 8 > actual_user.age)
 
     array_users = []
     for user in result:
-        if actual_user.tratamiento is not None and user.tratamiento == actual_user.tratamiento):
-            array_users.append(user)
+        if actual_user.treatment_id is not None and user.treatment_id == actual_user.treatment_id:
+                array_users.append(user)
         
-        if actual_user.tiempo_proceso is not None: 
-            if user.tiempo_proceso < 4 + actual_user.tiempo_proceso and user.tiempo_proceso > 4 - actual_user.tiempo_proceso:
+        if actual_user.process_id is not None: 
+            if user.process_id < 4 + actual_user.process_id and user.process_id > 4 - actual_user.process_id:
                 array_users.append(user)
 
 
     return jsonify(array_users), 200
+
+@api.route("/editProfile", methods=["PUT"])
+def edit_profile():
+    # actual_user_id = get_jwt_identity()
+    user_id = request.json.get("user_id", None)
+    name = request.json.get("name", None)
+    email = request.json.get("email", None)
+    password = request.json.get("password", None) 
+    age = request.json.get("age", None) 
+    abortion_num = request.json.get("abortion_num", None) 
+    couple_id = request.json.get("couple_id", None) 
+    process_id = request.json.get("process_id", None) 
+    center_id = request.json.get("center_id", None) 
+    treatment_id = request.json.get("treatment_id", None) 
+
+    # if user_id != actual_user_id: 
+    #     return jsonify({"msg": "Unauthorized"}), 401
+    
+    if name is None or email is None or age is None:
+        return jsonify({"msg": "El nombre, email y edad son obligatorios."})
+
+    user = User.query.filter_by(id=user_id).first()
+    user.name =  name
+    user.age = age
+    user.abortion_num = abortion_num
+    user.couple_id = couple_id
+    user.process_id = process_id
+    user.center_id = center_id
+    user.treatment_id = treatment_id
+
+    if password is not None:
+        password = password.encode('utf8')
+        salt = bcrypt.gensalt()
+        hashed_password = bcrypt.hashpw(password, salt)
+
+        user.password: hashed_password
+
+
+    db.session.commit()
+
+    return jsonify({"msg": "ok"}), 200
+
+@api.route("/getdata", methods=["GET"])
+@jwt_required()
+def get_user_data():
+    user_id = get_jwt_identity()
+    user = User.query.filter_by(id=current_user_id).first()
+
+    return jsonify(user.serialize()), 200
+
+
+@api.route('/centers', methods=['GET'])
+def get_centers():
+    centers = Center.query.all()
+
+    centers = list(map(lambda center: center.serialize(), centers))
+    return jsonify(centers), 200
+
+@api.route('/couples', methods=['GET'])
+def get_couples():
+    couples = Couple.query.all()
+
+    couples = list(map(lambda couple: couple.serialize(), couples))
+    return jsonify(couples), 200
+
+@api.route('/processtimeslots', methods=['GET'])
+def get_process_time_slots():
+    time_slots = Process.query.all()
+
+    time_slots = list(map(lambda time_slot: time_slot.serialize(), time_slots))
+    return jsonify(time_slots), 200
+
+@api.route('/treatments', methods=['GET'])
+def get_treatments():
+    treatments = Treatment.query.all()
+
+    treatments = list(map(lambda treatment: treatment.serialize(), treatments))
+    return jsonify(treatments), 200

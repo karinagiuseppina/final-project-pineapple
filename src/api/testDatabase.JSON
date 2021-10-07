@@ -3,103 +3,103 @@
         {
         "name": "Carla",
         "email": "carla@email.com",
-        "edad": 34,
-        "num_aborto": 2,
+        "age": 34,
+        "abortion_num": 2,
         "password": "123"
     
     },
     {
         "name": "Maria",
         "email": "maria@email.com",
-        "edad": 50,
-        "num_aborto": 0,
+        "age": 50,
+        "abortion_num": 0,
         "password": "123"
     },
     {
         "name": "Johana",
         "email": "johana@email.com",
-        "edad": 28,
-        "num_aborto": 0,
+        "age": 28,
+        "abortion_num": 0,
         "password": "123"
     },
     {
         "name": "Juanita",
         "email": "juanita@email.com",
-        "edad": 43,
-        "num_aborto": 1,
+        "age": 43,
+        "abortion_num": 1,
         "password": "123"
     }
     ],
     
-    "centros": [
+    "centers": [
         {
-            "tipo": "publico",
-            "peso": 1
+            "type": "publico",
+            "weight": 1
         },
         {
-            "tipo": "privado",
-            "peso": 2
+            "type": "privado",
+            "weight": 2
         },
         {
-            "tipo": "publico y privado",
-            "peso": 3
+            "type": "publico y privado",
+            "weight": 3
         }
     ],
     
-    "tratamientos": [
+    "treatments": [
         {
-            "tipo": "FIV",
-            "peso": 1
+            "type": "FIV",
+            "weight": 1
         },
         {
-            "tipo": "ISIC",
-            "peso": 2
+            "type": "ISIC",
+            "weight": 2
         },
         {
-            "tipo": "inseminacion artificial",
-            "peso": 3
+            "type": "inseminacion artificial",
+            "weight": 3
         }
     ],
     
-    "tiempo_proceso": [
+    "process_time_slots": [
         {
-            "menor_valor": 0,
-            "mayor_valor": 1,
-            "peso": 1
+            "min_value": 0,
+            "max_value": 1,
+            "weight": 1
         },
         {
-            "menor_valor": 1,
-            "mayor_valor": 2,
-            "peso": 2
+            "min_value": 1,
+            "max_value": 2,
+            "weight": 2
         },
         {
-            "menor_valor": 2,
-            "mayor_valor": 5,
-            "peso": 3
+            "min_value": 2,
+            "max_value": 5,
+            "weight": 3
         },
         {
-            "menor_valor": 5,
-            "mayor_valor": 5,
-            "peso": 4
+            "min_value": 5,
+            "max_value": 5,
+            "weight": 4
         }
     ],
     
-    "pareja": [
+    "couples": [
         {
-            "opcion": "no tengo", 
-            "peso": 1
+            "option": "no tengo", 
+            "weight": 1
         },
         {
-            "opcion": "tengo una relacion con una mujer", 
-            "peso": 2
+            "option": "tengo una relacion con una mujer", 
+            "weight": 2
         },
         {
-            "opcion": "tengo una relacion con un hombre", 
-            "peso": 3
+            "option": "tengo una relacion con un hombre", 
+            "weight": 3
         },
         {
-            "opcion": "tengo una relacion", 
-            "peso": 4
+            "option": "tengo una relacion", 
+            "weight": 4
         }
     ]
     }

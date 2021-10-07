@@ -7,12 +7,12 @@ class User(db.Model):
     name = db.Column(db.String(120), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(250), unique=False, nullable=False)
-    edad = db.Column(db.Integer, unique=False, nullable=False)
-    num_aborto = db.Column(db.Integer, unique=False, nullable=True)
-    pareja_id = db.Column(db.Integer, db.ForeignKey('pareja.id'), nullable=True)
-    tiempo_proceso_id = db.Column(db.Integer, db.ForeignKey('tiempo_proceso.id'), nullable=True)
-    centro_id = db.Column(db.Integer, db.ForeignKey('centro.id'), nullable=True)
-    tratamiento_id = db.Column(db.Integer, db.ForeignKey('tratamiento.id'), nullable=True)
+    age = db.Column(db.Integer, unique=False, nullable=False)
+    abortion_num = db.Column(db.Integer, unique=False, nullable=True)
+    couple_id = db.Column(db.Integer, db.ForeignKey('couple.id'), nullable=True)
+    process_id = db.Column(db.Integer, db.ForeignKey('process.id'), nullable=True)
+    center_id = db.Column(db.Integer, db.ForeignKey('center.id'), nullable=True)
+    treatment_id = db.Column(db.Integer, db.ForeignKey('treatment.id'), nullable=True)
 
     def __repr__(self):
         return '<User %r>' % self.name
@@ -22,67 +22,72 @@ class User(db.Model):
             "id": self.id,
             "email": self.email,
             "name": self.name,
-            "edad": self.edad
+            "age": self.age,
+            "abortion_num": self.abortion_num,
+            "couple_id": self.couple_id,
+            "process_id": self.process_id,
+            "treatment_id": self.treatment_id,
+            "center_id": self.center_id
         }
 
-class Pareja(db.Model):
+class Couple(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    opcion = db.Column(db.String(50), unique=True, nullable=False) 
-    peso = db.Column(db.Integer, unique=False, nullable=False)
-    users = db.relationship('User', backref='pareja', lazy=True)
+    option = db.Column(db.String(50), unique=True, nullable=False) 
+    weight = db.Column(db.Integer, unique=False, nullable=False)
+    users = db.relationship('User', backref='couple', lazy=True)
 
     def __repr__(self):
-        return '<tiene_pareja %r>' % self.tiene_pareja
+        return '%r' % self.option
 
     def serialize(self):
         return {
             "id": self.id,
-            "tiene_pareja": self.tiene_pareja
+            "option": self.option
         }
 
-class Tiempo_proceso(db.Model):
+class Process(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    menor_valor = db.Column(db.Integer, unique=False, nullable = False) 
-    mayor_valor = db.Column(db.Integer, unique=False, nullable = False)
-    peso = db.Column(db.Integer, unique=False, nullable=False)
-    users = db.relationship('User', backref='tiempo_proceso', lazy=True)
+    max_value = db.Column(db.Integer, unique=False, nullable = False) 
+    min_value = db.Column(db.Integer, unique=False, nullable = False)
+    weight = db.Column(db.Integer, unique=False, nullable=False)
+    users = db.relationship('User', backref='process', lazy=True)
 
     def __repr__(self):
-        return '<rango %r>' % self.rango
+        return '{0} - {1}'.format(self.min_value, self.max_value)
 
     def serialize(self):
         return {
             "id": self.id,
-            "mayor_valor": self.mayor_valor,
-            "menor_valor": self.menor_valor
+            "max_value": self.max_value,
+            "min_value": self.min_value
         }
 
-class Centro(db.Model):
+class Center(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    tipo = db.Column(db.String(20), unique=True, nullable=False)
-    peso = db.Column(db.Integer, unique=False, nullable=False)
-    users = db.relationship('User', backref='centro', lazy=True)
+    type = db.Column(db.String(20), unique=True, nullable=False)
+    weight = db.Column(db.Integer, unique=False, nullable=False)
+    users = db.relationship('User', backref='center', lazy=True)
 
     def __repr__(self):
-        return '<tipo %r>' % self.tipo
+        return '%r' % self.type
 
     def serialize(self):
         return {
             "id": self.id,
-            "tipo": self.tipo
+            "type": self.type
         }
 
-class Tratamiento(db.Model):
+class Treatment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    tipo = db.Column(db.String(50), unique=True, nullable=False)
-    peso = db.Column(db.Integer, unique=False, nullable=False)
-    users = db.relationship('User', backref='tratamiento', lazy=True)
+    type = db.Column(db.String(50), unique=True, nullable=False)
+    weight = db.Column(db.Integer, unique=False, nullable=False)
+    users = db.relationship('User', backref='treatment', lazy=True)
 
     def __repr__(self):
-        return '<tipo %r>' % self.tipo
+        return '%r' % self.type
 
     def serialize(self):
         return {
             "id": self.id,
-            "tipo": self.tipo
+            "type": self.type
         }
