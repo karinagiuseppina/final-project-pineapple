@@ -7,12 +7,13 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from api.utils import APIException, generate_sitemap
-from api.models import db, User, Pareja, Tratamiento, Tiempo_proceso, Centro
+from api.models import db, User, Couple, Treatment, Process, Center
 from api.routes import api
 from api.admin import setup_admin
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt, get_jwt_identity, set_access_cookies, unset_jwt_cookies
 import json
-#from models import Person
+import bcrypt
+
 
 ENV = os.getenv("FLASK_ENV")
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')
@@ -69,25 +70,29 @@ def fill_database():
     content = f.read()
     jsondecoded = json.loads(content)
 
-    for centro in jsondecoded['centros']:
-        new_centro = Centro(tipo = centro['tipo'], peso = centro['peso'])
-        db.session.add(new_centro)
+    for center in jsondecoded['centers']:
+        new_center = Center(type = center['type'], weight = center['weight'])
+        db.session.add(new_center)
 
-    for tratamiento in jsondecoded['tratamientos']:
-        new_tratamiento = Tratamiento(tipo = tratamiento['tipo'], peso = tratamiento['peso'])
-        db.session.add(new_tratamiento)
 
-    for rango_tiempo_proceso in jsondecoded['tiempo_proceso']:
-        new_tiempo = Tiempo_proceso(menor_valor = rango_tiempo_proceso['menor_valor'], mayor_valor = rango_tiempo_proceso['mayor_valor'], peso = rango_tiempo_proceso['peso'])
-        db.session.add(new_tiempo)
+    for treatment in jsondecoded['treatments']:
+        new_treatment = Treatment(type = treatment['type'], weight = treatment['weight'])
+        db.session.add(new_treatment)
 
-    for pareja in jsondecoded['pareja']:
-        new_pareja = Pareja(opcion = pareja['opcion'], peso = pareja['peso'])
-        db.session.add(new_pareja)
+    for time_slot in jsondecoded['process_time_slots']:
+        new_time = Process(min_value = time_slot['min_value'], max_value = time_slot['max_value'], weight = time_slot['weight'])
+        db.session.add(new_time)
+
+    for couple in jsondecoded['couples']:
+        new_couple = Couple(option = couple['option'], weight = couple['weight'])
+        db.session.add(new_couple)
     
     for user in jsondecoded['users']:
-
-        new_user = User(name = user['name'], email = user['email'], password = user['password'], edad = user['edad'], num_aborto = user['num_aborto'])
+        password = user['password'].encode('utf8')
+        salt = bcrypt.gensalt()
+        hashed_password = bcrypt.hashpw(password, salt)
+        decoded_password = hashed_password.decode('utf8')
+        new_user = User(name = user['name'], email = user['email'], password = decoded_password, age = user['age'], abortion_num = user['abortion_num'])
         db.session.add(new_user)
 
     db.session.commit()
@@ -97,33 +102,20 @@ def fill_database():
 #### LOGIN
 @app.route('/login', methods=['POST'])
 def login():
-    username = request.json.get("username", None)
-    password = request.json.get("password", None)
-    
-    users = User.query.all()
-    users_output = []
-
-    for user in users:
-        users_data = {}
-        users_data['id'] = user.id
-        users_data['name'] = user.name
-        users_data['password'] = user.password
-
-        users_output.append(users_data)
-    
-    print(username)
+    email = request.json.get("email", None)
+    password = request.json.get("password", None).encode('utf8')
     print(password)
+    
+    user = User.query.filter_by(email=email).first()
+    print(user)
 
-    for user in users_output: 
-        @jwt.user_identity_loader
-        def user_identity_lookup(user):
-            return user.id
-
-        if username == user['name'] or password == user['password']:
-            #return jsonify({"msg": "Bad username or password"}), 401
-            access_token = create_access_token(identity=user['id'])
-            print(access_token)
-            return jsonify(access_token=access_token)
+    if email != user.email or bcrypt.checkpw(password, user.password.encode('utf8')):
+        print(user.password)
+        return jsonify({"msg": "Bad username or password"}), 401
+        
+    access_token = create_access_token(identity=user.id)
+    print(access_token)
+    return jsonify({"user_id": user.id, "name": user.name, "token": access_token})
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

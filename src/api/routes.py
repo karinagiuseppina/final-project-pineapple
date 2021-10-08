@@ -11,7 +11,7 @@ import bcrypt
 
 api = Blueprint('api', __name__)
 
-@api.route("/testdb", methods=['GET'])
+""" @api.route("/testdb", methods=['GET'])
 def fill_database():
     f = open("/workspace/final-project-pineapple/src/api/testDatabase.JSON", "r")
     content = f.read()
@@ -43,7 +43,7 @@ def fill_database():
 
     db.session.commit()
 
-    return jsonify({"msg": "OK!"})
+    return jsonify({"msg": "OK!"}) """
 
 
 @api.route("/findpossiblematches", methods=["GET"])
