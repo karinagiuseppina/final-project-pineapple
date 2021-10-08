@@ -9,7 +9,7 @@ export const Signup2 = () => {
 	const { store, actions } = useContext(Context);
 	const name = store.initialUser.name;
 	const email = store.initialUser.email;
-	const edad = store.initialUser.edad;
+	const age = store.initialUser.age;
 	const [password, setPassword] = useState("");
 
 	async function createUser(event) {
@@ -20,7 +20,7 @@ export const Signup2 = () => {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				name: name,
-				edad: edad,
+				age: age,
 				email: email,
 				password: password
 			})
