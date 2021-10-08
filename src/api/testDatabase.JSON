@@ -1,107 +1,105 @@
-
 { 
-"users": [
-    {
-    "name": "Carla",
-    "email": "carla@email.com",
-    "edad": 34,
-    "num_aborto": 2,
-    "password": "kksjshdfs"
-
-},
-{
-    "name": "Maria",
-    "email": "maria@email.com",
-    "edad": 50,
-    "num_aborto": 0,
-    "password": "kksjshdfs"
-},
-{
-    "name": "Johana",
-    "email": "johana@email.com",
-    "edad": 28,
-    "num_aborto": 0,
-    "password": "kksjshdfs"
-},
-{
-    "name": "Juanita",
-    "email": "juanita@email.com",
-    "edad": 43,
-    "num_aborto": 1,
-    "password": "kksjshdfs"
-}
-],
-
-"centros": [
-    {
-        "tipo": "publico",
-        "peso": 1
+    "users": [
+        {
+        "name": "Carla",
+        "email": "carla@email.com",
+        "age": 34,
+        "abortion_num": 2,
+        "password": "123"
+    
     },
     {
-        "tipo": "privado",
-        "peso": 2
+        "name": "Maria",
+        "email": "maria@email.com",
+        "age": 50,
+        "abortion_num": 0,
+        "password": "123"
     },
     {
-        "tipo": "publico y privado",
-        "peso": 3
+        "name": "Johana",
+        "email": "johana@email.com",
+        "age": 28,
+        "abortion_num": 0,
+        "password": "123"
+    },
+    {
+        "name": "Juanita",
+        "email": "juanita@email.com",
+        "age": 43,
+        "abortion_num": 1,
+        "password": "123"
     }
-],
-
-"tratamientos": [
-    {
-        "tipo": "FIV",
-        "peso": 1
-    },
-    {
-        "tipo": "ISIC",
-        "peso": 2
-    },
-    {
-        "tipo": "inseminacion artificial",
-        "peso": 3
+    ],
+    
+    "centers": [
+        {
+            "type": "publico",
+            "weight": 1
+        },
+        {
+            "type": "privado",
+            "weight": 2
+        },
+        {
+            "type": "publico y privado",
+            "weight": 3
+        }
+    ],
+    
+    "treatments": [
+        {
+            "type": "FIV",
+            "weight": 1
+        },
+        {
+            "type": "ISIC",
+            "weight": 2
+        },
+        {
+            "type": "inseminacion artificial",
+            "weight": 3
+        }
+    ],
+    
+    "process_time_slots": [
+        {
+            "min_value": 0,
+            "max_value": 1,
+            "weight": 1
+        },
+        {
+            "min_value": 1,
+            "max_value": 2,
+            "weight": 2
+        },
+        {
+            "min_value": 2,
+            "max_value": 5,
+            "weight": 3
+        },
+        {
+            "min_value": 5,
+            "max_value": 5,
+            "weight": 4
+        }
+    ],
+    
+    "couples": [
+        {
+            "option": "no tengo", 
+            "weight": 1
+        },
+        {
+            "option": "tengo una relacion con una mujer", 
+            "weight": 2
+        },
+        {
+            "option": "tengo una relacion con un hombre", 
+            "weight": 3
+        },
+        {
+            "option": "tengo una relacion", 
+            "weight": 4
+        }
+    ]
     }
-],
-
-"tiempo_proceso": [
-    {
-        "menor_valor": 0,
-        "mayor_valor": 1,
-        "peso": 1
-    },
-    {
-        "menor_valor": 1,
-        "mayor_valor": 2,
-        "peso": 2
-    },
-    {
-        "menor_valor": 2,
-        "mayor_valor": 5,
-        "peso": 3
-    },
-    {
-        "menor_valor": 5,
-        "mayor_valor": 5,
-        "peso": 4
-    }
-],
-
-"pareja": [
-    {
-        "opcion": "no tengo", 
-        "peso": 1
-    },
-    {
-        "opcion": "tengo una relacion con una mujer", 
-        "peso": 2
-    },
-    {
-        "opcion": "tengo una relacion con un hombre", 
-        "peso": 3
-    },
-    {
-        "opcion": "tengo una relacion", 
-        "peso": 4
-    }
-]
-}
-
