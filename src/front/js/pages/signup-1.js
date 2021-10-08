@@ -1,22 +1,37 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
+import rigoImedadUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.scss";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 export const Signup1 = () => {
+	let History = useHistory();
 	const { store, actions } = useContext(Context);
+	const [name, setName] = useState("");
+	const [edad, setEdad] = useState("");
+	const [email, setEmail] = useState("");
+	const [user, setUser] = useState({});
+
+	function saveInfo(event) {
+		event.preventDefault();
+		setUser(((user.name = name), (user.edad = edad), (user.email = email)));
+		console.log(user);
+		actions.updateInitialUser(user);
+		History.push("/signup-2");
+	}
 
 	return (
-		<div className="text-center mt-5">
+		<div className="text-center mt-5 Singup-box">
 			<h1>¿Nos conocemos?</h1>
-			<label>Nombre</label>
-			<input type="text" />
-			<label>Edad</label>
-			<input type="number" />
-			<label>email</label>
-			<input type="email" />
-			<Link to={"/signup-2"}>Siguiente</Link>
+			<form onSubmit={saveInfo}>
+				<label>Nombre</label>
+				<input type="text" placeholder="Nombre" onChange={event => setName(event.target.value)} required />
+				<label>Edad</label>
+				<input type="number" onChange={event => setEdad(event.target.value)} placeholder="Edad" required />
+				<label>email</label>
+				<input type="email" onChange={event => setEmail(event.target.value)} placeholder="email" required />
+				<input type="submit" value="Siguiente" />
+			</form>
 		</div>
 	);
 };
