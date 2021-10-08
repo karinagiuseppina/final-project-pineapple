@@ -4,14 +4,15 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Pareja, Tratamiento, Tiempo_proceso, Centro
 from api.utils import generate_sitemap, APIException
-from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
+from flask_jwt_extended import  JWTManager, create_access_token,jwt_required, get_jwt_identity
 #from sqlalchemy import select
 import json
 #import bcrypt
 
 api = Blueprint('api', __name__)
 
-@api.route("/testdb", methods=['GET'])
+
+""" @api.route("/testdb", methods=['GET'])
 def fill_database():
     f = open("/workspace/final-project-pineapple/src/api/testDatabase.JSON", "r")
     content = f.read()
@@ -40,7 +41,7 @@ def fill_database():
 
     db.session.commit()
 
-    return jsonify({"msg": "OK!"})
+    return jsonify({"msg": "OK!"}) """
 
 
 @api.route('/hello', methods=['POST', 'GET'])
@@ -78,35 +79,11 @@ def protected():
 
 #     return jsonify(response_body), 200
 
-#### LOGIN
-@api.route('/login', methods=['POST'])
-def login():
-    username = request.json.get("username", None)
-    password = request.json.get("password", None)
-    
-    users = User.query.all()
-    users_output = []
 
-    for user in users:
-        users_data = {}
-        users_data['id'] = user.id
-        users_data['name'] = user.name
-        users_data['password'] = user.password
-
-        users_output.append(users_data)
-    
-    print(username)
-    print(password)
-    print(users_output[1])
-
-    for user in users_output:    
-        if username == user['name'] or password == user['password']:
-            #return jsonify({"msg": "Bad username or password"}), 401
-            access_token = create_access_token(identity=username)
-            return jsonify(access_token=access_token)
+            
     
 
-""" @api.route("/protected", methods=["GET"])
+""" @api.route("/currentUser", methods=["GET"])
 @jwt_required()
 def protected():
     current_user = get_jwt_identity()
