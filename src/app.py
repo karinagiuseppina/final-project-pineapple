@@ -2,6 +2,8 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
+from datetime import timedelta
+import redis
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
@@ -20,8 +22,17 @@ static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
+# Time delta for JWTs to expire
+ACCESS_EXPIRES = timedelta(hours=1)
+
 app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET')
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = ACCESS_EXPIRES
 jwt = JWTManager(app)
+
+# Setup redis connection for storing the blocklisted tokens.
+jwt_redis_blocklist = redis.StrictRedis(
+    host="0.0.0.0", port=3001, db=0, decode_responses=True
+)
 
 # database condiguration
 if os.getenv("DATABASE_URL") is not None:
@@ -99,6 +110,16 @@ def fill_database():
 
     return jsonify({"msg": "OK!"})
 
+# Callback function to check if a JWT exists in the redis blocklist. jti = JWT unique identifier
+@jwt.token_in_blocklist_loader
+def check_if_token_is_revoked(jwt_header, jwt_payload):
+    print(jwt_header, jwt_payload)
+    jti = jwt_payload["jti"]
+    print(jti)
+    token_in_redis = jwt_redis_blocklist.get(jti)
+    print(token_in_redis)
+    return token_in_redis is not None
+
 #### LOGIN
 @app.route('/login', methods=['POST'])
 def login():
@@ -116,6 +137,14 @@ def login():
     access_token = create_access_token(identity=user.id)
     print(access_token)
     return jsonify({"user_id": user.id, "name": user.name, "token": access_token})
+
+#LOGOUT
+@app.route("/logout", methods=["DELETE"])
+@jwt_required()
+def logout():
+    jti = get_jwt()["jti"]
+    jwt_redis_blocklist.set(jti, "", ex=ACCESS_EXPIRES)
+    return jsonify(msg="Access token revoked")
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

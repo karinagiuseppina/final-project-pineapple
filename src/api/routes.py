@@ -11,41 +11,6 @@ import bcrypt
 
 api = Blueprint('api', __name__)
 
-""" @api.route("/testdb", methods=['GET'])
-def fill_database():
-    f = open("/workspace/final-project-pineapple/src/api/testDatabase.JSON", "r")
-    content = f.read()
-    jsondecoded = json.loads(content)
-
-    for center in jsondecoded['centers']:
-        new_center = Center(type = center['type'], weight = center['weight'])
-        db.session.add(new_center)
-
-
-    for treatment in jsondecoded['treatments']:
-        new_treatment = Treatment(type = treatment['type'], weight = treatment['weight'])
-        db.session.add(new_treatment)
-
-    for time_slot in jsondecoded['process_time_slots']:
-        new_time = Process(min_value = time_slot['min_value'], max_value = time_slot['max_value'], weight = time_slot['weight'])
-        db.session.add(new_time)
-
-    for couple in jsondecoded['couples']:
-        new_couple = Couple(option = couple['option'], weight = couple['weight'])
-        db.session.add(new_couple)
-    
-    for user in jsondecoded['users']:
-        password = user['password'].encode('utf8')
-        salt = bcrypt.gensalt()
-        hashed_password = bcrypt.hashpw(password, salt)
-        new_user = User(name = user['name'], email = user['email'], password = hashed_password, age = user['age'], abortion_num = user['abortion_num'])
-        db.session.add(new_user)
-
-    db.session.commit()
-
-    return jsonify({"msg": "OK!"}) """
-
-
 @api.route("/findpossiblematches", methods=["GET"])
 @jwt_required()
 def find_possible_matches():
