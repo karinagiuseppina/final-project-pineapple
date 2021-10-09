@@ -79,6 +79,8 @@ def edit_profile():
     treatment_id = request.json.get("treatment_id", None) 
     description = request.json.get("description", None) 
 
+    print (user_id, name, email, password, age, abortion_num, couple_id, process_id, center_id,treatment_id,description)
+
     # if user_id != actual_user_id: 
     #     return jsonify({"msg": "Unauthorized"}), 401
     
@@ -95,7 +97,7 @@ def edit_profile():
     user.treatment_id = treatment_id
     user.description = description
 
-    if password is not None or password != "":
+    if password is not None:
         password = password.encode('utf8')
         salt = bcrypt.gensalt()
         hashed_password = bcrypt.hashpw(password, salt)

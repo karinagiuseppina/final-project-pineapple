@@ -18,7 +18,7 @@ input,
 input[type="radio"] + label,
 input[type="checkbox"] + label:before,
 select option,
-select {
+select{
   width: 100%;
   padding: 1em;
   line-height: 1.4;
@@ -31,6 +31,7 @@ select {
   transition: 0.35s ease-in-out;
   transition: all 0.35s ease-in-out;
 }
+
 input:focus {
   outline: 0;
   border-color: var(--color-prin);
