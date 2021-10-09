@@ -13,6 +13,7 @@ class User(db.Model):
     process_id = db.Column(db.Integer, db.ForeignKey('process.id'), nullable=True)
     center_id = db.Column(db.Integer, db.ForeignKey('center.id'), nullable=True)
     treatment_id = db.Column(db.Integer, db.ForeignKey('treatment.id'), nullable=True)
+    description = db.Column(db.String(500), unique=False, nullable=True)
 
     def __repr__(self):
         return '<User %r>' % self.name
@@ -27,7 +28,8 @@ class User(db.Model):
             "couple_id": self.couple_id,
             "process_id": self.process_id,
             "treatment_id": self.treatment_id,
-            "center_id": self.center_id
+            "center_id": self.center_id,
+            "description": self.description
         }
 
 class Couple(db.Model):
