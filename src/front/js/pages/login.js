@@ -13,11 +13,13 @@ export const Login = () => {
 		let logged_user = { ...userLogin };
 		logged_user[attr] = value;
 		setUserLogin(logged_user);
+
+		console.log(userLogin);
 	};
 
 	const logUserIn = async (email, password) => {
 		const response = await fetch(`${process.env.BACKEND_URL}/login`, {
-			method: "PUT",
+			method: "POST",
 			headers: { "content-Type": "application/json" },
 			body: JSON.stringify({
 				email: email,
