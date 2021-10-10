@@ -114,9 +114,9 @@ def fill_database():
 @jwt.token_in_blocklist_loader
 def check_if_token_is_revoked(jwt_header, jwt_payload):
     print(jwt_header, jwt_payload)
-    jti = jwt_payload["jti"]
-    print(jti)
-    token_in_redis = jwt_redis_blocklist.get(jti)
+    token_unique_id = jwt_payload["jti"]
+    print(token_unique_id)
+    token_in_redis = jwt_redis_blocklist.get(token_unique_id)
     print(token_in_redis)
     return token_in_redis is not None
 
@@ -142,8 +142,8 @@ def login():
 @app.route("/logout", methods=["DELETE"])
 @jwt_required()
 def logout():
-    jti = get_jwt()["jti"]
-    jwt_redis_blocklist.set(jti, "", ex=ACCESS_EXPIRES)
+    token_unique_id = get_jwt()["jti"]
+    jwt_redis_blocklist.set(token_unique_id, "", ex=ACCESS_EXPIRES)
     return jsonify(msg="Access token revoked")
 
 # this only runs if `$ python src/main.py` is executed
