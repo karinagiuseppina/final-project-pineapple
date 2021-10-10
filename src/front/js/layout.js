@@ -1,11 +1,9 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
-
+import ChatList from "./pages/ChatList.jsx";
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
-import Login from "./pages/Login.jsx";
-import SingUp from "./pages/SignUp.jsx";
 import { Single } from "./pages/single";
 import { Signup } from "./pages/signup";
 import { Login } from "./pages/login";
@@ -40,11 +38,11 @@ const Layout = () => {
 						<Route exact path="/">
 							<Home />
 						</Route>
+						<Route exact path="/chat">
+							<ChatList />
+						</Route>
 						<Route exact path="/login">
 							<Login />
-						</Route>
-						<Route exact path="/signup">
-							<SingUp />
 						</Route>
 						<Route exact path="/single/:theid">
 							<Single />

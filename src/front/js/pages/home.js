@@ -12,6 +12,7 @@ export const Home = () => {
 			<h1>Fivnder</h1>
 			<Link to={"/signup"}>Encuentra tu media piña</Link>
 			<Link to={"/login"}>Log In</Link>
+			<Link to={"/chat"}>Chat</Link>
 		</div>
 	);
 };
