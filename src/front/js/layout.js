@@ -16,6 +16,7 @@ import { Signup7 } from "./pages/signup-7";
 import { Signup8 } from "./pages/signup-8";
 import { ListOfWomen } from "./pages/list-of-women";
 import { Profile } from "./pages/profile";
+import { EditProfile } from "./pages/editProfile";
 
 import injectContext from "./store/appContext";
 
@@ -75,6 +76,9 @@ const Layout = () => {
 						</Route>
 						<Route exact path="/profile">
 							<Profile />
+						</Route>
+						<Route exact path="/editProfile">
+							<EditProfile />
 						</Route>
 						<Route>
 							<h1>Not found!</h1>

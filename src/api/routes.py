@@ -78,6 +78,9 @@ def edit_profile():
     process_id = request.json.get("process_id", None) 
     center_id = request.json.get("center_id", None) 
     treatment_id = request.json.get("treatment_id", None) 
+    description = request.json.get("description", None) 
+
+    print (user_id, name, email, password, age, abortion_num, couple_id, process_id, center_id,treatment_id,description)
 
     # if user_id != actual_user_id: 
     #     return jsonify({"msg": "Unauthorized"}), 401
@@ -93,6 +96,7 @@ def edit_profile():
     user.process_id = process_id
     user.center_id = center_id
     user.treatment_id = treatment_id
+    user.description = description
 
     if password is not None:
         password = password.encode('utf8')
@@ -106,14 +110,17 @@ def edit_profile():
 
     return jsonify({"msg": "ok"}), 200
 
-@api.route("/getdata", methods=["GET"])
-@jwt_required()
-def get_user_data():
-    user_id = get_jwt_identity()
-    user = User.query.filter_by(id=current_user_id).first()
+@api.route("/users", methods=["GET"])
+def get_users():
+    users = User.query.all()
 
+    users = list(map(lambda user: user.serialize(), users))
+    return jsonify(users), 200
+
+@api.route("/user/<id>", methods=["GET"])
+def get_user(id):
+    user = User.query.filter_by(id=id).first()
     return jsonify(user.serialize()), 200
-
 
 @api.route('/centers', methods=['GET'])
 def get_centers():
