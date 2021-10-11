@@ -5,15 +5,15 @@ import ScrollToTop from "./component/scrollToTop";
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
-import { Signup } from "./pages/signup";
+import { Signup1 } from "./pages/signup-1";
 import { Login } from "./pages/login";
-import { SignupPassword } from "./pages/signup-password";
-import { SignupExplanation } from "./pages/signup-explicacion";
-import { SignupTiempo } from "./pages/signup-tiempo";
-import { SignupRelacion } from "./pages/signup-relacion";
-import { SignupAborto } from "./pages/signup-aborto";
-import { SignupTratamientos } from "./pages/signup-tratamientos";
-import { SignupCentros } from "./pages/signup-centros";
+import { Signup2 } from "./pages/signup-2";
+import { Signup3 } from "./pages/signup-3";
+import { Signup4 } from "./pages/signup-4";
+import { Signup6 } from "./pages/signup-6";
+import { Signup5 } from "./pages/signup-5";
+import { Signup7 } from "./pages/signup-7";
+import { Signup8 } from "./pages/signup-8";
 import { ListOfWomen } from "./pages/list-of-women";
 import { Profile } from "./pages/profile";
 import { EditProfile } from "./pages/editProfile";
@@ -44,32 +44,32 @@ const Layout = () => {
 						<Route exact path="/single/:theid">
 							<Single />
 						</Route>
-						<Route exact path="/signup">
-							<Signup />
+						<Route exact path="/signup-1">
+							<Signup1 />
 						</Route>
 						<Route exact path="/login">
 							<Login />
 						</Route>
-						<Route exact path="/signup-password">
-							<SignupPassword />
+						<Route exact path="/signup-2">
+							<Signup2 />
 						</Route>
-						<Route exact path="/signup-explanation">
-							<SignupExplanation />
+						<Route exact path="/signup-3">
+							<Signup3 />
 						</Route>
-						<Route exact path="/signup-tiempo">
-							<SignupTiempo />
+						<Route exact path="/signup-4">
+							<Signup4 />
 						</Route>
-						<Route exact path="/signup-aborto">
-							<SignupAborto />
+						<Route exact path="/signup-5">
+							<Signup5 />
 						</Route>
-						<Route exact path="/signup-relacion">
-							<SignupRelacion />
+						<Route exact path="/signup-6">
+							<Signup6 />
 						</Route>
-						<Route exact path="/signup-tratamientos">
-							<SignupTratamientos />
+						<Route exact path="/signup-7">
+							<Signup7 />
 						</Route>
-						<Route exact path="/signup-centros">
-							<SignupCentros />
+						<Route exact path="/signup-8">
+							<Signup8 />
 						</Route>
 						<Route exact path="/list-of-women">
 							<ListOfWomen />

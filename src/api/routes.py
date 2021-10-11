@@ -7,6 +7,7 @@ from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
 import json
 import bcrypt
+from sqlalchemy import update
 
 api = Blueprint('api', __name__)
 
@@ -85,7 +86,7 @@ def edit_profile():
     #     return jsonify({"msg": "Unauthorized"}), 401
     
     if name is None or email is None or age is None:
-        return jsonify({"msg": "El nombre, email y edad son obligatorios."})
+        return jsonify({"msg": "El nombre, email y age son obligatorios."})
 
     user = User.query.filter_by(id=user_id).first()
     user.name =  name
@@ -148,6 +149,96 @@ def get_centers():
     centers = list(map(lambda center: center.serialize(), centers))
     return jsonify(centers), 200
 
+@api.route("/create-user", methods=["POST"])
+def create_user():
+    name = request.json.get("name")
+    email =request.json.get("email")
+    age = request.json.get("age")
+    password = request.json.get("password").encode('utf8')
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
+
+    user = User(name=name, email=email, age=age, password=hashed_password)
+
+    print(user)
+    db.session.add(user)
+    db.session.commit()
+
+    # access_token = create_access_token(user.id)
+
+    # return jsonify({"access_token" : access_token})
+
+    return jsonify(user.id)
+
+@api.route("/update-abortion", methods=["PUT"])
+# @jwt_required()
+def update_abortion():
+    
+    # user_id = get_jwt_identity()
+    abortion_num = request.json.get("abortion_num", None) 
+    user_id = request.json.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    user.abortion_num = abortion_num
+    db.session.commit()
+
+    return jsonify(user.id), 200
+
+@api.route("/update-center", methods=["PUT"])
+# @jwt_required()
+def update_center():
+    
+    # user_id = get_jwt_identity()
+    center_id = request.json.get("center_id", None) 
+    user_id = request.json.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    user.center_id= center_id
+    db.session.commit()
+
+    return jsonify(user.id), 200
+
+@api.route("/update-couple", methods=["PUT"])
+# @jwt_required()
+def update_couple():
+    
+    # user_id = get_jwt_identity()
+    couple_id = request.json.get("couple_id", None) 
+    user_id = request.json.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    user.couple_id= couple_id
+    db.session.commit()
+
+    return jsonify(user.id), 200
+
+
+@api.route("/update-treatment", methods=["PUT"])
+# @jwt_required()
+def update_treatment():
+    
+    # user_id = get_jwt_identity()
+    treatment_id = request.json.get("treatment_id", None) 
+    user_id = request.json.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    user.treatment_id= treatment_id
+    db.session.commit()
+
+    return jsonify(user.id), 200
+
+@api.route("/update-processtimeslot", methods=["PUT"])
+# @jwt_required()
+def update_processtimeslot():
+    
+    # user_id = get_jwt_identity()
+    process_id = request.json.get("process_id", None) 
+    user_id = request.json.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    user.process_id= process_id
+    db.session.commit()
+
+    return jsonify(user.id), 200
+    
+# @api.route("/findpossiblematches", methods=["GET"])
+# @jwt_required()
+# def find_possible_matches():
 @api.route('/couples', methods=['GET'])
 def get_couples():
     couples = Couple.query.all()
