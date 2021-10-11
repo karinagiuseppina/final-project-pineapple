@@ -10,15 +10,16 @@ export const Login = () => {
 	const [userLogin, setUserLogin] = useState({ email: "", password: "" });
 
 	const getLoginData = (attr, value) => {
-		let logged_user = { ...userLogin };
-		logged_user[attr] = value;
-		setUserLogin(logged_user);
+		setUserLogin(prev => {
+			let logged_user = { ...prev };
+			logged_user[attr] = value;
 
-		console.log(userLogin);
+			return logged_user;
+		});
 	};
 
 	const logUserIn = async (email, password) => {
-		const response = await fetch(`${process.env.BACKEND_URL}/login`, {
+		const response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
 			method: "POST",
 			headers: { "content-Type": "application/json" },
 			body: JSON.stringify({
@@ -26,9 +27,17 @@ export const Login = () => {
 				password: password
 			})
 		});
+
+		let data = await response.json();
+		if (data.name) {
+			localStorage.setItem("token", data.token);
+			store.access_token.token = data.token;
+		}
+		console.log(store.access_token);
 	};
 
 	const handleLogin = () => {
+		console.log(userLogin);
 		logUserIn(userLogin.email, userLogin.password);
 	};
 
@@ -57,9 +66,11 @@ export const Login = () => {
 
 						<div className="row justify-content-center">
 							<div className="col text-center">
-								<button type="button" className="btn bg-prin" onClick={handleLogin}>
-									Log in
-								</button>
+								<Link to={store.access_token ? "/profile" : "/"}>
+									<button type="button" className="btn bg-prin" onClick={handleLogin}>
+										Log in
+									</button>
+								</Link>
 							</div>
 						</div>
 					</form>
