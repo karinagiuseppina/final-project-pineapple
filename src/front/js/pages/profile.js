@@ -3,7 +3,6 @@ import { Context } from "../store/appContext";
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.scss";
 import { Link } from "react-router-dom";
-import { SignupPassword } from "./signup-password";
 
 export const Profile = () => {
 	const { store, actions } = useContext(Context);
