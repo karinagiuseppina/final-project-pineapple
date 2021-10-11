@@ -121,6 +121,26 @@ def get_user(id):
     user = User.query.filter_by(id=id).first()
     return jsonify(user.serialize()), 200
 
+@api.route("/user/show-info/<id>", methods=["GET"])
+def get_user_info(id):
+    user = User.query.filter_by(id=id).first()
+    center_type = Center.query.filter_by(id=user.center_id).first()
+    treatment_type = Treatment.query.filter_by(id=user.treatment_id).first()
+    process_range = Process.query.filter_by(id=user.process_id).first()
+    couple_type = Couple.query.filter_by(id=user.couple_id).first()
+
+    return jsonify({
+            "id": user.id,
+            "name": user.name,
+            "age": user.age,
+            "abortion_num": user.abortion_num,
+            "couple": couple_type.option,
+            "process": '{0} - {1}'.format(process_range.min_value, process_range.max_value),
+            "treatment": treatment_type.type,
+            "center": center_type.type,
+            "description": user.description
+        }), 200
+
 @api.route('/centers', methods=['GET'])
 def get_centers():
     centers = Center.query.all()
