@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.scss";
 import { Link, useHistory } from "react-router-dom";
+import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
 
 export const Signup1 = () => {
 	let History = useHistory();
@@ -21,8 +22,12 @@ export const Signup1 = () => {
 	}
 
 	return (
-		<div className="text-center mt-5 Singup-box">
-			<h1>¿Nos conocemos?</h1>
+		<div className="text-center mt-5 singup-box">
+			<div className="signup-header">
+				<h1 className="question-text">¿Nos conocemos?</h1>
+				<img className="piña-partida-sinnombre" src={pinaPartidaNombre} alt="dibujo piña partida" />
+			</div>
+
 			<form onSubmit={saveInfo}>
 				<label>Nombre</label>
 				<input type="text" placeholder="Nombre" onChange={event => setName(event.target.value)} required />
@@ -30,7 +35,7 @@ export const Signup1 = () => {
 				<input type="number" onChange={event => setAge(event.target.value)} placeholder="age" required />
 				<label>email</label>
 				<input type="email" onChange={event => setEmail(event.target.value)} placeholder="email" required />
-				<input type="submit" value="Siguiente" />
+				<input className="button-primary" type="submit" value="Siguiente" />
 			</form>
 		</div>
 	);

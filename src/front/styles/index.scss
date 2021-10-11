@@ -27,3 +27,76 @@ body{
     -1px 1px 0 var(--text-olive),
      1px 1px 0 var(--text-olive);
 }
+
+.button-primary{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    background: var(--primary);
+    border-radius: 8px;
+    font: var(--button);
+    color: var(--main-text)
+    }
+
+.singup-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 32px 32px;
+    position: static;
+    width: 100%;
+    height: 619.46px;
+    left: 0px;
+    top: 92.54px;
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 1;
+    margin: 24px 0px;
+}
+
+.signup-header{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0px;
+    position: static;
+    left: 32px;
+    top: 0px;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+    margin: 24px 0px;
+}
+
+.piña-partida-sinnombre{
+    position: static;
+    width: 75px;
+    height: 111.37px;
+    left: 241.43px;
+    top: 25.65px;
+    transform: rotate(-20deg);
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    margin: 0px 0px;
+}
+
+.question-text{
+    position: static;
+    left: 0px;
+    top: 0px;
+    font: var(--title);
+    font-size: 36px;
+    display: flex;
+    align-items: center;
+    color: var(--main-text);
+    margin: 0px 0px;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: space-evenly;
+    flex-direction: row;
+}
