@@ -15,7 +15,7 @@ export const Signup2 = () => {
 	async function createUser(event) {
 		event.preventDefault();
 
-		const response = await fetch("https://3001-jade-peacock-yxhi82yd.ws-eu18.gitpod.io/api/create-user", {
+		const res = await fetch("https://3001-jade-peacock-yxhi82yd.ws-eu18.gitpod.io/api/create-user", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -26,10 +26,15 @@ export const Signup2 = () => {
 			})
 		});
 
-		const responseJson = await response.json();
+		// const responseJson = await response.json();
 
-		if (responseJson.access_token) {
-			localStorage.setItem("access_token", responseJson.access_token);
+		// if (responseJson.access_token) {
+		// 	localStorage.setItem("access_token", responseJson.access_token);
+		// }
+		const resJson = await res.json();
+		console.log(resJson);
+		if (resJson) {
+			localStorage.setItem("userid", resJson);
 		}
 
 		actions.updateInitialUser({});

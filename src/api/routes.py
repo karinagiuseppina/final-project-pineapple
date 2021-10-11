@@ -6,7 +6,8 @@ from api.models import db, User, Couple, Treatment, Process, Center
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
 import json
-# import bcrypt
+import bcrypt
+from sqlalchemy import update
 
 api = Blueprint('api', __name__)
 
@@ -126,20 +127,87 @@ def create_user():
     name = request.json.get("name")
     email =request.json.get("email")
     age = request.json.get("age")
-    password = request.json.get("password")
-    user = User(name=name, email=email, age=age, password=password)
+    password = request.json.get("password").encode('utf8')
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
+
+    user = User(name=name, email=email, age=age, password=hashed_password)
 
     print(user)
     db.session.add(user)
     db.session.commit()
 
-    access_token = create_access_token(user.id)
+    # access_token = create_access_token(user.id)
 
-    return jsonify({"access_token" : access_token})
+    # return jsonify({"access_token" : access_token})
 
-# @api.route("/updte-user", methods =["PUT"])
-# def update_user():
+    return jsonify(user.id)
 
+@api.route("/update-abortion", methods=["PUT"])
+# @jwt_required()
+def update_abortion():
+    
+    # user_id = get_jwt_identity()
+    abortion_num = request.json.get("abortion_num", None) 
+    user_id = request.json.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    user.abortion_num = abortion_num
+    db.session.commit()
+
+    return jsonify(user.id), 200
+
+@api.route("/update-center", methods=["PUT"])
+# @jwt_required()
+def update_center():
+    
+    # user_id = get_jwt_identity()
+    center_id = request.json.get("center_id", None) 
+    user_id = request.json.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    user.center_id= center_id
+    db.session.commit()
+
+    return jsonify(user.id), 200
+
+@api.route("/update-couple", methods=["PUT"])
+# @jwt_required()
+def update_couple():
+    
+    # user_id = get_jwt_identity()
+    couple_id = request.json.get("couple_id", None) 
+    user_id = request.json.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    user.couple_id= couple_id
+    db.session.commit()
+
+    return jsonify(user.id), 200
+
+
+@api.route("/update-treatment", methods=["PUT"])
+# @jwt_required()
+def update_treatment():
+    
+    # user_id = get_jwt_identity()
+    treatment_id = request.json.get("treatment_id", None) 
+    user_id = request.json.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    user.treatment_id= treatment_id
+    db.session.commit()
+
+    return jsonify(user.id), 200
+
+@api.route("/update-processtimeslot", methods=["PUT"])
+# @jwt_required()
+def update_processtimeslot():
+    
+    # user_id = get_jwt_identity()
+    process_id = request.json.get("process_id", None) 
+    user_id = request.json.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    user.process_id= process_id
+    db.session.commit()
+
+    return jsonify(user.id), 200
     
 # @api.route("/findpossiblematches", methods=["GET"])
 # @jwt_required()
