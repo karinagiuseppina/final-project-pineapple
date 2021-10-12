@@ -4,7 +4,7 @@ import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.scss";
 import { Link } from "react-router-dom";
 
-export const SignupExplanation = () => {
+export const Signup3 = () => {
 	return (
 		<div className="text-center mt-5">
 			<h1>Queremos conocerte mejor</h1>
@@ -12,7 +12,7 @@ export const SignupExplanation = () => {
 				Sabemos que es dificil pero para encontrar tu media piña necesitamos toda la informacion que nos puedas
 				dar. Todas Las preguntas son opcionales.
 			</h2>
-			<Link to={"/signup-tiempo"}>
+			<Link to={"/signup-4"}>
 				<button>Siguiente</button>
 			</Link>
 			<Link to={"/list-of-women"}>

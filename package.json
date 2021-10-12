@@ -76,7 +76,11 @@
 		]
 	},
 	"dependencies": {
+		"@fortawesome/fontawesome-svg-core": "^1.2.36",
+		"@fortawesome/free-solid-svg-icons": "^5.15.4",
+		"@fortawesome/react-fontawesome": "^0.1.15",
 		"bootstrap": "^5.1.1",
+		"fs": "0.0.1-security",
 		"install": "^0.13.0",
 		"npm": "^7.24.1",
 		"prop-types": "^15.6.1",
