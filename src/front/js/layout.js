@@ -54,7 +54,7 @@ const Layout = () => {
 
 						<Route exact path="/signup-password">
 							<SignupPassword />
-
+						</Route>
 						<Route exact path="/login">
 							<Login />
 						</Route>
