@@ -7,6 +7,7 @@ class User(db.Model):
     name = db.Column(db.String(120), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(250), unique=False, nullable=False)
+
     age = db.Column(db.Integer, unique=False, nullable=False)
     abortion_num = db.Column(db.Integer, unique=False, nullable=True)
     couple_id = db.Column(db.Integer, db.ForeignKey('couple.id'), nullable=True)
@@ -14,6 +15,7 @@ class User(db.Model):
     center_id = db.Column(db.Integer, db.ForeignKey('center.id'), nullable=True)
     treatment_id = db.Column(db.Integer, db.ForeignKey('treatment.id'), nullable=True)
     description = db.Column(db.String(500), unique=False, nullable=True)
+
 
     def __repr__(self):
         return '<User %r>' % self.name
