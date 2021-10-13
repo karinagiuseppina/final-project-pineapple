@@ -1,69 +1,71 @@
-import React, { useContext, useState } from "react";
-import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
+import React, { useContext, useState, useEffect } from "react";
 import "../../styles/home.scss";
+import { Card } from "../component/card";
 import { Link } from "react-router-dom";
+import pinaNotFound from "../../img/piña-notfound.gif";
 
 export const ListOfWomen = () => {
+	const [waiting, setwaiting] = useState(0);
 	const [results, setResults] = useState([]);
 
 	useEffect(() => {
 		(async () => {
-			const res = await fetch("https://3001-jade-peacock-yxhi82yd.ws-eu18.gitpod.io/api//findpossiblematches", {
+			const res = await fetch("https://3001-jade-peacock-yxhi82yd.ws-eu18.gitpod.io/api/findpossiblematches", {
 				method: "GET",
 				headers: { "Content-Type": "application/json" }
 			});
 			const data = await res.json();
 			console.log(data);
-			setResultslots(data);
+			setResults(data);
+			setwaiting(waiting + 1);
 		})();
 	}, []);
 
-	return (
-		<div className="row row-cols-1 row-cols-md-3 g-4">
-			<div className="col">
-				{results.map(result => {
-					<card result={result} />;
-				})}
-				<div className="card">
-					<img src="..." className="card-img-top" alt="..." />
-					<div className="card-body">
-						<h5 className="card-title">Carlota</h5>
-						<ul className="list-group list-group-flush">
-							<li className="list-group-item">Edad: 35</li>
-							<li className="list-group-item">Busqueda: 3 años</li>
-							<li className="list-group-item">fiv , ISIC, IA</li>
-							<li className="list-group-item">En una relacion con una mujer</li>
-							<li className="list-group-item">CentrosPrivado - Publico</li>
-							<li className="list-group-item">1 perdida</li>
-						</ul>
-						<button>contactar</button>
-						<Link to={"/profile"}>
-							<button>mas info</button>
-						</Link>
+	console.log(results);
+
+	if (waiting === 0) {
+		return (
+			<div className="row row-cols-1 row-cols-md-3 g-4">
+				<div className="col">
+					<div className="card">
+						<img src="..." className="card-img-top grey-box" alt="..." />
+						<div className="card-body">
+							<h5 className="card-title grey-box" />
+							<ul className="list-group list-group-flush">
+								<li className="list-group-item grey-box" />
+								<li className="list-group-item grey-box" />
+								<li className="list-group-item grey-box" />
+								<li className="list-group-item grey-box" />
+								<li className="list-group-item grey-box" />
+								<li className="list-group-item grey-box" />
+							</ul>
+							<button grey-box />
+							<Link>
+								<button grey-box />
+							</Link>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div className="col">
-				<div className="card">
-					<img src="..." className="card-img-top" alt="..." />
-					<div className="card-body">
-						<h5 className="card-title">Carlota</h5>
-						<ul className="list-group list-group-flush">
-							<li className="list-group-item">Edad: 35</li>
-							<li className="list-group-item">Busqueda: 3 años</li>
-							<li className="list-group-item">fiv , ISIC, IA</li>
-							<li className="list-group-item">En una relacion con una mujer</li>
-							<li className="list-group-item">CentrosPrivado - Publico</li>
-							<li className="list-group-item">1 perdida</li>
-						</ul>
-						<button>contactar</button>
-						<Link to={"/profile"}>
-							<button>mas info</button>
-						</Link>
+		);
+	} else if (waiting == 1) {
+		if (results.length == 0) {
+			return (
+				<div className="box-notfound">
+					{/* <img src={pinaNotFound} /> */}
+					<p>Tu media piña aun esta madurando, puedes probar ha cambiar algunas opciones en el filtro.</p>
+				</div>
+			);
+		} else {
+			return (
+				<div className="row row-cols-1 row-cols-md-3 g-4">
+					<div className="col">
+						{results.map(result => {
+							return <Card result={result} key={result.id} />;
+						})}
 					</div>
 				</div>
-			</div>
-		</div>
-	);
+			);
+		}
+	}
 };
