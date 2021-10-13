@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
 import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
 import "../../styles/home.scss";
 import { Link } from "react-router-dom";

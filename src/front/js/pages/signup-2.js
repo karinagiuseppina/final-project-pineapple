@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
-import "../../styles/home.scss";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { NormalInput } from "../component/normalInput";
+import { ButtonType } from "../component/buttonType";
 
 export const Signup2 = () => {
 	const eye = <FontAwesomeIcon icon={faEye} />;
@@ -22,7 +22,7 @@ export const Signup2 = () => {
 	async function createUser(event) {
 		event.preventDefault();
 
-		const res = await fetch("https://3001-jade-peacock-yxhi82yd.ws-eu18.gitpod.io/api/create-user", {
+		const res = await fetch(`${process.env.BACKEND_URL}/api/create-user`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -39,24 +39,37 @@ export const Signup2 = () => {
 		// 	localStorage.setItem("access_token", responseJson.access_token);
 		// }
 		const resJson = await res.json();
-		console.log(resJson);
 		if (resJson) {
-			localStorage.setItem("userid", resJson);
+			localStorage.setItem("user_id", resJson);
 		}
-
 		actions.updateInitialUser({});
 		History.push("/signup-3");
 	}
 
 	return (
-		<div className="text-center mt-5">
-			<h1>Hola {name}, lo primero es tu seguridad</h1>
-			<form onSubmit={createUser}>
-				<label>Contraseña</label>
-				<input type={passwordShown ? "text" : "password"} onChange={event => setPassword(event.target.value)} />
-				<i onClick={togglePasswordVisiblity}>{eye}</i>
-				<input type="submit" value="Siguiente" />
-			</form>
+		<div className="container-fluid bg-lightgray p-4">
+			<div className="row justify-content-center">
+				<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white">
+					<h1 className="question-text">Hola {name}, lo primero es tu seguridad</h1>
+					<form onSubmit={createUser}>
+						<div className="d-flex flex-nowrap align-items-center">
+							<NormalInput
+								type={passwordShown ? "text" : "password"}
+								placeholder="Contraseña"
+								value={password}
+								set={setPassword}
+								icon="fa fa-userfas fa-key"
+								required={false}
+							/>
+
+							<i onClick={togglePasswordVisiblity} className="mb-3 mx-2 p-3">
+								{eye}
+							</i>
+						</div>
+						<ButtonType type="submit" value="Siguiente" />
+					</form>
+				</div>
+			</div>
 		</div>
 	);
 };

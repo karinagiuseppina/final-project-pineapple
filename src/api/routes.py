@@ -49,6 +49,7 @@ def fill_database():
 
     return jsonify({"msg": "OK!"})
 
+
 @api.route("/findpossiblematches", methods=["GET"])
 @jwt_required()
 def find_possible_matches():
@@ -84,8 +85,6 @@ def edit_profile():
     treatment_id = request.json.get("treatment_id", None) 
     description = request.json.get("description", None) 
 
-    print (user_id, name, email, password, age, abortion_num, couple_id, process_id, center_id,treatment_id,description)
-
     # if user_id != actual_user_id: 
     #     return jsonify({"msg": "Unauthorized"}), 401
     
@@ -106,8 +105,9 @@ def edit_profile():
         password = password.encode('utf8')
         salt = bcrypt.gensalt()
         hashed_password = bcrypt.hashpw(password, salt)
+        decoded_password = hashed_password.decode('utf8')
 
-        user.password: hashed_password
+        user.password: decoded_password
 
 
     db.session.commit()
@@ -129,22 +129,31 @@ def get_user(id):
 @api.route("/user/show-info/<id>", methods=["GET"])
 def get_user_info(id):
     user = User.query.filter_by(id=id).first()
-    center_type = Center.query.filter_by(id=user.center_id).first()
-    treatment_type = Treatment.query.filter_by(id=user.treatment_id).first()
-    process_range = Process.query.filter_by(id=user.process_id).first()
-    couple_type = Couple.query.filter_by(id=user.couple_id).first()
-
-    return jsonify({
+    user_obj = {
             "id": user.id,
             "name": user.name,
             "age": user.age,
             "abortion_num": user.abortion_num,
-            "couple": couple_type.option,
-            "process": '{0} - {1}'.format(process_range.min_value, process_range.max_value),
-            "treatment": treatment_type.type,
-            "center": center_type.type,
             "description": user.description
-        }), 200
+        }
+    
+    if user.center_id is not None: 
+        center_type = Center.query.filter_by(id=user.center_id).first()
+        user_obj["center"] = center_type.type
+
+    if user.treatment_id is not None:    
+        treatment_type = Treatment.query.filter_by(id=user.treatment_id).first()
+        user_obj["treatment"] = treatment_type.type
+
+    if user.process_id is not None: 
+        process_range = Process.query.filter_by(id=user.process_id).first()
+        user_obj["process"] = '{0} - {1}'.format(process_range.min_value, process_range.max_value)
+
+    if user.couple_id is not None: 
+        couple_type = Couple.query.filter_by(id=user.couple_id).first()
+        user_obj["couple"] = couple_type.option
+
+    return jsonify(user_obj), 200
 
 @api.route('/centers', methods=['GET'])
 def get_centers():
@@ -161,10 +170,10 @@ def create_user():
     password = request.json.get("password").encode('utf8')
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
+    decoded_password = hashed_password.decode('utf8')
 
-    user = User(name=name, email=email, age=age, password=hashed_password)
+    user = User(name=name, email=email, age=age, password=decoded_password)
 
-    print(user)
     db.session.add(user)
     db.session.commit()
 
@@ -265,17 +274,12 @@ def get_treatments():
     return jsonify(treatments), 200
 
 
-
-#### LOGIN
 @api.route('/login', methods=['POST'])
 def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None).encode('utf8')
-    print(email)
-    print(password)
     
     user = User.query.filter_by(email=email).first()
-    print(user)
 
     if email != user.email or not bcrypt.checkpw(password, user.password.encode('utf8')):
         return jsonify({"msg": "Bad username or password"}), 401

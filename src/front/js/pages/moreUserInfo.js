@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { HashtagProfile } from "../component/hashtagProfile";
 
-export const Profile = () => {
+export const MoreUserInfo = () => {
 	const { store, actions } = useContext(Context);
 	const [user, setUser] = useState({});
+	const { id } = useParams();
 
 	const getUserData = async id => {
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/show-info/${id}`, {
@@ -19,7 +20,7 @@ export const Profile = () => {
 	};
 
 	useEffect(() => {
-		getUserData(store.user_id);
+		getUserData(id);
 	}, []);
 
 	return (
@@ -75,14 +76,19 @@ export const Profile = () => {
 						<div className="card-footer p-4">
 							<div className="row justify-content-center">
 								<div className="col-8 col-md-4 text-center">
-									<Link to="/editprofile">
-										<button
-											type="button"
-											className="btn border-0 p-3 rounded bg-prin text-white w-100 text-uppercase font-size-small my-1">
-											<i className="fas fa-user-cog mx-2" />
-											Editar Perfil
-										</button>
-									</Link>
+									<button
+										type="button"
+										className="btn border-0 p-3 rounded bg-prin text-white w-100 text-uppercase font-size-small my-1">
+										<i className="cp cp-pineapple mx-2" /> Es mi media piña
+									</button>
+								</div>
+								<div className="col-8 col-md-4 text-center">
+									<button
+										type="button"
+										className="btn border-0 p-3 rounded bg-prin text-white w-100 text-uppercase font-size-small my-1">
+										<i className="fas fa-arrow-left mx-2" />
+										Ver otras piñas
+									</button>
 								</div>
 							</div>
 						</div>

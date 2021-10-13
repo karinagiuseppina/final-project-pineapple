@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import "../../styles/home.scss";
+import React, { useContext, useState, useEffect } from "react";
+import { Context } from "../store/appContext";
 import { SelectInput } from "../component/selectInput";
 import { NormalInput } from "../component/normalInput";
 import { FormTitle } from "../component/formTitle";
 import { SelectOptionForm } from "../component/selectOptionForm";
 
 export const EditProfile = () => {
+	const { store, actions } = useContext(Context);
 	const [user, setUser] = useState({
 		user_id: -1,
 		name: "",
@@ -109,7 +110,6 @@ export const EditProfile = () => {
 		});
 		if (resp.ok) {
 			const data = await resp.json();
-			console.log("saved!");
 		}
 	};
 
@@ -118,7 +118,7 @@ export const EditProfile = () => {
 		getElements("centers", setCenters);
 		getElements("couples", setCouples);
 		getElements("processtimeslots", setProcesses);
-		getUserData(1);
+		getUserData(store.user_id);
 	}, []);
 
 	const handleUpdateUser = (attr, value) => {

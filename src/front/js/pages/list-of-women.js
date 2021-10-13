@@ -1,7 +1,5 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
-import "../../styles/home.scss";
 import { Link } from "react-router-dom";
 
 export const ListOfWomen = () => {
@@ -21,7 +19,7 @@ export const ListOfWomen = () => {
 							<li className="list-group-item">1 perdida</li>
 						</ul>
 						<button>contactar</button>
-						<Link to={"/profile"}>
+						<Link to={"/usermoreinfo/1"}>
 							<button>mas info</button>
 						</Link>
 					</div>

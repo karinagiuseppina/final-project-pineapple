@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
-import "../../styles/home.scss";
-import { Link } from "react-router-dom";
 import { NormalInput } from "../component/normalInput";
+import { useHistory } from "react-router";
+import { ButtonType } from "../component/buttonType";
 
 export const Login = () => {
 	const { store, actions } = useContext(Context);
 	const [userLogin, setUserLogin] = useState({ email: "", password: "" });
+	let History = useHistory();
 
 	const getLoginData = (attr, value) => {
 		setUserLogin(prev => {
@@ -29,15 +29,13 @@ export const Login = () => {
 		});
 
 		let data = await response.json();
-		if (data.name) {
-			localStorage.setItem("token", data.token);
-			store.access_token.token = data.token;
+		if (response.ok) {
+			actions.setUserSession(data.token, data.user_id);
+			History.push("/");
 		}
-		console.log(store.access_token);
 	};
 
 	const handleLogin = () => {
-		console.log(userLogin);
 		logUserIn(userLogin.email, userLogin.password);
 	};
 
@@ -66,11 +64,7 @@ export const Login = () => {
 
 						<div className="row justify-content-center">
 							<div className="col text-center">
-								<Link to={store.access_token ? "/profile" : "/"}>
-									<button type="button" className="btn bg-prin" onClick={handleLogin}>
-										Log in
-									</button>
-								</Link>
+								<ButtonType type="button" onClick={handleLogin} value="Log In" />
 							</div>
 						</div>
 					</form>

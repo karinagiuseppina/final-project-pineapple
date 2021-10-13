@@ -5,18 +5,13 @@ import { Link } from "react-router-dom";
 const LogoutButton = () => {
 	const { store, actions } = useContext(Context);
 	const revokeAccessToken = () => {
-		localStorage.removeItem("token");
-		store.access_token.token = "";
+		actions.deleteUserSession();
 	};
 
 	return (
-		<div className="row justify-content-center">
-			<div className="col text-center">
-				<button type="button" className="btn bg-prin" onClick={revokeAccessToken}>
-					Log out
-				</button>
-			</div>
-		</div>
+		<li className="nav-item" onClick={revokeAccessToken}>
+			Log out
+		</li>
 	);
 };
 
