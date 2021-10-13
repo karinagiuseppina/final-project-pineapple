@@ -11,7 +11,6 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
-#from models import Person
 
 ENV = os.getenv("FLASK_ENV")
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')

@@ -14,6 +14,7 @@ export const Home = () => {
 			<img src={pinaPartidaNombre} />
 			<Link to={"/signup-1"}>Encuentra tu media piña</Link>
 			<Link to={"/login"}>Log In</Link>
+			<Link to={"/chat"}>Chat</Link>
 		</div>
 	);
 };

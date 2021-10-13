@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
+import LogoutButton from "./LogoutButton.jsx";
 
 export const Navbar = () => {
 	const location = useLocation();
@@ -17,9 +18,14 @@ export const Navbar = () => {
 							<button className="btn btn-primary">Perfil</button>
 						</Link>
 					) : (
-						<Link to="/login">
-							<button className="btn btn-primary">Log In</button>
-						</Link>
+						<>
+							<Link to="/login">
+								<button className="btn btn-primary">Log In</button>
+							</Link>
+							<Link to="/">
+								<LogoutButton />
+							</Link>
+						</>
 					)}
 				</div>
 			</div>

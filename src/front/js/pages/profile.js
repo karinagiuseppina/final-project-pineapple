@@ -38,7 +38,7 @@ export const Profile = () => {
 
 							<div className="row justify-content-end">
 								<div className="col-12 d-flex flex-wrap justify-content-center">
-									{user.age !== "" ? (
+									{user.age? (
 										<HashtagProfile icon="fas fa-history" text={`${user.age} años`} />
 									) : (
 										""
