@@ -171,7 +171,6 @@ def create_user():
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
     decoded_password = hashed_password.decode('utf8')
-
     user = User(name=name, email=email, age=age, password=decoded_password)
 
     db.session.add(user)
@@ -181,7 +180,7 @@ def create_user():
 
     # return jsonify({"access_token" : access_token})
 
-    return jsonify(user.id)
+    return jsonify(user.id), 200
 
 @api.route("/update-abortion", methods=["PUT"])
 # @jwt_required()

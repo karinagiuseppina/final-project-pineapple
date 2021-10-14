@@ -10,7 +10,7 @@ export const Signup5 = () => {
 
 	function updateInfo(event) {
 		event.preventDefault();
-		const userId = localStorage.getItem("userid");
+		const userId = localStorage.getItem("user_id");
 
 		fetch(`${process.env.BACKEND_URL}/api/update-abortion`, {
 			method: "PUT",
