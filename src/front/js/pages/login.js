@@ -4,6 +4,7 @@ import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.scss";
 import { Link } from "react-router-dom";
 import { NormalInput } from "../component/normalInput";
+import Swal from "sweetalert2";
 
 export const Login = () => {
 	const { store, actions } = useContext(Context);
@@ -19,15 +20,24 @@ export const Login = () => {
 	};
 
 	const logUserIn = async (email, password) => {
-		const response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
-			method: "POST",
-			headers: { "content-Type": "application/json" },
-			body: JSON.stringify({
-				email: email,
-				password: password
-			})
-		});
-
+		if (userLogin.email === "" || !userLogin.email || userLogin.password === "" || store.access_token === "") {
+			Swal.fire({
+				title: "Advertencia",
+				text: "El email o password introducidos no son correctos",
+				icon: "warning",
+				confirmButtonText: "Cerrar"
+			});
+			return;
+		} else {
+			const response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
+				method: "POST",
+				headers: { "content-Type": "application/json" },
+				body: JSON.stringify({
+					email: email,
+					password: password
+				})
+			});
+		}
 		let data = await response.json();
 		if (data.name) {
 			localStorage.setItem("token", data.token);
@@ -66,7 +76,7 @@ export const Login = () => {
 
 						<div className="row justify-content-center">
 							<div className="col text-center">
-								<Link to={store.access_token ? "/profile" : "/"}>
+								<Link to="">
 									<button type="button" className="btn bg-prin" onClick={handleLogin}>
 										Log in
 									</button>

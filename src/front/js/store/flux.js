@@ -5,7 +5,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			access_token: {
 				token: ""
-
 			}
 		},
 		actions: {

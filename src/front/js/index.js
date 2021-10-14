@@ -12,7 +12,6 @@ import "../styles/chat.scss";
 
 import "../styles/colours.scss";
 
-
 //import your own components
 import Layout from "./layout";
 
