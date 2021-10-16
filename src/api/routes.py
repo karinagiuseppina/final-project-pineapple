@@ -1,14 +1,18 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
+import os
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Couple, Treatment, Process, Center
+from api.models import db, User, Couple, Treatment, Process, Center, Cloudinary_image
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
 import json
 import bcrypt
 from sqlalchemy import update
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 api = Blueprint('api', __name__)
 
@@ -72,7 +76,7 @@ def find_possible_matches():
 
 @api.route("/editProfile", methods=["PUT"])
 def edit_profile():
-    # actual_user_id = get_jwt_identity()
+    actual_user_id = get_jwt_identity()
     user_id = request.json.get("user_id", None)
     name = request.json.get("name", None)
     email = request.json.get("email", None)
@@ -84,9 +88,10 @@ def edit_profile():
     center_id = request.json.get("center_id", None) 
     treatment_id = request.json.get("treatment_id", None) 
     description = request.json.get("description", None) 
+    profile_img = request.json.get("profile_img", None) 
 
-    # if user_id != actual_user_id: 
-    #     return jsonify({"msg": "Unauthorized"}), 401
+    if user_id != actual_user_id: 
+        return jsonify({"msg": "Unauthorized"}), 401
     
     if name is None or email is None or age is None:
         return jsonify({"msg": "El nombre, email y age son obligatorios."})
@@ -101,6 +106,10 @@ def edit_profile():
     user.treatment_id = treatment_id
     user.description = description
 
+    if profile_img is not None:
+        user.profile_img = profile_img
+
+
     if password is not None:
         password = password.encode('utf8')
         salt = bcrypt.gensalt()
@@ -113,6 +122,23 @@ def edit_profile():
     db.session.commit()
 
     return jsonify({"msg": "ok"}), 200
+
+@api.route('/upload-file', methods=['PUT'])
+def upload_file():
+    files= request.files
+
+    cloudinary.config( 
+        cloud_name = os.getenv('cloud_name'), 
+        api_key = os.getenv('api_key'), 
+        api_secret = os.getenv('api_secret')
+    )
+    file_to_upload = request.files.get('file')
+    if file_to_upload:
+      upload_result = cloudinary.uploader.upload(file_to_upload)
+      return jsonify({'profile_image': upload_result['secure_url']}), 200
+
+    return jsonify(''), 400
+
 
 @api.route("/users", methods=["GET"])
 def get_users():
@@ -134,7 +160,8 @@ def get_user_info(id):
             "name": user.name,
             "age": user.age,
             "abortion_num": user.abortion_num,
-            "description": user.description
+            "description": user.description,
+            "profile_img": user.profile_img
         }
     
     if user.center_id is not None: 
@@ -286,9 +313,4 @@ def login():
     access_token = create_access_token(identity=user.id)
     print(access_token)
     return jsonify({"user_id": user.id, "name": user.name, "token": access_token})
-
-
-
-
-
 

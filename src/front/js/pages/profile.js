@@ -30,7 +30,10 @@ export const Profile = () => {
 						<div className="card-top-banner" />
 						<div className="card-body little-profile px-4 pt-0 pb-4">
 							<div className="pro-img text-center">
-								<img src="https://via.placeholder.com/128" alt="user" />
+								<img
+									src={user.profile_img ? user.profile_img : "https://via.placeholder.com/128"}
+									alt="user"
+								/>
 							</div>
 							<h3 className="text-center text-prin">{user.name ? user.name : ""}</h3>
 							<p className="text-start px-md-4 py-md-2 p-1">{user.description ? user.description : ""}</p>

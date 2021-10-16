@@ -17,9 +17,11 @@ export const EditProfile = () => {
 		treatment_id: -1,
 		process_id: -1,
 		couple_id: -1,
-		center_id: -1
+		center_id: -1,
+		profile_img: null
 	});
 
+	const [file, setFile] = useState([]);
 	const [treatments, setTreatments] = useState([]);
 	const [centers, setCenters] = useState([]);
 	const [couples, setCouples] = useState([]);
@@ -65,19 +67,33 @@ export const EditProfile = () => {
 		});
 	};
 
-	const handleUpdateProfile = () => {
-		updateProfile(
-			user.user_id,
-			user.age,
-			user.name,
-			user.password,
-			user.email,
-			user.treatment_id,
-			user.process_id,
-			user.couple_id,
-			user.center_id,
-			user.description
-		);
+	const save_profile_img = async () => {
+		let data = new FormData();
+		data.append("file", file[0]);
+		let resp = await fetch(`${process.env.BACKEND_URL}/api/upload-file`, {
+			method: "PUT",
+			body: data
+		});
+		if (resp.ok) {
+			const profile_image_url = await resp.json();
+			console.log(profile_image_url.profile_image);
+			handleUpdateUser("profile_img", profile_image_url.profile_image);
+			updateProfile(
+				user.user_id,
+				user.age,
+				user.name,
+				user.password,
+				user.email,
+				user.treatment_id,
+				user.process_id,
+				user.couple_id,
+				user.center_id,
+				user.description,
+				profile_image_url.profile_image
+			);
+		} else {
+			alert("ERROR");
+		}
 	};
 
 	const updateProfile = async (
@@ -90,7 +106,8 @@ export const EditProfile = () => {
 		process_id,
 		couple_id,
 		center_id,
-		description
+		description,
+		profile_image_url
 	) => {
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/editProfile`, {
 			method: "PUT",
@@ -105,7 +122,8 @@ export const EditProfile = () => {
 				process_id: process_id,
 				couple_id: couple_id,
 				center_id: center_id,
-				description: description
+				description: description,
+				profile_img: profile_image_url
 			})
 		});
 		if (resp.ok) {
@@ -227,8 +245,6 @@ export const EditProfile = () => {
 		[processes, user]
 	);
 
-	const handleUpdateImage = () => {};
-
 	return (
 		<div className="container-fluid bg-lightgray p-4">
 			<div className="row justify-content-center">
@@ -237,6 +253,7 @@ export const EditProfile = () => {
 						<div className="row justify-content-center">
 							<div className="col">
 								<FormTitle title="Datos Generales" />
+								<input type="file" onChange={e => setFile(e.target.files)} />
 								<NormalInput
 									type="text"
 									placeholder="Nombre"
@@ -304,7 +321,7 @@ export const EditProfile = () => {
 						</div>
 						<div className="row justify-content-center">
 							<div className="col text-center">
-								<button type="button" className="btn bg-prin" onClick={handleUpdateProfile}>
+								<button type="button" className="btn bg-prin" onClick={save_profile_img}>
 									Actualizar
 								</button>
 							</div>

@@ -7,15 +7,16 @@ class User(db.Model):
     name = db.Column(db.String(120), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(250), unique=False, nullable=False)
-
+    description = db.Column(db.String(500), unique=False, nullable=True)
+    profile_img = db.Column(db.String(250), unique=False, nullable=True)
     age = db.Column(db.Integer, unique=False, nullable=False)
     abortion_num = db.Column(db.Integer, unique=False, nullable=True)
+
     couple_id = db.Column(db.Integer, db.ForeignKey('couple.id'), nullable=True)
     process_id = db.Column(db.Integer, db.ForeignKey('process.id'), nullable=True)
     center_id = db.Column(db.Integer, db.ForeignKey('center.id'), nullable=True)
     treatment_id = db.Column(db.Integer, db.ForeignKey('treatment.id'), nullable=True)
-    description = db.Column(db.String(500), unique=False, nullable=True)
-
+    # cloudinary_id = db.Column(db.Integer, db.ForeignKey('cloudinary_image.id'))
 
     def __repr__(self):
         return '<User %r>' % self.name
@@ -31,7 +32,8 @@ class User(db.Model):
             "process_id": self.process_id,
             "treatment_id": self.treatment_id,
             "center_id": self.center_id,
-            "description": self.description
+            "description": self.description,
+            "profile_img": self.profile_img
         }
 
 class Couple(db.Model):
@@ -94,4 +96,25 @@ class Treatment(db.Model):
         return {
             "id": self.id,
             "type": self.type
+        }
+
+class Cloudinary_image(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    asset_id = db.Column(db.String(100), unique=True, nullable=False)
+    public_id = db.Column(db.String(100), unique=False, nullable=False)
+    version_id= db.Column(db.String(100), unique=False, nullable=False)
+    version = db.Column(db.String(100), unique=False, nullable=False)
+    secure_url = db.Column(db.String(150), unique=False, nullable=False)
+    # user = db.relationship("User", backref="cloudinary_image", uselist=False, lazy=True)
+
+    def __repr__(self):
+        return '%r' % self.secure_url
+
+    def serialize(self):
+        return {
+            "asset_id": self.asset_id,
+            "public_id": self.public_id,
+            "version_id": self.version_id,
+            "version": self.version, 
+            "secure_url": self.secure_url
         }
