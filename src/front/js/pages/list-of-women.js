@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import "../../styles/home.scss";
 import { Card } from "../component/card";
 import { Link } from "react-router-dom";
-import pinaNotFound from "../../img/piña-notfound.gif";
+import { Filter } from "../component/filter";
 
 export const ListOfWomen = () => {
 	const [waiting, setwaiting] = useState(0);
@@ -10,7 +10,7 @@ export const ListOfWomen = () => {
 
 	useEffect(() => {
 		(async () => {
-			const res = await fetch("https://3001-jade-peacock-yxhi82yd.ws-eu18.gitpod.io/api/findpossiblematches", {
+			const res = await fetch(`${process.env.BACKEND_URL}/api/findpossiblematches`, {
 				method: "GET",
 				headers: { "Content-Type": "application/json" }
 			});
@@ -58,11 +58,13 @@ export const ListOfWomen = () => {
 			);
 		} else {
 			return (
-				<div className="row row-cols-1 row-cols-md-3 g-4">
-					<div className="col">
-						{results.map(result => {
-							return <Card result={result} key={result.id} />;
-						})}
+				<div className="container">
+					<div className="row row-cols-1 row-cols-md-3 g-4">
+						<div className="col">
+							{results.map(result => {
+								return <Card result={result} key={result.id} />;
+							})}
+						</div>
 					</div>
 				</div>
 			);

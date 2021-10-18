@@ -118,7 +118,7 @@ export const EditProfile = () => {
 		getElements("centers", setCenters);
 		getElements("couples", setCouples);
 		getElements("processtimeslots", setProcesses);
-		getUserData(store.user_id);
+		getUserData(1);
 	}, []);
 
 	const handleUpdateUser = (attr, value) => {
