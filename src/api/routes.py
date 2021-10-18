@@ -55,21 +55,21 @@ def fill_database():
 # @jwt_required()
 def find_possible_matches():
     # actual_user_id = get_jwt_identity()
-    user_id = 5
+    user_id = 2
     actual_user = User.query.filter_by(id=user_id).first()
 
     result = User.query.filter(and_(User.age <= (actual_user.age+8), User.age > (actual_user.age-8), User.id != user_id)).all()
     
     print(result)
-    array_users=[]
-    for user in result:
-        if actual_user.treatment_id is not None:
-            print(user)
-            if user.treatment_id == actual_user.treatment_id:
+    array_users= result
+    # for user in result:
+    #     # if actual_user.treatment_id is not None:
+    #     #     print(user)
+    #         if user.treatment_id == actual_user.treatment_id:
                 
-                if actual_user.process_id is not None and user.process_id is not None: 
-                    if user.process_id <= (actual_user.process_id + 4) and (user.process_id > actual_user.process_id -4 ):
-                        array_users.append(user)
+    #             # if actual_user.process_id is not None and user.process_id is not None: 
+    #                 if user.process_id <= (actual_user.process_id + 4) and (user.process_id > actual_user.process_id -4 ):
+    #                     array_users.append(user)
            
         
     print(array_users)            
@@ -255,9 +255,7 @@ def update_processtimeslot():
 
     return jsonify(user.id), 200
     
-# @api.route("/findpossiblematches", methods=["GET"])
-# @jwt_required()
-# def find_possible_matches():
+
 @api.route('/couples', methods=['GET'])
 def get_couples():
     couples = Couple.query.all()
