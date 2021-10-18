@@ -227,6 +227,8 @@ export const EditProfile = () => {
 		[processes, user]
 	);
 
+	const handleUpdateImage = () => {};
+
 	return (
 		<div className="container-fluid bg-lightgray p-4">
 			<div className="row justify-content-center">

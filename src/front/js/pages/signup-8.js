@@ -45,7 +45,7 @@ export const Signup8 = () => {
 
 	async function updateInfo(event) {
 		event.preventDefault();
-		const userId = localStorage.getItem("userid");
+		const userId = localStorage.getItem("user_id");
 		await fetch(`${process.env.BACKEND_URL}/api/update-center`, {
 			method: "PUT",
 			headers: { "Content-Type": "application/json" },
