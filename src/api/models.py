@@ -13,6 +13,11 @@ class GeneralModel:
     def add (self):
         db.session.add(self)
 
+connections = db.Table('connections',
+    db.Column('user_connected', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('user_connecting', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+)
+
 class User(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=False, nullable=False)
@@ -28,6 +33,12 @@ class User(db.Model, GeneralModel):
     center_id = db.Column(db.Integer, db.ForeignKey('center.id'), nullable=True)
     treatment_id = db.Column(db.Integer, db.ForeignKey('treatment.id'), nullable=True)
     # cloudinary_id = db.Column(db.Integer, db.ForeignKey('cloudinary_image.id'))
+
+    users_connected  = db.relationship("User",
+                        secondary=connections,
+                        primaryjoin=id==connections.c.user_connecting,
+                        secondaryjoin=id==connections.c.user_connected,
+                        backref="users_connecting")
 
     def __repr__(self):
         return '<User %r>' % self.name
@@ -83,6 +94,9 @@ class User(db.Model, GeneralModel):
     
     def get_all_users ():
         return User.query.all()
+    
+    def get_connected (self):
+        return self.users_connected
 
 class Couple(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
