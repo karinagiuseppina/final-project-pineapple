@@ -19,7 +19,7 @@ export const Profile = () => {
 	};
 
 	useEffect(() => {
-		getUserData(store.user_id);
+		getUserData(1);
 	}, []);
 
 	return (

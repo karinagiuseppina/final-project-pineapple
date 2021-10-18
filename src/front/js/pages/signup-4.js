@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import "../../styles/home.scss";
 import { Link, useHistory } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { SelectOptionForm } from "../component/selectOptionForm";

@@ -8,6 +8,7 @@ from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get
 import json
 import bcrypt
 from sqlalchemy import update
+from sqlalchemy import and_
 
 
 api = Blueprint('api', __name__)
@@ -51,24 +52,30 @@ def fill_database():
 
 
 @api.route("/findpossiblematches", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def find_possible_matches():
-    actual_user_id = get_jwt_identity()
-    actual_user = User.query.filter_by(id=current_user_id).first()
+    # actual_user_id = get_jwt_identity()
+    user_id = 2
+    actual_user = User.query.filter_by(id=user_id).first()
 
-    result = session.query(User).filter(User.age + 8 > actual_user.age, User.age - 8 > actual_user.age)
-
-    array_users = []
-    for user in result:
-        if actual_user.treatment_id is not None and user.treatment_id == actual_user.treatment_id:
-                array_users.append(user)
+    result = User.query.filter(and_(User.age <= (actual_user.age+8), User.age > (actual_user.age-8), User.id != user_id)).all()
+    
+    print(result)
+    array_users= result
+    # for user in result:
+    #     # if actual_user.treatment_id is not None:
+    #     #     print(user)
+    #         if user.treatment_id == actual_user.treatment_id:
+                
+    #             # if actual_user.process_id is not None and user.process_id is not None: 
+    #                 if user.process_id <= (actual_user.process_id + 4) and (user.process_id > actual_user.process_id -4 ):
+    #                     array_users.append(user)
+           
         
-        if actual_user.process_id is not None: 
-            if user.process_id < 4 + actual_user.process_id and user.process_id > 4 - actual_user.process_id:
-                array_users.append(user)
-
-
-    return jsonify(array_users), 200
+    print(array_users)            
+    posibles_matches_users = list(map (lambda user: user.serialize(), array_users))
+    
+    return jsonify(posibles_matches_users), 200
 
 @api.route("/editProfile", methods=["PUT"])
 def edit_profile():
@@ -248,9 +255,7 @@ def update_processtimeslot():
 
     return jsonify(user.id), 200
     
-# @api.route("/findpossiblematches", methods=["GET"])
-# @jwt_required()
-# def find_possible_matches():
+
 @api.route('/couples', methods=['GET'])
 def get_couples():
     couples = Couple.query.all()
