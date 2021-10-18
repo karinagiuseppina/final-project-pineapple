@@ -2,7 +2,18 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class User(db.Model):
+class GeneralModel: 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+    
+    def commit ():
+        db.session.commit()
+
+    def add (self):
+        db.session.add(self)
+
+class User(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -36,7 +47,44 @@ class User(db.Model):
             "profile_img": self.profile_img
         }
 
-class Couple(db.Model):
+    def serialize_to_show(self): 
+        user_obj = {
+            "id": self.id,
+            "name": self.name,
+            "age": self.age,
+            "abortion_num": self.abortion_num,
+            "description": self.description,
+            "profile_img": self.profile_img
+        }
+    
+        if self.center_id is not None: 
+            center_type = Center.get_center_by_id(self.center_id)
+            user_obj["center"] = center_type.type
+
+        if self.treatment_id is not None:    
+            treatment_type = Treatment.get_treatment_by_id(self.treatment_id)
+            user_obj["treatment"] = treatment_type.type
+
+        if self.process_id is not None: 
+            process_range = Process.get_process_by_id(self.treatment_id)
+            user_obj["process"] = '{0} - {1}'.format(process_range.min_value, process_range.max_value)
+
+        if self.couple_id is not None: 
+            couple_type = Couple.get_couple_by_id(self.treatment_id)
+            user_obj["couple"] = couple_type.option
+        
+        return user_obj
+    
+    def get_user_by_id (id):
+        return User.query.filter_by(id=id).first()
+
+    def get_user_by_email (email):
+        return User.query.filter_by(email=email).first()
+    
+    def get_all_users ():
+        return User.query.all()
+
+class Couple(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     option = db.Column(db.String(50), unique=True, nullable=False) 
     weight = db.Column(db.Integer, unique=False, nullable=False)
@@ -51,7 +99,13 @@ class Couple(db.Model):
             "option": self.option
         }
 
-class Process(db.Model):
+    def get_all_couples ():
+        return Couple.query.all()
+    
+    def get_couple_by_id (id):
+        return Couple.query.filter_by(id=id).first()
+
+class Process(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     max_value = db.Column(db.Integer, unique=False, nullable = False) 
     min_value = db.Column(db.Integer, unique=False, nullable = False)
@@ -67,8 +121,14 @@ class Process(db.Model):
             "max_value": self.max_value,
             "min_value": self.min_value
         }
+    
+    def get_all_process():
+        return Process.query.all()
 
-class Center(db.Model):
+    def get_process_by_id (id):
+        return Process.query.filter_by(id=id).first()
+
+class Center(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(20), unique=True, nullable=False)
     weight = db.Column(db.Integer, unique=False, nullable=False)
@@ -82,8 +142,14 @@ class Center(db.Model):
             "id": self.id,
             "type": self.type
         }
+    
+    def get_all_centers(): 
+        return Center.query.all()
+    
+    def get_center_by_id (id):
+        return Center.query.filter_by(id=id).first()
 
-class Treatment(db.Model):
+class Treatment(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(50), unique=True, nullable=False)
     weight = db.Column(db.Integer, unique=False, nullable=False)
@@ -97,8 +163,14 @@ class Treatment(db.Model):
             "id": self.id,
             "type": self.type
         }
+    
+    def get_all_treatment ():
+        return Treatment.query.all()
+    
+    def get_treatment_by_id (id):
+        return Treatment.query.filter_by(id=id).first()
 
-class Cloudinary_image(db.Model):
+class Cloudinary_image(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     asset_id = db.Column(db.String(100), unique=True, nullable=False)
     public_id = db.Column(db.String(100), unique=False, nullable=False)

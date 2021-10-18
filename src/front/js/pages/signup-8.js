@@ -1,24 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { ButtonType } from "../component/buttonType";
 import { SelectOptionForm } from "../component/selectOptionForm";
+import { Context } from "../store/appContext";
 
 export const Signup8 = () => {
 	let History = useHistory();
 	const [centers, setCenters] = useState([]);
 	const [centerid, setCenterid] = useState("");
 	const [centersInHTML, setCentersInHTML] = useState([]);
+	const { actions } = useContext(Context);
 
 	useEffect(() => {
-		(async () => {
-			const res = await fetch(`${process.env.BACKEND_URL}/api/centers`, {
-				method: "GET",
-				headers: { "Content-Type": "application/json" }
-			});
-			const data = await res.json();
-			setCenters(data);
-		})();
+		actions.getElements("centers", setCenters);
 	}, []);
 	useEffect(
 		() => {

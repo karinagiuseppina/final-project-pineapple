@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 export const ListOfWomen = () => {
 	return (
 		<div className="row row-cols-1 row-cols-md-3 g-4">
+			<Link to="/filter">Filter</Link>
 			<div className="col">
 				<div className="card">
 					<img src="..." className="card-img-top" alt="..." />

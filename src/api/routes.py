@@ -75,6 +75,7 @@ def find_possible_matches():
     return jsonify(array_users), 200
 
 @api.route("/editProfile", methods=["PUT"])
+@jwt_required()
 def edit_profile():
     actual_user_id = get_jwt_identity()
     user_id = request.json.get("user_id", None)
@@ -89,6 +90,7 @@ def edit_profile():
     treatment_id = request.json.get("treatment_id", None) 
     description = request.json.get("description", None) 
     profile_img = request.json.get("profile_img", None) 
+
 
     if user_id != actual_user_id: 
         return jsonify({"msg": "Unauthorized"}), 401
@@ -119,11 +121,12 @@ def edit_profile():
         user.password: decoded_password
 
 
-    db.session.commit()
+    User.commit()
 
     return jsonify({"msg": "ok"}), 200
 
 @api.route('/upload-file', methods=['PUT'])
+@jwt_required()
 def upload_file():
     files= request.files
 
@@ -142,49 +145,31 @@ def upload_file():
 
 @api.route("/users", methods=["GET"])
 def get_users():
-    users = User.query.all()
+    users = User.get_all_users()
 
     users = list(map(lambda user: user.serialize(), users))
     return jsonify(users), 200
 
 @api.route("/user/<id>", methods=["GET"])
 def get_user(id):
-    user = User.query.filter_by(id=id).first()
+    user= User.get_user_by_id(id)
     return jsonify(user.serialize()), 200
+
+@api.route("/users/show-info", methods=["GET"])
+def get_users_show_info():
+    users = User.get_all_users()
+
+    users = list(map(lambda user: user.serialize_to_show(), users))
+    return jsonify(users), 200
 
 @api.route("/user/show-info/<id>", methods=["GET"])
 def get_user_info(id):
-    user = User.query.filter_by(id=id).first()
-    user_obj = {
-            "id": user.id,
-            "name": user.name,
-            "age": user.age,
-            "abortion_num": user.abortion_num,
-            "description": user.description,
-            "profile_img": user.profile_img
-        }
-    
-    if user.center_id is not None: 
-        center_type = Center.query.filter_by(id=user.center_id).first()
-        user_obj["center"] = center_type.type
-
-    if user.treatment_id is not None:    
-        treatment_type = Treatment.query.filter_by(id=user.treatment_id).first()
-        user_obj["treatment"] = treatment_type.type
-
-    if user.process_id is not None: 
-        process_range = Process.query.filter_by(id=user.process_id).first()
-        user_obj["process"] = '{0} - {1}'.format(process_range.min_value, process_range.max_value)
-
-    if user.couple_id is not None: 
-        couple_type = Couple.query.filter_by(id=user.couple_id).first()
-        user_obj["couple"] = couple_type.option
-
-    return jsonify(user_obj), 200
+    user= User.get_user_by_id(id)
+    return jsonify(user.serialize_to_show()), 200
 
 @api.route('/centers', methods=['GET'])
 def get_centers():
-    centers = Center.query.all()
+    centers = Center.get_all_centers()
 
     centers = list(map(lambda center: center.serialize(), centers))
     return jsonify(centers), 200
@@ -200,8 +185,7 @@ def create_user():
     decoded_password = hashed_password.decode('utf8')
     user = User(name=name, email=email, age=age, password=decoded_password)
 
-    db.session.add(user)
-    db.session.commit()
+    User.save(user)
 
     # access_token = create_access_token(user.id)
 
@@ -216,9 +200,9 @@ def update_abortion():
     # user_id = get_jwt_identity()
     abortion_num = request.json.get("abortion_num", None) 
     user_id = request.json.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
+    user= User.get_user_by_id(user_id)
     user.abortion_num = abortion_num
-    db.session.commit()
+    User.commit()
 
     return jsonify(user.id), 200
 
@@ -229,9 +213,9 @@ def update_center():
     # user_id = get_jwt_identity()
     center_id = request.json.get("center_id", None) 
     user_id = request.json.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
+    user= User.get_user_by_id(user_id)
     user.center_id= center_id
-    db.session.commit()
+    User.commit()
 
     return jsonify(user.id), 200
 
@@ -242,9 +226,9 @@ def update_couple():
     # user_id = get_jwt_identity()
     couple_id = request.json.get("couple_id", None) 
     user_id = request.json.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
+    user= User.get_user_by_id(user_id)
     user.couple_id= couple_id
-    db.session.commit()
+    User.commit()
 
     return jsonify(user.id), 200
 
@@ -256,9 +240,9 @@ def update_treatment():
     # user_id = get_jwt_identity()
     treatment_id = request.json.get("treatment_id", None) 
     user_id = request.json.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
+    user= User.get_user_by_id(user_id)
     user.treatment_id= treatment_id
-    db.session.commit()
+    User.commit()
 
     return jsonify(user.id), 200
 
@@ -269,9 +253,9 @@ def update_processtimeslot():
     # user_id = get_jwt_identity()
     process_id = request.json.get("process_id", None) 
     user_id = request.json.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
+    user= User.get_user_by_id(user_id)
     user.process_id= process_id
-    db.session.commit()
+    User.commit()
 
     return jsonify(user.id), 200
     
@@ -280,21 +264,21 @@ def update_processtimeslot():
 # def find_possible_matches():
 @api.route('/couples', methods=['GET'])
 def get_couples():
-    couples = Couple.query.all()
+    couples = Couple.get_all_couples()
 
     couples = list(map(lambda couple: couple.serialize(), couples))
     return jsonify(couples), 200
 
 @api.route('/processtimeslots', methods=['GET'])
 def get_process_time_slots():
-    time_slots = Process.query.all()
+    time_slots = Process.get_all_process()
 
     time_slots = list(map(lambda time_slot: time_slot.serialize(), time_slots))
     return jsonify(time_slots), 200
 
 @api.route('/treatments', methods=['GET'])
 def get_treatments():
-    treatments = Treatment.query.all()
+    treatments = Treatment.get_all_treatment()
 
     treatments = list(map(lambda treatment: treatment.serialize(), treatments))
     return jsonify(treatments), 200
@@ -305,7 +289,8 @@ def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None).encode('utf8')
     
-    user = User.query.filter_by(email=email).first()
+    # user = User.query.filter_by(email=email).first()
+    user= User.get_user_by_email(email)
 
     if email != user.email or not bcrypt.checkpw(password, user.password.encode('utf8')):
         return jsonify({"msg": "Bad username or password"}), 401
