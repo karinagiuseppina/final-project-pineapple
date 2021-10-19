@@ -9,7 +9,7 @@ const LogoutButton = () => {
 	};
 
 	return (
-		<li className="nav-links-mobile" onClick={revokeAccessToken}>
+		<li className="nav-links-mobile warning" onClick={revokeAccessToken}>
 			Log out
 		</li>
 	);

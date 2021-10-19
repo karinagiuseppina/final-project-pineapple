@@ -1,6 +1,6 @@
 .navbarItems{
     background-color: var(--neutral-ligth);
-    border-bottom: 1px solid var(--main-text);
+    border-bottom: 1px solid var(--details);
     height: 64px;
     display: flex;
     justify-content: space-between;
@@ -10,19 +10,7 @@
 }
 
 
-.logo{
-    font: var(--logo);
-    color: var(--primary);
-    text-shadow:
-   -1px -1px 0 var(--main-text),  
-    1px -1px 0 var(--main-text),
-    -1px 1px 0 var(--main-text),
-     1px 1px 0 var(--main-text);
-    justify-self: start;
-    margin-left: 20px;
-    margin-bottom: 0px;
-    cursor: pointer;
-}
+
 .nav-menu-login{
     display:flex;
     list-style: none;
@@ -73,7 +61,6 @@
     justify-content: center;
     align-items: center;
     padding: 8px 16px;
-    background: var(--primary);
     border-radius: 8px;
     font: var(--button);
     color: var(--main-text);
@@ -81,7 +68,6 @@
 }
 
 .nav-links-mobile:hover{
-    background-color: var(--primary);
     color: var(--main-text);
     font: var(--button-hover);
     border: 2px solid var(--main-text);
@@ -141,7 +127,6 @@
         justify-content: center;
         align-items: center;
         padding: 8px 16px;
-        background: var(--primary);
         border-radius: 8px;
         font: var(--button);
         color: var(--main-text);
@@ -149,7 +134,6 @@
     }
     
     .nav-links-mobile:hover{
-        background-color: var(--primary);
         color: var(--main-text);
         font: var(--button-hover);
         border: 2px solid var(--main-text);
