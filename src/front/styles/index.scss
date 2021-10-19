@@ -8,6 +8,7 @@
 body{
     font-family: var(--general-font);
     color: var(--main-text);
+    margin-top: 0px;
 
 }
  h1{
@@ -18,15 +19,7 @@ body{
      font: var(--text)
     }
 
-.logo{
-    font: var(--logo);
-    color: var(--light-green);
-    text-shadow:
-   -1px -1px 0 var(--text-olive),  
-    1px -1px 0 var(--text-olive),
-    -1px 1px 0 var(--text-olive),
-     1px 1px 0 var(--text-olive);
-}
+
 
 
 
@@ -42,6 +35,13 @@ body{
     color: var(--main-text);
     text-decoration: none!important;
     }
+
+  .button-primary:hover{
+    background-color: var(--primary);
+    font: var(--button-hover);
+    border: 2px solid var(--main-text);
+    transition: 250ms ease-out;
+  }
 
 .singup-box{
     display: flex;

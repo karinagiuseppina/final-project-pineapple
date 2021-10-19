@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import ProgressBar from "react-bootstrap/ProgressBar";
+
 import { ButtonType } from "../component/buttonType";
 import { SelectOptionForm } from "../component/selectOptionForm";
 
@@ -61,7 +61,7 @@ export const Signup8 = () => {
 		<div className="container-fluid bg-lightgray p-4">
 			<div className="row justify-content-center">
 				<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white text-center">
-					<ProgressBar now={100} />
+					{/* <ProgressBar now={100} /> */}
 					<h1 className="pt-3">¿A que centros has acudido?</h1>
 					<form onSubmit={updateInfo}>
 						<div className="row p-2">{centersInHTML}</div>

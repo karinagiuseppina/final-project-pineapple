@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "../../styles/home.scss";
 import { Link, useHistory } from "react-router-dom";
-import ProgressBar from "react-bootstrap/ProgressBar";
+
 import { SelectOptionForm } from "../component/selectOptionForm";
 import { ButtonType } from "../component/buttonType";
 
@@ -77,7 +77,7 @@ export const Signup4 = () => {
 						<ButtonType type="submit" value="Siguiente" />
 					</form>
 
-					<ProgressBar now={20} />
+					{/* <ProgressBar now={20} /> */}
 				</div>
 			</div>
 		</div>

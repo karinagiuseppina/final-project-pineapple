@@ -1,53 +1,82 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import LogoutButton from "./LogoutButton.jsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faEye } from "@fortawesome/";
 
 export const Navbar = () => {
+	const MenuItems = [
+		{
+			title: "Perfil",
+			url: "/profile",
+			cName: "nav-links"
+		},
+		{
+			title: "Encuentra tu piña",
+			url: "/list-of-women",
+			cName: "nav-links"
+		},
+		{
+			title: "Tus Piñas",
+			// lista de chats
+			url: "",
+			cName: "nav-links"
+		}
+	];
+
 	const { store, actions } = useContext(Context);
+	const [isClicked, setIsClicked] = useState(false);
+	const handleClicked = () => {
+		setIsClicked(isClicked ? false : true);
+		console.log(isClicked);
+	};
 
-	let logOut = (
+	const logIn = (
 		<>
-			<li className="nav-item">
-				<Link to="/profile">Perfil</Link>
+			<li>
+				<Link className="nav-links-mobile" to="/login">
+					Log In
+				</Link>
 			</li>
-			<LogoutButton />
-		</>
-	);
-
-	let logIn = (
-		<>
-			<li className="nav-item">
-				<Link to="/login">Sign In</Link>
-			</li>
-			<li className="nav-item">
+			{/* <li className="nav-links-mobile">
 				<Link to="/signup-1">Sign Up</Link>
-			</li>
+			</li> */}
 		</>
 	);
 
+	// if (store.user_id == null && store.access_token == null) {
+	// 	console.log(store.user_id);
+	// 	return (
+	// 		<nav className="navbarItems">
+	// 			<h1 className="logo">Fivnder</h1>
+	// 			<ul className="nav-menu-login">{logIn}</ul>
+	// 		</nav>
+	// 	);
+	// } else {
 	return (
-		<nav className="navbar navbar-expand-lg navbar-light bg-light">
-			<div className="container-fluid">
-				<a className="navbar-brand" href="#">
-					Navbar scroll
-				</a>
-				<button
-					className="navbar-toggler"
-					type="button"
-					data-bs-toggle="collapse"
-					data-bs-target="#navbarScroll"
-					aria-controls="navbarScroll"
-					aria-expanded="false"
-					aria-label="Toggle navigation">
-					<span className="navbar-toggler-icon"> </span>
-				</button>
-				<div className="collapse navbar-collapse" id="navbarScroll">
-					<ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
-						{store.user_id !== null && store.access_token !== null ? logOut : logIn}
-					</ul>
-				</div>
+		<nav className="navbarItems">
+			<h1 className="logo">Fivnder</h1>
+			<div className="menu-icon" onClick={handleClicked}>
+				{isClicked ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
 			</div>
+			<ul className={isClicked ? "nav-menu active" : "nav-menu"}>
+				{MenuItems.map((Item, index) => {
+					return (
+						<li key={index}>
+							<Link className={Item.cName} to={Item.url}>
+								{Item.title}
+							</Link>
+						</li>
+					);
+				})}
+				<LogoutButton />
+			</ul>
 		</nav>
 	);
+	// }
 };
