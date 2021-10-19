@@ -12,6 +12,10 @@ class GeneralModel:
 
     def add (self):
         db.session.add(self)
+    
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
 connections = db.Table('connections',
     db.Column('user_connected', db.Integer, db.ForeignKey('user.id'), primary_key=True),
@@ -19,9 +23,8 @@ connections = db.Table('connections',
 )
 
 chats = db.Table('chats',
-    db.Column('id', db.Integer, primary_key=True),
-    db.Column('user_1', db.Integer, db.ForeignKey('user.id'), primary_key=False),
-    db.Column('user_2', db.Integer, db.ForeignKey('user.id'), primary_key=False)
+    db.Column('chat_id', db.Integer, db.ForeignKey('chat.id'), primary_key=True),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
 )
 
 class User(db.Model, GeneralModel):
@@ -38,7 +41,6 @@ class User(db.Model, GeneralModel):
     process_id = db.Column(db.Integer, db.ForeignKey('process.id'), nullable=True)
     center_id = db.Column(db.Integer, db.ForeignKey('center.id'), nullable=True)
     treatment_id = db.Column(db.Integer, db.ForeignKey('treatment.id'), nullable=True)
-    # cloudinary_id = db.Column(db.Integer, db.ForeignKey('cloudinary_image.id'))
 
     users_connected  = db.relationship("User",
                         secondary=connections,
@@ -46,11 +48,8 @@ class User(db.Model, GeneralModel):
                         secondaryjoin=id==connections.c.user_connected,
                         backref="users_connecting")
     
-    chats  = db.relationship("User",
-                        secondary=chats,
-                        primaryjoin=id==chats.c.user_2,
-                        secondaryjoin=id==chats.c.user_1,
-                        backref="user_chats")
+    chats = db.relationship('Chat', secondary=chats, lazy='subquery',
+        backref=db.backref('users', lazy=True))
 
     def __repr__(self):
         return '<User %r>' % self.name
@@ -112,6 +111,7 @@ class User(db.Model, GeneralModel):
     
     def get_chats (self):
         return self.chats
+    
 
 class Couple(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
@@ -199,23 +199,23 @@ class Treatment(db.Model, GeneralModel):
     def get_treatment_by_id (id):
         return Treatment.query.filter_by(id=id).first()
 
-class Cloudinary_image(db.Model, GeneralModel):
+class Chat(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
-    asset_id = db.Column(db.String(100), unique=True, nullable=False)
-    public_id = db.Column(db.String(100), unique=False, nullable=False)
-    version_id= db.Column(db.String(100), unique=False, nullable=False)
-    version = db.Column(db.String(100), unique=False, nullable=False)
-    secure_url = db.Column(db.String(150), unique=False, nullable=False)
-    # user = db.relationship("User", backref="cloudinary_image", uselist=False, lazy=True)
 
     def __repr__(self):
-        return '%r' % self.secure_url
+        return '%r' % self.id
 
     def serialize(self):
         return {
-            "asset_id": self.asset_id,
-            "public_id": self.public_id,
-            "version_id": self.version_id,
-            "version": self.version, 
-            "secure_url": self.secure_url
+            "id": self.id
         }
+    
+    def get_all_chats ():
+        return Chat.query.all()
+    
+    def get_chat_by_id (id):
+        return Chat.query.filter_by(id=id).first()
+
+    def get_chat_users(self):
+        return self.users
+    

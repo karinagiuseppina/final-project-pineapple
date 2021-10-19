@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 import os
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Couple, Treatment, Process, Center, Cloudinary_image
+from api.models import db, User, Couple, Treatment, Process, Center, Chat
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
 import json
@@ -53,7 +53,6 @@ def fill_database():
     db.session.commit()
 
     return jsonify({"msg": "OK!"})
-
 
 @api.route("/findpossiblematches", methods=["GET"])
 # @jwt_required()
@@ -315,8 +314,10 @@ def user_connects_with_user(id_asking, id_listening):
     user_asking.users_connected.append(user_listening)
 
     if user_asking in user_listening.users_connected: 
-        user_asking.chats.append(user_listening)
-        user_listening.chats.append(user_asking)
+        new_chat = Chat()
+        user_asking.chats.append(new_chat)
+        user_listening.chats.append(new_chat)
+        Chat.save(new_chat)
 
     User.commit()
 
@@ -338,6 +339,15 @@ def get_user_chats(id):
 
     chats = user.get_chats()
 
-    chats = list(map(lambda user: user.serialize(), chats))
+    chats = list(map(lambda chat: chat.serialize(), chats))
 
     return jsonify({"chats": chats}), 200
+
+@api.route('/chat/<id>', methods=['GET'])
+def get_chats(id):
+    chat = Chat.get_chat_by_id(id)
+    users = chat.get_chat_users()
+
+    users = list(map(lambda user: user.serialize(), users))
+
+    return jsonify({"chat_id": chat.id, "users": users}), 200
