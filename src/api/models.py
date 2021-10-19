@@ -18,6 +18,12 @@ connections = db.Table('connections',
     db.Column('user_connecting', db.Integer, db.ForeignKey('user.id'), primary_key=True)
 )
 
+chats = db.Table('chats',
+    db.Column('id', db.Integer, primary_key=True),
+    db.Column('user_1', db.Integer, db.ForeignKey('user.id'), primary_key=False),
+    db.Column('user_2', db.Integer, db.ForeignKey('user.id'), primary_key=False)
+)
+
 class User(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=False, nullable=False)
@@ -39,6 +45,12 @@ class User(db.Model, GeneralModel):
                         primaryjoin=id==connections.c.user_connecting,
                         secondaryjoin=id==connections.c.user_connected,
                         backref="users_connecting")
+    
+    chats  = db.relationship("User",
+                        secondary=chats,
+                        primaryjoin=id==chats.c.user_2,
+                        secondaryjoin=id==chats.c.user_1,
+                        backref="user_chats")
 
     def __repr__(self):
         return '<User %r>' % self.name
@@ -97,6 +109,9 @@ class User(db.Model, GeneralModel):
     
     def get_connected (self):
         return self.users_connected
+    
+    def get_chats (self):
+        return self.chats
 
 class Couple(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)

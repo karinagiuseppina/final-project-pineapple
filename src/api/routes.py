@@ -304,27 +304,40 @@ def login():
     print(access_token)
     return jsonify({"user_id": user.id, "name": user.name, "token": access_token})
 
-@api.route("/user/<id_asking>/connects_to/<id_listening>", methods=["PUT"])
+@api.route("/user/<id_asking>/asks/<id_listening>", methods=["PUT"])
 #@jwt_required()
 def user_connects_with_user(id_asking, id_listening):
     # user_id = get_jwt_identity()
 
     user_asking = User.get_user_by_id(id_asking)
     user_listening = User.get_user_by_id(id_listening)
-    print(user_asking.users_connected, user_listening)
 
     user_asking.users_connected.append(user_listening)
+
+    if user_asking in user_listening.users_connected: 
+        user_asking.chats.append(user_listening)
+        user_listening.chats.append(user_asking)
+
     User.commit()
 
     return jsonify({"msg" : "ok"}), 200
 
-@api.route('/users_connected/<id>', methods=['GET'])
+@api.route('user/<id>/users_connected', methods=['GET'])
 def get_users_connected(id):
     user = User.get_user_by_id(id)
 
     users_connected = user.get_connected()
 
-    print(users_connected)
     users_connected = list(map(lambda user: user.serialize(), users_connected))
 
     return jsonify({"connected": users_connected}), 200
+
+@api.route('/user/<id>/chats', methods=['GET'])
+def get_user_chats(id):
+    user = User.get_user_by_id(id)
+
+    chats = user.get_chats()
+
+    chats = list(map(lambda user: user.serialize(), chats))
+
+    return jsonify({"chats": chats}), 200
