@@ -4,15 +4,15 @@
     --primary: #A5DD81;
     --accents: #2E9414;
     --warning : #C85636;
-    --netral: #F2F2F2;
+    --neutral: #F2F2F2;
     --neutral-light: #ffffff;
-    --main-text : #666632;
+    --main-text : #3b3b1c;
 }
 // <'font-style'> || <'font-variant'> || <'font-weight'> ]? <'font-size'> [ / <'line-height'> ]? <'font-family'> ]
 :root{
     --general-font:'Poppins';
     --title:700 36px 'Poppins';
-    --button:400 24px 'Poppins';
+    --button:400 18px 'Poppins';
     --logo:700 48px 'Poppins';
     --text:700 24px 'poppins';
 }

@@ -1,55 +1,58 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.scss";
 import { Link, useHistory } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
+import { SelectOptionForm } from "../component/selectOptionForm";
+import { ButtonType } from "../component/buttonType";
 
 export const Signup4 = () => {
 	let History = useHistory();
 	const [processtimeslots, setProcesstimeslots] = useState([]);
-	const [processtimeslotsid, setProcesstimeslotsid] = useState("");
+	const [processtimeslotsid, setProcesstimeslotsid] = useState(null);
+	const [processInHTML, setProcessInHTML] = useState([]);
 
 	useEffect(() => {
 		(async () => {
-			const res = await fetch("https://3001-jade-peacock-yxhi82yd.ws-eu18.gitpod.io/api/processtimeslots", {
+			const res = await fetch(`${process.env.BACKEND_URL}/api/processtimeslots`, {
 				method: "GET",
 				headers: { "Content-Type": "application/json" }
 			});
 			const data = await res.json();
-			console.log(data);
 			setProcesstimeslots(data);
 		})();
 	}, []);
 
-	const optionHtml = processtimeslots.map(function(processtimeslot) {
-		console.log(processtimeslot.id);
-		if (processtimeslot.id === 1) {
-			return (
-				<option key={processtimeslot.id} value={processtimeslot.id}>
-					{processtimeslot.min_value} - {processtimeslot.max_value} año
-				</option>
+	useEffect(
+		() => {
+			setProcessInHTML(
+				processtimeslots.map(process => {
+					let range =
+						process.min_value === process.max_value
+							? "> 5 años"
+							: `${process.min_value} - ${process.max_value} años`;
+					let isChecked = process.id === processtimeslotsid ? true : false;
+					return (
+						<SelectOptionForm
+							colClass="col-12 col-md-6 p-1"
+							code={`pr-${process.id}`}
+							key={`pr-${process.id}`}
+							generalName="process"
+							id={process.id}
+							set={setProcesstimeslotsid}
+							option={range}
+							isChecked={isChecked}
+						/>
+					);
+				})
 			);
-		} else if (processtimeslot.id === 2 || processtimeslot.id === 3) {
-			return (
-				<option key={processtimeslot.id} value={processtimeslot.id}>
-					{processtimeslot.min_value} - {processtimeslot.max_value} años
-				</option>
-			);
-		} else if (processtimeslot.id === 4) {
-			return (
-				<option key={processtimeslot.id} value={processtimeslot.id}>
-					mas de {processtimeslot.min_value} años
-				</option>
-			);
-		}
-	});
+		},
+		[processtimeslots, processtimeslotsid]
+	);
 
 	async function updateInfo(event) {
 		event.preventDefault();
-		const userId = localStorage.getItem("userid");
-		console.log("processtimeslot id" + processtimeslotsid);
-		await fetch("https://3001-jade-peacock-yxhi82yd.ws-eu18.gitpod.io/api/update-processtimeslot", {
+		const userId = localStorage.getItem("user_id");
+		await fetch(`${process.env.BACKEND_URL}/api/update-processtimeslot`, {
 			method: "PUT",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -61,22 +64,22 @@ export const Signup4 = () => {
 	}
 
 	return (
-		<div className="text-center mt-5">
-			<h1>¿Cuanto llevas en busqueda? </h1>
-			<form onSubmit={updateInfo}>
-				<select name="tiempo_proceso" onChange={event => setProcesstimeslotsid(event.target.value)}>
-					{optionHtml}
-				</select>
-				<input type="submit" value="Siguiente" />
-				<Link to={"signup-5"}>
-					<button>Saltar</button>{" "}
-				</Link>
-			</form>
-			{/* <progress id="file" max="100" value="20">
-				{" "}
-				20%{" "}
-			</progress> */}
-			<ProgressBar now={20} />
+		<div className="container-fluid bg-lightgray p-4">
+			<div className="row justify-content-center">
+				<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white text-center">
+					<h1 className="question-text">¿Cuánto llevas en busqueda? </h1>
+					<form onSubmit={updateInfo}>
+						<div className="row p-4">{processInHTML}</div>
+						<Link to={"/signup-5"}>
+							<ButtonType type="button" value="Saltar Cuestionario" />
+						</Link>
+
+						<ButtonType type="submit" value="Siguiente" />
+					</form>
+
+					<ProgressBar now={20} />
+				</div>
+			</div>
 		</div>
 	);
 };

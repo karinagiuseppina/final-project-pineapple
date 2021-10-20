@@ -3,8 +3,6 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import ChatList from "./pages/ChatList.jsx";
 import { Home } from "./pages/home";
-import { Demo } from "./pages/demo";
-import { Single } from "./pages/single";
 import { Signup1 } from "./pages/signup-1";
 import { Login } from "./pages/login";
 import { Signup2 } from "./pages/signup-2";
@@ -17,6 +15,7 @@ import { Signup8 } from "./pages/signup-8";
 import { ListOfWomen } from "./pages/list-of-women";
 import { Profile } from "./pages/profile";
 import { EditProfile } from "./pages/editProfile";
+import { MoreUserInfo } from "./pages/moreUserInfo";
 
 import injectContext from "./store/appContext";
 
@@ -43,9 +42,6 @@ const Layout = () => {
 						</Route>
 						<Route exact path="/login">
 							<Login />
-						</Route>
-						<Route exact path="/single/:theid">
-							<Single />
 						</Route>
 						<Route exact path="/signup-1">
 							<Signup1 />
@@ -80,9 +76,13 @@ const Layout = () => {
 						<Route exact path="/profile">
 							<Profile />
 						</Route>
+						<Route exact path="/usermoreinfo/:id">
+							<MoreUserInfo />
+						</Route>
 						<Route exact path="/editProfile">
 							<EditProfile />
 						</Route>
+
 						<Route>
 							<h1>Not found!</h1>
 						</Route>

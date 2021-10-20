@@ -8,6 +8,7 @@ from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get
 import json
 import bcrypt
 from sqlalchemy import update
+from sqlalchemy import and_
 
 
 api = Blueprint('api', __name__)
@@ -49,25 +50,32 @@ def fill_database():
 
     return jsonify({"msg": "OK!"})
 
+
 @api.route("/findpossiblematches", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def find_possible_matches():
-    actual_user_id = get_jwt_identity()
-    actual_user = User.query.filter_by(id=current_user_id).first()
+    # actual_user_id = get_jwt_identity()
+    user_id = 2
+    actual_user = User.query.filter_by(id=user_id).first()
 
-    result = session.query(User).filter(User.age + 8 > actual_user.age, User.age - 8 > actual_user.age)
-
-    array_users = []
-    for user in result:
-        if actual_user.treatment_id is not None and user.treatment_id == actual_user.treatment_id:
-                array_users.append(user)
+    result = User.query.filter(and_(User.age <= (actual_user.age+8), User.age > (actual_user.age-8), User.id != user_id)).all()
+    
+    print(result)
+    array_users= result
+    # for user in result:
+    #     # if actual_user.treatment_id is not None:
+    #     #     print(user)
+    #         if user.treatment_id == actual_user.treatment_id:
+                
+    #             # if actual_user.process_id is not None and user.process_id is not None: 
+    #                 if user.process_id <= (actual_user.process_id + 4) and (user.process_id > actual_user.process_id -4 ):
+    #                     array_users.append(user)
+           
         
-        if actual_user.process_id is not None: 
-            if user.process_id < 4 + actual_user.process_id and user.process_id > 4 - actual_user.process_id:
-                array_users.append(user)
-
-
-    return jsonify(array_users), 200
+    print(array_users)            
+    posibles_matches_users = list(map (lambda user: user.serialize(), array_users))
+    
+    return jsonify(posibles_matches_users), 200
 
 @api.route("/editProfile", methods=["PUT"])
 def edit_profile():
@@ -83,8 +91,6 @@ def edit_profile():
     center_id = request.json.get("center_id", None) 
     treatment_id = request.json.get("treatment_id", None) 
     description = request.json.get("description", None) 
-
-    print (user_id, name, email, password, age, abortion_num, couple_id, process_id, center_id,treatment_id,description)
 
     # if user_id != actual_user_id: 
     #     return jsonify({"msg": "Unauthorized"}), 401
@@ -106,8 +112,9 @@ def edit_profile():
         password = password.encode('utf8')
         salt = bcrypt.gensalt()
         hashed_password = bcrypt.hashpw(password, salt)
+        decoded_password = hashed_password.decode('utf8')
 
-        user.password: hashed_password
+        user.password: decoded_password
 
 
     db.session.commit()
@@ -126,6 +133,35 @@ def get_user(id):
     user = User.query.filter_by(id=id).first()
     return jsonify(user.serialize()), 200
 
+@api.route("/user/show-info/<id>", methods=["GET"])
+def get_user_info(id):
+    user = User.query.filter_by(id=id).first()
+    user_obj = {
+            "id": user.id,
+            "name": user.name,
+            "age": user.age,
+            "abortion_num": user.abortion_num,
+            "description": user.description
+        }
+    
+    if user.center_id is not None: 
+        center_type = Center.query.filter_by(id=user.center_id).first()
+        user_obj["center"] = center_type.type
+
+    if user.treatment_id is not None:    
+        treatment_type = Treatment.query.filter_by(id=user.treatment_id).first()
+        user_obj["treatment"] = treatment_type.type
+
+    if user.process_id is not None: 
+        process_range = Process.query.filter_by(id=user.process_id).first()
+        user_obj["process"] = '{0} - {1}'.format(process_range.min_value, process_range.max_value)
+
+    if user.couple_id is not None: 
+        couple_type = Couple.query.filter_by(id=user.couple_id).first()
+        user_obj["couple"] = couple_type.option
+
+    return jsonify(user_obj), 200
+
 @api.route('/centers', methods=['GET'])
 def get_centers():
     centers = Center.query.all()
@@ -141,10 +177,9 @@ def create_user():
     password = request.json.get("password").encode('utf8')
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
+    decoded_password = hashed_password.decode('utf8')
+    user = User(name=name, email=email, age=age, password=decoded_password)
 
-    user = User(name=name, email=email, age=age, password=hashed_password)
-
-    print(user)
     db.session.add(user)
     db.session.commit()
 
@@ -152,7 +187,7 @@ def create_user():
 
     # return jsonify({"access_token" : access_token})
 
-    return jsonify(user.id)
+    return jsonify(user.id), 200
 
 @api.route("/update-abortion", methods=["PUT"])
 # @jwt_required()
@@ -220,9 +255,7 @@ def update_processtimeslot():
 
     return jsonify(user.id), 200
     
-# @api.route("/findpossiblematches", methods=["GET"])
-# @jwt_required()
-# def find_possible_matches():
+
 @api.route('/couples', methods=['GET'])
 def get_couples():
     couples = Couple.query.all()
@@ -245,17 +278,12 @@ def get_treatments():
     return jsonify(treatments), 200
 
 
-
-#### LOGIN
 @api.route('/login', methods=['POST'])
 def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None).encode('utf8')
-    print(email)
-    print(password)
     
     user = User.query.filter_by(email=email).first()
-    print(user)
 
     if user is None or email != user.email or email is None or not bcrypt.checkpw(password, user.password.encode('utf8')):
         return jsonify({"msg": "Bad username or password"}), 401

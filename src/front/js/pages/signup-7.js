@@ -1,39 +1,52 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
-import "../../styles/home.scss";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
+import { ButtonType } from "../component/buttonType";
+import { SelectOptionForm } from "../component/selectOptionForm";
 
 export const Signup7 = () => {
 	let History = useHistory();
 	const [treatments, setTreatments] = useState([]);
 	const [treatmentid, setTreatmentid] = useState("");
+	const [treatmentsInHTML, setTreatmentsInHTML] = useState([]);
 
 	useEffect(() => {
 		(async () => {
-			const res = await fetch("https://3001-jade-peacock-yxhi82yd.ws-eu18.gitpod.io/api/treatments", {
+			const res = await fetch(`${process.env.BACKEND_URL}/api/treatments`, {
 				method: "GET",
 				headers: { "Content-Type": "application/json" }
 			});
 			const data = await res.json();
-			console.log(data);
 			setTreatments(data);
 		})();
 	}, []);
-	const optionHtml = treatments.map(function(treatment) {
-		return (
-			<option key={treatment.id} value={treatment.id}>
-				{treatment.type}
-			</option>
-		);
-	});
+	useEffect(
+		() => {
+			setTreatmentsInHTML(
+				treatments.map(treatment => {
+					let isChecked = treatment.id === treatmentid ? true : false;
+					return (
+						<SelectOptionForm
+							colClass="col-12 col-md-4 p-1"
+							code={`t-${treatment.id}`}
+							key={`t-${treatment.id}`}
+							generalName="treatment"
+							id={treatment.id}
+							set={setTreatmentid}
+							option={treatment.type}
+							isChecked={isChecked}
+						/>
+					);
+				})
+			);
+		},
+		[treatments, treatmentid]
+	);
 
 	async function updateInfo(event) {
 		event.preventDefault();
-		const userId = localStorage.getItem("userid");
-		console.log("treatment id" + treatmentid);
-		await fetch("https://3001-jade-peacock-yxhi82yd.ws-eu18.gitpod.io/api/update-treatment", {
+		const userId = localStorage.getItem("user_id");
+		await fetch(`${process.env.BACKEND_URL}/api/update-treatment`, {
 			method: "PUT",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -45,22 +58,26 @@ export const Signup7 = () => {
 	}
 
 	return (
-		<div className="text-center mt-5">
-			<h1>¿Que tratamiento estas siguendo?</h1>
-			<form onSubmit={updateInfo}>
-				<select name="tiempo_proceso" onChange={event => setTreatmentid(event.target.value)}>
-					{optionHtml}
-				</select>
-				<input type="submit" value="Siguiente" />
-				<Link to={"signup-8"}>
-					<button>Saltar</button>{" "}
-				</Link>
-			</form>
-			{/* <progress id="file" max="100" value="20">
-				{" "}
-				20%{" "}
-			</progress> */}
-			<ProgressBar now={20} />
+		<div className="container-fluid bg-lightgray p-4">
+			<div className="row justify-content-center">
+				<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white text-center">
+					<ProgressBar now={80} />
+					<h1 className="pt-3">¿Que tratamiento estas siguendo?</h1>
+					<form onSubmit={updateInfo}>
+						<div className="row p-2">{treatmentsInHTML}</div>
+
+						<div className="d-flex flex-sm-column flex-md-row flex-nowrap justify-content-center pb-3">
+							<Link to={"/list-of-women"} className="text-decoration-none">
+								<ButtonType type="button" value="Saltar Cuestonario" />
+							</Link>
+							<Link to={"/signup-8"} className="text-decoration-none">
+								<ButtonType type="button" value="Saltar Pregunta" />
+							</Link>
+							<ButtonType type="submit" value="Siguiente" />
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 	);
 };

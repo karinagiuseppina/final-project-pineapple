@@ -1,16 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
-import "../../styles/home.scss";
-import { Link } from "react-router-dom";
 import { NormalInput } from "../component/normalInput";
-import Swal from "sweetalert2";
+import { useHistory } from "react-router";
+import { ButtonType } from "../component/buttonType";
 
 export const Login = () => {
 	const { store, actions } = useContext(Context);
-	const [loginData, setLoginData] = useState({ email: "", password: "" });
-	const [userAlreadyLoggedIn, setUserAlreadyLoggedIn] = useState(false);
-	const [userId, setUserId] = useState("");
+	const [userLogin, setUserLogin] = useState({ email: "", password: "" });
+	let History = useHistory();
 
 	const getLoginData = (attr, value) => {
 		setLoginData(prev => {
@@ -46,22 +43,17 @@ export const Login = () => {
 		if (response.ok) {
 			let data = await response.json();
 
-			if (data.name) {
-				localStorage.setItem("token", data.token);
-				store.access_token.token = data.token;
-				store.access_token.id = JSON.stringify(data.user_id);
-				setUserId(store.access_token.id);
+		let data = await response.json();
+		if (response.ok) {
+			actions.setUserSession(data.token, data.user_id);
+			History.push("/");
 			}
-		} else {
-			badLoginAlert();
-		}
-	};
+		};
 
 	const handleLogin = () => {
-		logUserIn(loginData.email, loginData.password);
-		console.log("from handleLogin: ", store.access_token);
-		setUserId("");
+		logUserIn(userLogin.email, userLogin.password);
 	};
+}
 
 	return (
 		<div className="container-fluid bg-lightgray p-4">
@@ -88,11 +80,7 @@ export const Login = () => {
 
 						<div className="row justify-content-center">
 							<div className="col text-center">
-								<Link to={`/profile/${userId}`}>
-									<button type="button" className="btn bg-prin" onClick={handleLogin}>
-										Log in
-									</button>
-								</Link>
+								<ButtonType type="button" onClick={handleLogin} value="Log In" />
 							</div>
 						</div>
 					</form>

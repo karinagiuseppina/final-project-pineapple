@@ -10,7 +10,7 @@ export const SelectOptionForm = ({ colClass, code, generalName, id, set, option,
 				type="radio"
 				name={generalName}
 				value={id}
-				onChange={() => set(attr, id)}
+				onChange={() => (attr === undefined ? set(id) : set(attr, id))}
 				checked={isChecked}
 			/>
 			<label htmlFor={code}>{option} </label>
