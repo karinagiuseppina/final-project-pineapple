@@ -314,14 +314,15 @@ def user_connects_with_user(id_asking, id_listening):
     user_asking.users_connected.append(user_listening)
 
     if user_asking in user_listening.users_connected: 
-        new_chat = Chat()
+        new_chat = Chat(is_active = True)
         user_asking.chats.append(new_chat)
         user_listening.chats.append(new_chat)
         Chat.save(new_chat)
+        return jsonify({"chat" : True}), 200
 
     User.commit()
 
-    return jsonify({"msg" : "ok"}), 200
+    return jsonify({"chat" : False}), 200
 
 @api.route('user/<id>/users_connected', methods=['GET'])
 def get_users_connected(id):
@@ -344,10 +345,22 @@ def get_user_chats(id):
     return jsonify({"chats": chats}), 200
 
 @api.route('/chat/<id>', methods=['GET'])
-def get_chats(id):
+def get_chat_info(id):
     chat = Chat.get_chat_by_id(id)
+    return jsonify(chat.serialize()), 200
+
+
+@api.route('/delete_chat/<id>', methods=['PUT'])
+def delete_chat(id):
+    user_requesting = request.json.get("user_id")
+    user_requesting = User.get_user_by_id(user_requesting)
+    chat = Chat.get_chat_by_id(id)
+
     users = chat.get_chat_users()
+    user_to_be_deleted = next(user for user in users if user is not user_requesting)
+    
+    chat.is_active = False
+    Chat.commit()
 
-    users = list(map(lambda user: user.serialize(), users))
-
-    return jsonify({"chat_id": chat.id, "users": users}), 200
+    # user_requesting.remove()
+    return jsonify({"msg": "ok"}), 200

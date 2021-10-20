@@ -201,13 +201,18 @@ class Treatment(db.Model, GeneralModel):
 
 class Chat(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
+    is_active = db.Column(db.Boolean, primary_key=False)
 
     def __repr__(self):
         return '%r' % self.id
 
     def serialize(self):
+        users = self.get_chat_users()
+        users = list(map(lambda user: user.serialize(), users))
         return {
-            "id": self.id
+            "id": self.id,
+            "is_active": self.is_active,
+            "users": users
         }
     
     def get_all_chats ():
