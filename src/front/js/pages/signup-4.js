@@ -75,16 +75,16 @@ export const Signup4 = () => {
 				<div className="row">{processInHTML}</div>
 				<div className="row">
 					<div className="col-12 col-md-4">
-						<ButtonType classN="button primary" type="submit" value="Siguiente" />
+						<ButtonType classN="button primary" type="submit" value="Continuar" />
 					</div>
-					<div className="col-12 col-md-4">
+					<div className="col-6 col-md-4">
 						<Link to={"/signup-5"}>
-							<ButtonType classN="button secondary" type="button" value="Saltar Pregunta" />
+							<ButtonType classN="button secondary" type="button" value="Omitir" />
 						</Link>
 					</div>
-					<div className="col-12 col-md-4">
+					<div className="col-6 col-md-4">
 						<Link to={"/list-of-women"}>
-							<ButtonType classN="button alert" type="button" value="Saltar cuestionario" />
+							<ButtonType classN="button alert" type="button" value="Terminar" />
 						</Link>
 					</div>
 				</div>
