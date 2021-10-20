@@ -50,9 +50,6 @@ body{
 
 }
 
-
-
-
 .button{
     padding: 8px 16px;
     background: var(--primary);
@@ -61,6 +58,10 @@ body{
     color: var(--main-text);
     text-decoration: none!important;
     margin: 8px 4px;
+    text-align: center;
+    border: 0px;
+    max-height: 43px;
+    max-width: 300px;
     }
 
   .button:hover{
@@ -101,48 +102,31 @@ body{
     margin: 24px 0px;
 }
 
+.image-box{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+}
+
 .signup-header{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0px;
-    position: static;
-    left: 32px;
-    top: 0px;
-    flex: none;
-    order: 0;
-    flex-grow: 1;
-    margin: 24px 0px;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  margin: 24px 0px;
 }
 
 .piña-partida-sinnombre{
-    position: static;
-    width: 75px;
-    height: 111.37px;
-    left: 241.43px;
-    top: 25.65px;
-    transform: rotate(-20deg);
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    margin: 0px 0px;
+  position: static;
+  width: 35%;
+  min-width: 45px;
+  transform: rotate(
+-20deg);
 }
 
 .question-text{
-    position: static;
-    left: 0px;
-    top: 0px;
-    font: var(--title);
-    font-size: 36px;
-    display: flex;
-    align-items: center;
-    color: var(--main-text);
-    margin: 0px 10px;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    justify-content: space-evenly;
-    flex-direction: row;
+  text-align: left;
+  font: var(--title);
+  color: var(--main-text);
 }
 /*General classes*/
 .bg-lightgray{
@@ -158,7 +142,12 @@ body{
     color: var(--main-text);
   }
 /*Form*/
-input,
+form{
+  display: grid;
+  grid-gap: 16px;
+  width: 100%;
+}
+input, input[type="text"]
 input[type="radio"] + label,
 input[type="checkbox"] + label:before,
 select option,
@@ -166,9 +155,9 @@ select{
   width: 100%;
   padding: 0.8em;
   line-height: 1.4;
-  background-color: #f9f9f9;
-  border: 1px solid #e5e5e5;
-  border-radius: 3px;
+  background-color: var(--neutral-ligth);
+  border: 1px solid var(--details);
+  border-radius: 8px;
   -webkit-transition: 0.35s ease-in-out;
   -moz-transition: 0.35s ease-in-out;
   -o-transition: 0.35s ease-in-out;
@@ -180,19 +169,19 @@ select{
 input[type="radio"] + label,
 input[type="checkbox"] + label:before, input,
 select option,
-select, .button{
+select{
 text-transform: uppercase;
 }
 
 input:focus {
   outline: 0;
-  border-color: var(--main-text);
+  border: 3px solid var(--details);
 }
 input:focus + .input-icon i {
-  color: var(--main-text);
+  color: var(--details);
 }
 input:focus + .input-icon:after {
-  border-right-color: var(--main-text);
+  border-right-color: var(--details);
 }
 input[type="radio"] {
   display: none;
@@ -201,15 +190,15 @@ input[type="radio"] + label,
 select{
   text-align: center;
   float: left;
-  border-radius: 0;
+  border-radius: 8px;
 }
 input[type="radio"] + label:first-of-type {
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 input[type="radio"] + label:last-of-type {
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 input[type="radio"] + label i {
   padding-right: 0.4em;
@@ -218,9 +207,9 @@ input[type="radio"]:checked + label,
 input:checked + label:before, 
 select:focus,
 select:active {
-  background-color: var(--main-text);
-  color: #fff;
-  border-color: var(--main-text);
+  background-color: var(--details);
+  color: var(--main-text);
+  border-color: var(--secondary);
 }
 
 
@@ -232,12 +221,12 @@ select {
   line-height: 2;
 }
 select:first-of-type {
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 select:last-of-type {
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 select:focus,
 select:active {
@@ -250,52 +239,55 @@ select option {
 .input-group {
   margin-bottom: 1em;
   zoom: 1;
+  border-radius: 8px;
 }
 .input-group:before,
 .input-group:after {
   content: "";
   display: table;
+  border-radius: 8px;
 }
 .input-group:after {
   clear: both;
+  border-radius: 8px;
 }
-.input-group-icon {
-  position: relative;
-}
+// .input-group-icon {
+//   position: relative;
+// }
 .input-group-icon input {
   padding-left: 4.4em;
 }
-.input-group-icon .input-icon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3.4em;
-  height: 3.4em;
-  line-height: 3.4em;
-  text-align: center;
-  pointer-events: none;
-}
-.input-group-icon .input-icon:after {
-  position: absolute;
-  top: 0.6em;
-  bottom: 0.6em;
-  left: 3.4em;
-  display: block;
-  border-right: 1px solid #e5e5e5;
-  content: "";
-  -webkit-transition: 0.35s ease-in-out;
-  -moz-transition: 0.35s ease-in-out;
-  -o-transition: 0.35s ease-in-out;
-  transition: 0.35s ease-in-out;
-  transition: all 0.35s ease-in-out;
-}
-.input-group-icon .input-icon i {
-  -webkit-transition: 0.35s ease-in-out;
-  -moz-transition: 0.35s ease-in-out;
-  -o-transition: 0.35s ease-in-out;
-  transition: 0.35s ease-in-out;
-  transition: all 0.35s ease-in-out;
-}
+// .input-group-icon .input-icon {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 3.4em;
+//   height: 3.4em;
+//   line-height: 3.4em;
+//   text-align: center;
+//   pointer-events: none;
+// }
+// .input-group-icon .input-icon:after {
+//   position: absolute;
+//   top: 0.6em;
+//   bottom: 0.6em;
+//   left: 3.4em;
+//   display: block;
+//   border-right: 1px solid #e5e5e5;
+//   content: "";
+//   -webkit-transition: 0.35s ease-in-out;
+//   -moz-transition: 0.35s ease-in-out;
+//   -o-transition: 0.35s ease-in-out;
+//   transition: 0.35s ease-in-out;
+//   transition: all 0.35s ease-in-out;
+// }
+// .input-group-icon .input-icon i {
+//   -webkit-transition: 0.35s ease-in-out;
+//   -moz-transition: 0.35s ease-in-out;
+//   -o-transition: 0.35s ease-in-out;
+//   transition: 0.35s ease-in-out;
+//   transition: all 0.35s ease-in-out;
+// }
 /*Perfil*/
 .pro-img {
   margin-top: -80px;
