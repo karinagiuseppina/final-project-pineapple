@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.scss";
@@ -8,10 +8,12 @@ import Swal from "sweetalert2";
 
 export const Login = () => {
 	const { store, actions } = useContext(Context);
-	const [userLogin, setUserLogin] = useState({ email: "", password: "" });
+	const [loginData, setLoginData] = useState({ email: "", password: "" });
+	const [userAlreadyLoggedIn, setUserAlreadyLoggedIn] = useState(false);
+	const [userId, setUserId] = useState("");
 
 	const getLoginData = (attr, value) => {
-		setUserLogin(prev => {
+		setLoginData(prev => {
 			let logged_user = { ...prev };
 			logged_user[attr] = value;
 
@@ -19,36 +21,46 @@ export const Login = () => {
 		});
 	};
 
+	const badLoginAlert = () => {
+		Swal.fire({
+			title: "Advertencia",
+			text: "El email o password introducidos no son correctos",
+			icon: "warning",
+			confirmButtonText: "Cerrar"
+		});
+	};
+
 	const logUserIn = async (email, password) => {
-		if (userLogin.email === "" || !userLogin.email || userLogin.password === "" || store.access_token === "") {
-			Swal.fire({
-				title: "Advertencia",
-				text: "El email o password introducidos no son correctos",
-				icon: "warning",
-				confirmButtonText: "Cerrar"
-			});
+		if (loginData.email === "" || loginData.password === "") {
+			badLoginAlert();
 			return;
+		}
+		const response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
+			method: "POST",
+			headers: { "content-Type": "application/json" },
+			body: JSON.stringify({
+				email: email,
+				password: password
+			})
+		});
+		if (response.ok) {
+			let data = await response.json();
+
+			if (data.name) {
+				localStorage.setItem("token", data.token);
+				store.access_token.token = data.token;
+				store.access_token.id = JSON.stringify(data.user_id);
+				setUserId(store.access_token.id);
+			}
 		} else {
-			const response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
-				method: "POST",
-				headers: { "content-Type": "application/json" },
-				body: JSON.stringify({
-					email: email,
-					password: password
-				})
-			});
+			badLoginAlert();
 		}
-		let data = await response.json();
-		if (data.name) {
-			localStorage.setItem("token", data.token);
-			store.access_token.token = data.token;
-		}
-		console.log(store.access_token);
 	};
 
 	const handleLogin = () => {
-		console.log(userLogin);
-		logUserIn(userLogin.email, userLogin.password);
+		logUserIn(loginData.email, loginData.password);
+		console.log("from handleLogin: ", store.access_token);
+		setUserId("");
 	};
 
 	return (
@@ -60,7 +72,7 @@ export const Login = () => {
 						<NormalInput
 							type="email"
 							placeholder="example@example.com"
-							value={userLogin.email}
+							value={loginData.email}
 							set={getLoginData}
 							attr="email"
 							icon="fa fa-envelope"
@@ -68,7 +80,7 @@ export const Login = () => {
 						<NormalInput
 							type="password"
 							placeholder="Contraseña"
-							value={userLogin.password}
+							value={loginData.password}
 							set={getLoginData}
 							attr="password"
 							icon="fas fa-key"
@@ -76,7 +88,7 @@ export const Login = () => {
 
 						<div className="row justify-content-center">
 							<div className="col text-center">
-								<Link to="">
+								<Link to={`/profile/${userId}`}>
 									<button type="button" className="btn bg-prin" onClick={handleLogin}>
 										Log in
 									</button>

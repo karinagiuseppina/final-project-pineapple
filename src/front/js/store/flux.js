@@ -4,7 +4,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			message: null,
 
 			access_token: {
-				token: ""
+				token: "",
+				id: ""
 			}
 		},
 		actions: {
