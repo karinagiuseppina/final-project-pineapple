@@ -17,6 +17,9 @@
   cursor: pointer;
 }
 
+h6{
+  text-align: center;
+}
 
 body{
     font-family: var(--general-font);
@@ -60,8 +63,7 @@ body{
     margin: 8px 4px;
     text-align: center;
     border: 0px;
-    max-height: 43px;
-    max-width: 300px;
+    width: 100%;
     }
 
   .button:hover{
@@ -112,7 +114,7 @@ body{
 .signup-header{
   display: flex;
   align-items: center;
-  margin: 24px 0px;
+  margin: 0px 0px 24px 0px;
 }
 
 .piña-partida-sinnombre{
@@ -177,7 +179,7 @@ select, .form-control, .input-group-text {
   
 }
 
-input[type="radio"] + label,
+input[type="radio"] + label, div label,
 input[type="checkbox"] + label:before, input,
 select option,
 select, .input-group-text{
@@ -210,6 +212,18 @@ input[type="radio"] + label:first-of-type {
 input[type="radio"] + label:last-of-type {
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
+  width: 100%;
+  padding: 0.8em;
+  line-height: 1.4;
+  background-color: var(--neutral-ligth);
+  border: 1px solid var(--details);
+  border-radius: 8px;
+  -webkit-transition: 0.35s ease-in-out;
+  -moz-transition: 0.35s ease-in-out;
+  -o-transition: 0.35s ease-in-out;
+  transition: 0.35s ease-in-out;
+  transition: all 0.35s ease-in-out;
+  font-size: 0.9rem;
 }
 input[type="radio"] + label i {
   padding-right: 0.4em;
