@@ -18,15 +18,6 @@ export const Login = () => {
 		});
 	};
 
-	const badLoginAlert = () => {
-		Swal.fire({
-			title: "Advertencia",
-			text: "El email o password introducidos no son correctos",
-			icon: "warning",
-			confirmButtonText: "Cerrar"
-		});
-	};
-
 	const logUserIn = async (email, password) => {
 		if (loginData.email === "" || loginData.password === "") {
 			badLoginAlert();
@@ -47,13 +38,11 @@ export const Login = () => {
 		if (response.ok) {
 			actions.setUserSession(data.token, data.user_id);
 			History.push("/");
-			}
-		};
-
+		}
+	};
 	const handleLogin = () => {
 		logUserIn(userLogin.email, userLogin.password);
 	};
-}
 
 	return (
 		<div className="container-fluid bg-lightgray p-4">
