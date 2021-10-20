@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { NormalInput } from "../component/normalInput";
 import { ButtonType } from "../component/buttonType";
+import { NormalInputPassword } from "../component/normalInputPassword";
+import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
 
 export const Signup2 = () => {
 	const eye = <FontAwesomeIcon icon={faEye} />;
@@ -47,29 +49,28 @@ export const Signup2 = () => {
 	}
 
 	return (
-		<div className="container-fluid bg-lightgray p-4">
-			<div className="row justify-content-center">
-				<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white">
-					<h1 className="question-text">Hola {name}, lo primero es tu seguridad</h1>
-					<form onSubmit={createUser}>
-						<div className="d-flex flex-nowrap align-items-center">
-							<NormalInput
-								type={passwordShown ? "text" : "password"}
-								placeholder="Contraseña"
-								value={password}
-								set={setPassword}
-								icon="fa fa-userfas fa-key"
-								required={false}
-							/>
-
-							<i onClick={togglePasswordVisiblity} className="mb-3 mx-2 p-3">
-								{eye}
-							</i>
-						</div>
-						<ButtonType type="submit" value="Siguiente" />
-					</form>
+		<div className="App-box">
+			<div className="signup-header">
+				<h1 className="question-text">Hola {name}, lo primero es tu seguridad</h1>
+				<div className="image-box">
+					<img className="piña-partida-sinnombre" src={pinaPartidaNombre} alt="dibujo piña partida" />
 				</div>
 			</div>
+			<form onSubmit={createUser}>
+				<div>
+					<NormalInputPassword
+						type={passwordShown ? "text" : "password"}
+						placeholder="Contraseña"
+						value={password}
+						set={setPassword}
+						required={false}
+						click={togglePasswordVisiblity}
+						icon={<FontAwesomeIcon icon={faEye} />}
+					/>
+				</div>
+
+				<ButtonType classN="button primary" type="submit" value="Siguiente" />
+			</form>
 		</div>
 	);
 };
