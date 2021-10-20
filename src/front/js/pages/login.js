@@ -7,7 +7,15 @@ import { ButtonType } from "../component/buttonType";
 export const Login = () => {
 	const { store, actions } = useContext(Context);
 	const [userLogin, setUserLogin] = useState({ email: "", password: "" });
+	const [loginData, setLoginData] = useState({ email: "", password: "" });
 	let History = useHistory();
+
+	const badLogin = {
+		title: "Atención",
+		text: "El usuarion o contraseña ingresados son incorrectos",
+		icon: "warning",
+		confirmButtonText: "cerrar"
+	};
 
 	const getLoginData = (attr, value) => {
 		setLoginData(prev => {
@@ -20,7 +28,7 @@ export const Login = () => {
 
 	const logUserIn = async (email, password) => {
 		if (loginData.email === "" || loginData.password === "") {
-			badLoginAlert();
+			actions.notificationAlert(badLogin.title, badLogin.text, badLogin.icon, badLogin.confirmButtonText);
 			return;
 		}
 		const response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
@@ -33,11 +41,12 @@ export const Login = () => {
 		});
 		if (response.ok) {
 			let data = await response.json();
-
-		let data = await response.json();
-		if (response.ok) {
+			console.log(data);
 			actions.setUserSession(data.token, data.user_id);
 			History.push("/");
+		} else {
+			History.push("/");
+			//actions.notificationAlert(badLogin.title, badLogin.text, badLogin.icon, badLogin.confirmButtonText);
 		}
 	};
 	const handleLogin = () => {
