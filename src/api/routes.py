@@ -285,7 +285,7 @@ def login():
     
     user = User.query.filter_by(email=email).first()
 
-    if email != user.email or not bcrypt.checkpw(password, user.password.encode('utf8')):
+    if user is None or email != user.email or email is None or not bcrypt.checkpw(password, user.password.encode('utf8')):
         return jsonify({"msg": "Bad username or password"}), 401
         
     access_token = create_access_token(identity=user.id)

@@ -30,30 +30,9 @@ export const Signup1 = () => {
 			</div>
 
 			<form onSubmit={saveInfo}>
-				<NormalInput
-					type="text"
-					placeholder="Nombre"
-					value={name}
-					set={setName}
-					icon="fa fa-user"
-					required={true}
-				/>
-				<NormalInput
-					type="number"
-					placeholder="Edad"
-					value={age}
-					set={setAge}
-					icon="fas fa-calendar-check"
-					required={true}
-				/>
-				<NormalInput
-					type="email"
-					placeholder="Email"
-					value={email}
-					set={setEmail}
-					icon="fa fa-envelope"
-					required={true}
-				/>
+				<NormalInput type="text" placeholder="Nombre" value={name} set={setName} required={true} />
+				<NormalInput type="number" placeholder="Edad" value={age} set={setAge} required={true} />
+				<NormalInput type="email" placeholder="Email" value={email} set={setEmail} required={true} />
 				<div className="row">
 					<div className="col-12 col-md-4">
 						<ButtonType classN="button primary" type="submit" value="Continuar" />

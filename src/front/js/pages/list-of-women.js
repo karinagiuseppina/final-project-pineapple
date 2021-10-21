@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import "../../styles/home.scss";
 import { Card } from "../component/card";
 import { Link } from "react-router-dom";
+//import { Filter } from "../component/filter";
 
 export const ListOfWomen = () => {
 	const [waiting, setwaiting] = useState(0);
