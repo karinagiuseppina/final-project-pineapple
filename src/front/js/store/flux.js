@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -31,6 +32,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ user_id: user_id });
 					setStore({ access_token: token });
 				}
+			},
+			notificationAlert: (title, text, icon, confirmButtonText) => {
+				Swal.fire({
+					title: title,
+					text: text,
+					icon: icon,
+					confirmButtonText: confirmButtonText
+				});
 			}
 		}
 	};
