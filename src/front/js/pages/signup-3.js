@@ -14,15 +14,20 @@ export const Signup3 = () => {
 			</div>
 			<h6 className="p-3">
 				Sabemos que es dificil pero para encontrar tu media piña necesitamos toda la informacion que nos puedas
-				dar. Recuerda que todas Las preguntas son opcionales.
+				dar. Recuerda que puedes omitir la pregunta.
 			</h6>
-
-			<Link to={"/signup-4"}>
-				<ButtonType classN="button primary" type="button" value="Siguiente" />
-			</Link>
-			<Link to={"/list-of-women"}>
-				<ButtonType classN="button alert" type="submit" value="Saltar Cuestionario" />
-			</Link>
+			<div className="row">
+				<div className="col-12 col-md-6">
+					<Link to={"/signup-4"}>
+						<ButtonType classN="button primary" type="button" value="Continuar" />
+					</Link>
+				</div>
+				<div className="col-12 col-md-6">
+					<Link to={"/list-of-women"}>
+						<ButtonType classN="button alert" type="submit" value="Más tarde" />
+					</Link>
+				</div>
+			</div>
 		</div>
 	);
 };

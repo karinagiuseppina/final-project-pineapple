@@ -68,8 +68,11 @@ export const Signup2 = () => {
 						icon={<FontAwesomeIcon icon={faEye} />}
 					/>
 				</div>
-
-				<ButtonType classN="button primary" type="submit" value="Siguiente" />
+				<div className="row">
+					<div className="col-12 col-md-4">
+						<ButtonType classN="button primary" type="submit" value="Guardar" />
+					</div>
+				</div>
 			</form>
 		</div>
 	);

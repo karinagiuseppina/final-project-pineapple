@@ -10,9 +10,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 
 //include your index.scss file into the bundle
 import "../styles/index.scss";
-
 import "../styles/chat.scss";
-
 import "../styles/colours.scss";
 import "../styles/list-of-women.scss";
 import "../styles/navbar.scss";

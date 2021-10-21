@@ -54,7 +54,11 @@ export const Signup1 = () => {
 					icon="fa fa-envelope"
 					required={true}
 				/>
-				<ButtonType classN="button primary" type="submit" value="Siguiente" />
+				<div className="row">
+					<div className="col-12 col-md-4">
+						<ButtonType classN="button primary" type="submit" value="Continuar" />
+					</div>
+				</div>
 			</form>
 		</div>
 	);
