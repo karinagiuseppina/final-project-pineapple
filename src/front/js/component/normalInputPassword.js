@@ -6,7 +6,7 @@ import { oneOfType } from "prop-types";
 export const NormalInputPassword = ({ type, placeholder, set, value, icon, attr, required, click }) => {
 	return (
 		<div className="col-auto">
-			<label>{placeholder}</label>
+			{placeholder !== "" ? <label>{placeholder}</label> : ""}
 			<div className="input-group">
 				<input
 					type={type}

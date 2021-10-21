@@ -4,9 +4,19 @@ import { SelectInput } from "../component/selectInput";
 import { NormalInput } from "../component/normalInput";
 import { FormTitle } from "../component/formTitle";
 import { SelectOptionForm } from "../component/selectOptionForm";
+import { NormalInputPassword } from "../component/normalInputPassword";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import { ButtonType } from "../component/buttonType";
 
 export const EditProfile = () => {
 	const { store, actions } = useContext(Context);
+	const [passwordShown, setPasswordShown] = useState(false);
+	const togglePasswordVisiblity = () => {
+		setPasswordShown(passwordShown ? false : true);
+	};
+
 	const [user, setUser] = useState({
 		user_id: -1,
 		name: "",
@@ -135,7 +145,7 @@ export const EditProfile = () => {
 					return (
 						<SelectOptionForm
 							key={`c-${center.id}`}
-							colClass="col-12 col-md-4 p-1"
+							colClass={center.id == 3 ? "col-12 p-1" : "col-6 p-1"}
 							code={`c-${center.id}`}
 							generalName="centers"
 							id={center.id}
@@ -158,7 +168,7 @@ export const EditProfile = () => {
 					let isChecked = treatment.id === user.treatment_id ? true : false;
 					return (
 						<SelectOptionForm
-							colClass="col-12 col-md-4 p-1"
+							colClass={treatment.id == 3 ? "col-12 p-1" : "col-6 p-1"}
 							key={`t-${treatment.id}`}
 							code={`t-${treatment.id}`}
 							generalName="treatments"
@@ -182,7 +192,7 @@ export const EditProfile = () => {
 					let isChecked = couple.id === user.couple_id ? true : false;
 					return (
 						<SelectOptionForm
-							colClass="col-12 col-md-6 p-1"
+							colClass="col-6 p-1"
 							key={`co-${couple.id}`}
 							code={`co-${couple.id}`}
 							generalName="couples"
@@ -210,7 +220,7 @@ export const EditProfile = () => {
 					let isChecked = process.id === user.process_id ? true : false;
 					return (
 						<SelectOptionForm
-							colClass="col-12 col-md-6 p-1"
+							colClass="col-6 p-1"
 							code={`pr-${process.id}`}
 							key={`pr-${process.id}`}
 							generalName="process"
@@ -230,88 +240,87 @@ export const EditProfile = () => {
 	const handleUpdateImage = () => {};
 
 	return (
-		<div className="container-fluid bg-lightgray p-4">
-			<div className="row justify-content-center">
-				<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white">
-					<form>
-						<div className="row justify-content-center">
-							<div className="col">
-								<FormTitle title="Datos Generales" />
-								<NormalInput
-									type="text"
-									placeholder="Nombre"
-									value={user.name}
-									set={handleUpdateUser}
-									attr="name"
-									icon="fa fa-user"
-								/>
-								<NormalInput
-									type="email"
-									placeholder="example@example.com"
-									value={user.email}
-									set={handleUpdateUser}
-									attr="email"
-									icon="fa fa-envelope"
-								/>
-								<NormalInput
-									type="password"
-									placeholder="Contraseña"
-									value={user.password}
-									set={handleUpdateUser}
-									attr="password"
-									icon="fas fa-key"
-								/>
-							</div>
+		<div className="App-box">
+			<form>
+				<div className="row justify-content-center p-2">
+					<div className="col">
+						<h1>Datos Generales</h1>
+						<FormTitle title="Nombre" />
+						<NormalInput
+							type="text"
+							// placeholder="Nombre"
+							value={user.name}
+							set={handleUpdateUser}
+							attr="name"
+						/>
+						<FormTitle title="email" />
+						<NormalInput
+							type="email"
+							// placeholder="example@example.com"
+							value={user.email}
+							set={handleUpdateUser}
+							attr="email"
+						/>
+						<FormTitle title="Nueva contarseña" />
+						<NormalInputPassword
+							type={passwordShown ? "text" : "password"}
+							placeholder=""
+							value={user.password}
+							set={handleUpdateUser}
+							attr="password"
+							required={true}
+							click={togglePasswordVisiblity}
+							icon={<FontAwesomeIcon icon={faEye} />}
+						/>
+						<FormTitle title="Tu experiencia" />
+						<div className="input-group">
+							<textarea
+								className="form-control"
+								value={user.description}
+								onChange={e => handleUpdateUser("description", e.target.value)}
+							/>
 						</div>
-
-						<div className="row justify-content-center">
-							<div className="col-12 col-md-6">
-								<FormTitle title="Edad" />
-								<NormalInput
-									type="number"
-									value={user.age}
-									set={handleUpdateUser}
-									attr="age"
-									icon="fas fa-calendar-check"
-								/>
-							</div>
-							<div className="col-12 col-md-6">
-								<FormTitle title="Número de abortos" />
-								<NormalInput
-									type="number"
-									value={user.abortion_num}
-									set={handleUpdateUser}
-									attr="abortion_num"
-									icon="fas fa-calendar-check"
-								/>
-							</div>
-						</div>
-						<SelectInput label="Centro" options={centersInHTML} />
-						<SelectInput label="Tratamiento actual" options={treatmentsInHTML} />
-						<SelectInput label="Tipo de relación" options={couplesInHTML} />
-						<SelectInput label="Tiempo en el proceso" options={processInHTML} />
-						<div className="row justify-content-center">
-							<div className="col">
-								<FormTitle title="Más detalles" />
-								<div className="input-group">
-									<textarea
-										className="form-control bg-lightgray"
-										value={user.description}
-										onChange={e => handleUpdateUser("description", e.target.value)}
-									/>
-								</div>
-							</div>
-						</div>
-						<div className="row justify-content-center">
-							<div className="col text-center">
-								<button type="button" className="btn bg-prin" onClick={handleUpdateProfile}>
-									Actualizar
-								</button>
-							</div>
-						</div>
-					</form>
+					</div>
 				</div>
-			</div>
+
+				<div className="col-12" />
+				<h1>Sobre tu camino</h1>
+				<div className="row row-questions p-2">
+					<div className="col-6 p-1">
+						<FormTitle title="Edad" />
+						<NormalInput type="number" value={user.age} set={handleUpdateUser} attr="age" />
+					</div>
+					<div className="col-6 p-1">
+						<FormTitle title="Muerte gestacional" />
+						<NormalInput
+							type="number"
+							value={user.abortion_num}
+							set={handleUpdateUser}
+							attr="abortion_num"
+						/>
+					</div>
+				</div>
+				<SelectInput label="Tiempo en el proceso" options={processInHTML} />
+				<SelectInput label="Tipo de relación" options={couplesInHTML} />
+				<SelectInput label="Centro" options={centersInHTML} />
+				<SelectInput label="Tratamiento actual" options={treatmentsInHTML} />
+
+				<div className="row">
+					<div className="col-12 col-md-6">
+						<ButtonType
+							classN="button primary"
+							type="button"
+							value="Guardar"
+							onClick={handleUpdateProfile}
+						/>
+					</div>
+					<div className="col-12 col-md-6">
+						<Link to={"/profile"}>
+							<ButtonType classN="button secondary" type="submit" value="Ver perfil" />
+						</Link>
+					</div>
+				</div>
+			</form>
 		</div>
 	);
 };

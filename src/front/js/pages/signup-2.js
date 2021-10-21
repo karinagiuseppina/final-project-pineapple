@@ -63,7 +63,7 @@ export const Signup2 = () => {
 						placeholder="Contraseña"
 						value={password}
 						set={setPassword}
-						required={false}
+						required={true}
 						click={togglePasswordVisiblity}
 						icon={<FontAwesomeIcon icon={faEye} />}
 					/>
