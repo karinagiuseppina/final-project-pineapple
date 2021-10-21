@@ -73,7 +73,7 @@ export const Signup6 = () => {
 						<ButtonType classN="button primary" type="submit" value="Continuar" />
 					</div>
 					<div className="col-6 col-md-4">
-						<Link to={"/signup-5"}>
+						<Link to={"/signup-7"}>
 							<ButtonType classN="button secondary" type="button" value="Omitir" />
 						</Link>
 					</div>
