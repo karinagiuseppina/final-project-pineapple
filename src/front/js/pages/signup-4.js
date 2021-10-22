@@ -4,22 +4,17 @@ import { Link, useHistory } from "react-router-dom";
 import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
 import { SelectOptionForm } from "../component/selectOptionForm";
 import { ButtonType } from "../component/buttonType";
+import { Context } from "../store/appContext";
 
 export const Signup4 = () => {
+	const { actions } = useContext(Context);
 	let History = useHistory();
 	const [processtimeslots, setProcesstimeslots] = useState([]);
 	const [processtimeslotsid, setProcesstimeslotsid] = useState(null);
 	const [processInHTML, setProcessInHTML] = useState([]);
 
 	useEffect(() => {
-		(async () => {
-			const res = await fetch(`${process.env.BACKEND_URL}/api/processtimeslots`, {
-				method: "GET",
-				headers: { "Content-Type": "application/json" }
-			});
-			const data = await res.json();
-			setProcesstimeslots(data);
-		})();
+		actions.getElements("processtimeslots", setProcesstimeslots);
 	}, []);
 
 	useEffect(

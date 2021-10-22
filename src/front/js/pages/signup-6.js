@@ -1,24 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
 import { SelectOptionForm } from "../component/selectOptionForm";
 import { ButtonType } from "../component/buttonType";
+import { Context } from "../store/appContext";
 
 export const Signup6 = () => {
-	let History = useHistory();
+	const { actions } = useContext(Context);
+	let history = useHistory();
 	const [coupleOPtions, setCoupleOPtions] = useState([]);
 	const [coupleid, setCoupleid] = useState("");
 	const [couplesInHTML, setCouplesInHTML] = useState([]);
 
 	useEffect(() => {
-		(async () => {
-			const res = await fetch(`${process.env.BACKEND_URL}/api/couples`, {
-				method: "GET",
-				headers: { "Content-Type": "application/json" }
-			});
-			const data = await res.json();
-			setCoupleOPtions(data);
-		})();
+		actions.getElements("couples", setCoupleOPtions);
 	}, []);
 
 	useEffect(
@@ -55,7 +50,7 @@ export const Signup6 = () => {
 				user_id: userId
 			})
 		});
-		History.push("/signup-7");
+		history.push("/signup-7");
 	}
 
 	return (
@@ -87,26 +82,5 @@ export const Signup6 = () => {
 
 			{/* <ProgressBar now={20} /> */}
 		</div>
-
-		// <div className="container-fluid bg-lightgray p-4">
-		// 	<div className="row justify-content-center">
-		// 		<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white text-center">
-		// 			<h1 className="question-text">¿Tienes una relacion?</h1>
-		// 			<form onSubmit={updateInfo}>
-		// 				<div className="row p-2">{couplesInHTML}</div>
-		// 				<div className="d-flex flex-sm-column flex-md-row flex-nowrap justify-content-center pb-3">
-		// 					<Link to={"/list-of-women"} className="text-decoration-none">
-		// 						<ButtonType type="button" value="Saltar Cuestionario" />
-		// 					</Link>
-		// 					<Link to={"/signup-7"} className="text-decoration-none">
-		// 						<ButtonType type="button" value="Saltar Pregunta" />
-		// 					</Link>
-		// 					<ButtonType type="submit" value="Siguiente" />
-		// 				</div>
-		// 			</form>
-		// 			{/* <ProgressBar now={60} /> */}
-		// 		</div>
-		// 	</div>
-		// </div>
 	);
 };

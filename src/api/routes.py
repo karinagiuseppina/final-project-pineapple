@@ -1,8 +1,9 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
+import os
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Couple, Treatment, Process, Center
+from api.models import db, User, Couple, Treatment, Process, Center, Chat
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
 import json
@@ -10,6 +11,9 @@ import bcrypt
 from sqlalchemy import update
 from sqlalchemy import and_
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 api = Blueprint('api', __name__)
 
@@ -50,7 +54,6 @@ def fill_database():
 
     return jsonify({"msg": "OK!"})
 
-
 @api.route("/findpossiblematches", methods=["GET"])
 # @jwt_required()
 def find_possible_matches():
@@ -78,8 +81,9 @@ def find_possible_matches():
     return jsonify(posibles_matches_users), 200
 
 @api.route("/editProfile", methods=["PUT"])
+@jwt_required()
 def edit_profile():
-    # actual_user_id = get_jwt_identity()
+    actual_user_id = get_jwt_identity()
     user_id = request.json.get("user_id", None)
     name = request.json.get("name", None)
     email = request.json.get("email", None)
@@ -91,9 +95,11 @@ def edit_profile():
     center_id = request.json.get("center_id", None) 
     treatment_id = request.json.get("treatment_id", None) 
     description = request.json.get("description", None) 
+    profile_img = request.json.get("profile_img", None) 
 
-    # if user_id != actual_user_id: 
-    #     return jsonify({"msg": "Unauthorized"}), 401
+
+    if user_id != actual_user_id: 
+        return jsonify({"msg": "Unauthorized"}), 401
     
     if name is None or email is None or age is None:
         return jsonify({"msg": "El nombre, email y age son obligatorios."})
@@ -108,6 +114,10 @@ def edit_profile():
     user.treatment_id = treatment_id
     user.description = description
 
+    if profile_img is not None:
+        user.profile_img = profile_img
+
+
     if password is not None:
         password = password.encode('utf8')
         salt = bcrypt.gensalt()
@@ -117,54 +127,55 @@ def edit_profile():
         user.password: decoded_password
 
 
-    db.session.commit()
+    User.commit()
 
     return jsonify({"msg": "ok"}), 200
 
+@api.route('/upload-file', methods=['PUT'])
+@jwt_required()
+def upload_file():
+    files= request.files
+
+    cloudinary.config( 
+        cloud_name = os.getenv('cloud_name'), 
+        api_key = os.getenv('api_key'), 
+        api_secret = os.getenv('api_secret')
+    )
+    file_to_upload = request.files.get('file')
+    if file_to_upload:
+      upload_result = cloudinary.uploader.upload(file_to_upload)
+      return jsonify({'profile_image': upload_result['secure_url']}), 200
+
+    return jsonify(''), 400
+
+
 @api.route("/users", methods=["GET"])
 def get_users():
-    users = User.query.all()
+    users = User.get_all_users()
 
     users = list(map(lambda user: user.serialize(), users))
     return jsonify(users), 200
 
 @api.route("/user/<id>", methods=["GET"])
 def get_user(id):
-    user = User.query.filter_by(id=id).first()
+    user= User.get_user_by_id(id)
     return jsonify(user.serialize()), 200
+
+@api.route("/users/show-info", methods=["GET"])
+def get_users_show_info():
+    users = User.get_all_users()
+
+    users = list(map(lambda user: user.serialize_to_show(), users))
+    return jsonify(users), 200
 
 @api.route("/user/show-info/<id>", methods=["GET"])
 def get_user_info(id):
-    user = User.query.filter_by(id=id).first()
-    user_obj = {
-            "id": user.id,
-            "name": user.name,
-            "age": user.age,
-            "abortion_num": user.abortion_num,
-            "description": user.description
-        }
-    
-    if user.center_id is not None: 
-        center_type = Center.query.filter_by(id=user.center_id).first()
-        user_obj["center"] = center_type.type
-
-    if user.treatment_id is not None:    
-        treatment_type = Treatment.query.filter_by(id=user.treatment_id).first()
-        user_obj["treatment"] = treatment_type.type
-
-    if user.process_id is not None: 
-        process_range = Process.query.filter_by(id=user.process_id).first()
-        user_obj["process"] = '{0} - {1}'.format(process_range.min_value, process_range.max_value)
-
-    if user.couple_id is not None: 
-        couple_type = Couple.query.filter_by(id=user.couple_id).first()
-        user_obj["couple"] = couple_type.option
-
-    return jsonify(user_obj), 200
+    user= User.get_user_by_id(id)
+    return jsonify(user.serialize_to_show()), 200
 
 @api.route('/centers', methods=['GET'])
 def get_centers():
-    centers = Center.query.all()
+    centers = Center.get_all_centers()
 
     centers = list(map(lambda center: center.serialize(), centers))
     return jsonify(centers), 200
@@ -180,8 +191,7 @@ def create_user():
     decoded_password = hashed_password.decode('utf8')
     user = User(name=name, email=email, age=age, password=decoded_password)
 
-    db.session.add(user)
-    db.session.commit()
+    User.save(user)
 
     # access_token = create_access_token(user.id)
 
@@ -196,9 +206,9 @@ def update_abortion():
     # user_id = get_jwt_identity()
     abortion_num = request.json.get("abortion_num", None) 
     user_id = request.json.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
+    user= User.get_user_by_id(user_id)
     user.abortion_num = abortion_num
-    db.session.commit()
+    User.commit()
 
     return jsonify(user.id), 200
 
@@ -209,9 +219,9 @@ def update_center():
     # user_id = get_jwt_identity()
     center_id = request.json.get("center_id", None) 
     user_id = request.json.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
+    user= User.get_user_by_id(user_id)
     user.center_id= center_id
-    db.session.commit()
+    User.commit()
 
     return jsonify(user.id), 200
 
@@ -222,9 +232,9 @@ def update_couple():
     # user_id = get_jwt_identity()
     couple_id = request.json.get("couple_id", None) 
     user_id = request.json.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
+    user= User.get_user_by_id(user_id)
     user.couple_id= couple_id
-    db.session.commit()
+    User.commit()
 
     return jsonify(user.id), 200
 
@@ -236,9 +246,9 @@ def update_treatment():
     # user_id = get_jwt_identity()
     treatment_id = request.json.get("treatment_id", None) 
     user_id = request.json.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
+    user= User.get_user_by_id(user_id)
     user.treatment_id= treatment_id
-    db.session.commit()
+    User.commit()
 
     return jsonify(user.id), 200
 
@@ -249,30 +259,30 @@ def update_processtimeslot():
     # user_id = get_jwt_identity()
     process_id = request.json.get("process_id", None) 
     user_id = request.json.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
+    user= User.get_user_by_id(user_id)
     user.process_id= process_id
-    db.session.commit()
+    User.commit()
 
     return jsonify(user.id), 200
     
 
 @api.route('/couples', methods=['GET'])
 def get_couples():
-    couples = Couple.query.all()
+    couples = Couple.get_all_couples()
 
     couples = list(map(lambda couple: couple.serialize(), couples))
     return jsonify(couples), 200
 
 @api.route('/processtimeslots', methods=['GET'])
 def get_process_time_slots():
-    time_slots = Process.query.all()
+    time_slots = Process.get_all_process()
 
     time_slots = list(map(lambda time_slot: time_slot.serialize(), time_slots))
     return jsonify(time_slots), 200
 
 @api.route('/treatments', methods=['GET'])
 def get_treatments():
-    treatments = Treatment.query.all()
+    treatments = Treatment.get_all_treatment()
 
     treatments = list(map(lambda treatment: treatment.serialize(), treatments))
     return jsonify(treatments), 200
@@ -283,7 +293,8 @@ def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None).encode('utf8')
     
-    user = User.query.filter_by(email=email).first()
+    # user = User.query.filter_by(email=email).first()
+    user= User.get_user_by_email(email)
 
     if user is None or email != user.email or email is None or not bcrypt.checkpw(password, user.password.encode('utf8')):
         return jsonify({"msg": "Bad username or password"}), 401
@@ -292,8 +303,75 @@ def login():
     print(access_token)
     return jsonify({"user_id": user.id, "name": user.name, "token": access_token})
 
+@api.route("/user/<id_asking>/asks/<id_listening>", methods=["PUT"])
+@jwt_required()
+def user_connects_with_user(id_asking, id_listening):
+    user_id = get_jwt_identity()
+    user_asking = User.get_user_by_id(id_asking)
+    user_listening = User.get_user_by_id(id_listening)
+
+    if user_id != user_asking:
+        return jsonify({"msg": "Not authorized"}), 401
+
+    user_asking.users_connected.append(user_listening)
+
+    if user_asking in user_listening.users_connected: 
+        new_chat = Chat(is_active = True)
+        user_asking.chats.append(new_chat)
+        user_listening.chats.append(new_chat)
+        Chat.save(new_chat)
+        return jsonify({"chat" : True}), 200
+
+    User.commit()
+
+    return jsonify({"chat" : False}), 200
+
+@api.route('user/<id>/users_connected', methods=['GET'])
+def get_users_connected(id):
+    user = User.get_user_by_id(id)
+
+    users_connected = user.get_connected()
+
+    users_connected = list(map(lambda user: user.serialize(), users_connected))
+
+    return jsonify({"connected": users_connected}), 200
+
+@api.route('/user/chats', methods=['GET'])
+@jwt_required()
+def get_user_chats():
+    current_user_id = get_jwt_identity()
+    current_user = User.get_user_by_id(current_user_id)
+
+    chats = current_user.get_chats()
+
+    chat_list = []
+    for chat in chats:
+        if chat.is_active:
+            users = chat.get_chat_users()
+            user_chatting_with = next(user for user in users if user is not current_user)
+            temp = {"id": chat.id, "is_active": chat.is_active, "user": {"name": user_chatting_with.name, "profile_img": user_chatting_with.profile_img}}
+            chat_list.append(temp)
+
+    return jsonify(chat_list), 200
+
+@api.route('/chat/<id>', methods=['GET'])
+def get_chat_info(id):
+    chat = Chat.get_chat_by_id(id)
+    return jsonify(chat.serialize()), 200
 
 
+@api.route('/delete_chat/<id>', methods=['PUT'])
+@jwt_required()
+def delete_chat(id):
+    user_requesting = get_jwt_identity()
+    user_requesting = User.get_user_by_id(user_requesting)
+    chat = Chat.get_chat_by_id(id)
 
+    users = chat.get_chat_users()
+    user_to_be_deleted = next(user for user in users if user is not user_requesting)
+    
+    chat.is_active = False
+    Chat.commit()
 
-
+    # user_requesting.remove()
+    return jsonify({"msg": "ok"}), 200

@@ -1,24 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
 import { ButtonType } from "../component/buttonType";
 import { SelectOptionForm } from "../component/selectOptionForm";
+import { Context } from "../store/appContext";
 
 export const Signup7 = () => {
 	let History = useHistory();
 	const [treatments, setTreatments] = useState([]);
 	const [treatmentid, setTreatmentid] = useState("");
 	const [treatmentsInHTML, setTreatmentsInHTML] = useState([]);
+	const { actions } = useContext(Context);
 
 	useEffect(() => {
-		(async () => {
-			const res = await fetch(`${process.env.BACKEND_URL}/api/treatments`, {
-				method: "GET",
-				headers: { "Content-Type": "application/json" }
-			});
-			const data = await res.json();
-			setTreatments(data);
-		})();
+		actions.getElements("treatments", setTreatments);
 	}, []);
 	useEffect(
 		() => {
@@ -87,26 +82,5 @@ export const Signup7 = () => {
 			{/* <ProgressBar now={20} /> */}
 		</div>
 
-		// <div className="container-fluid bg-lightgray p-4">
-		// 	<div className="row justify-content-center">
-		// 		<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white text-center">
-		// 			{/* <ProgressBar now={80} /> */}
-		// 			<h1 className="pt-3">¿Que tratamiento estas siguendo?</h1>
-		// 			<form onSubmit={updateInfo}>
-		// 				<div className="row p-2">{treatmentsInHTML}</div>
-
-		// 				<div className="d-flex flex-sm-column flex-md-row flex-nowrap justify-content-center pb-3">
-		// 					<Link to={"/list-of-women"} className="text-decoration-none">
-		// 						<ButtonType type="button" value="Saltar Cuestonario" />
-		// 					</Link>
-		// 					<Link to={"/signup-8"} className="text-decoration-none">
-		// 						<ButtonType type="button" value="Saltar Pregunta" />
-		// 					</Link>
-		// 					<ButtonType type="submit" value="Siguiente" />
-		// 				</div>
-		// 			</form>
-		// 		</div>
-		// 	</div>
-		// </div>
 	);
 };

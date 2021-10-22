@@ -2,9 +2,12 @@ import Swal from "sweetalert2";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			message: null,
 			access_token: null,
-			user_id: null
+			user_id: null,
+			treatments: [],
+			centers: [],
+			couples: [],
+			processes: []
 		},
 		actions: {
 			updateInitialUser: updateUser => {
@@ -32,6 +35,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ user_id: user_id });
 					setStore({ access_token: token });
 				}
+			},
+			getElements: async (elements, set) => {
+				const resp = await fetch(`${process.env.BACKEND_URL}/api/${elements}`, {
+					method: "GET",
+					headers: { "Content-Type": "applicacion/json" }
+				});
+				if (resp.ok) {
+					const data = await resp.json();
+					set(data);
+					// return data;
+				}
+			},
+			setElements: async () => {
+				let treatments = await getActions().getElements("treatments");
+				let centers = await getActions().getElements("centers");
+				let couples = await getActions().getElements("couples");
+				let process = await getActions().getElements("processtimeslots");
+
+				setStore({ centers: centers });
+				setStore({ treatments: treatments });
+				setStore({ couples: couples });
+				setStore({ processes: process });
 			},
 			notificationAlert: (title, text, icon, confirmButtonText) => {
 				Swal.fire({

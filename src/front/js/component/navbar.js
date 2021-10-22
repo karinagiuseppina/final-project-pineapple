@@ -36,6 +36,17 @@ export const Navbar = () => {
 		setIsClicked(isClicked ? false : true);
 		console.log(isClicked);
 	};
+	let logOut = (
+		<>
+			<li className="nav-item">
+				<Link to="/profile">Perfil</Link>
+			</li>
+			<LogoutButton />
+			<li className="nav-item">
+				<Link to="/chat">Chat</Link>
+			</li>
+		</>
+	);
 
 	const logIn = (
 		<>
