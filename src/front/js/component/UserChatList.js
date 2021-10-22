@@ -49,6 +49,7 @@ export const UserChatList = ({ setActiveChat }) => {
 		if (resp.ok) {
 			const data = await resp.json();
 			setChats(data);
+			if (data.length > 0) setActiveChat(data[0]);
 		}
 	};
 
@@ -100,5 +101,5 @@ export const UserChatList = ({ setActiveChat }) => {
 };
 
 UserChatList.propTypes = {
-	setActiveChat: PropTypes.funtion
+	setActiveChat: PropTypes.func
 };

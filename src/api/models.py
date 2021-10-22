@@ -80,20 +80,16 @@ class User(db.Model, GeneralModel):
         }
     
         if self.center_id is not None: 
-            center_type = Center.get_center_by_id(self.center_id)
-            user_obj["center"] = center_type.type
+            user_obj["center"] = self.center.type
 
         if self.treatment_id is not None:    
-            treatment_type = Treatment.get_treatment_by_id(self.treatment_id)
-            user_obj["treatment"] = treatment_type.type
+            user_obj["treatment"] = self.treatment.type
 
         if self.process_id is not None: 
-            process_range = Process.get_process_by_id(self.treatment_id)
-            user_obj["process"] = '{0} - {1}'.format(process_range.min_value, process_range.max_value)
+            user_obj["process"] = '{0} - {1}'.format(self.process.min_value, self.process.max_value)
 
         if self.couple_id is not None: 
-            couple_type = Couple.get_couple_by_id(self.treatment_id)
-            user_obj["couple"] = couple_type.option
+            user_obj["couple"] = self.couple.option
         
         return user_obj
     

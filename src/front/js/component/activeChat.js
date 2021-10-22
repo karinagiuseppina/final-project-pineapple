@@ -4,11 +4,12 @@ import PropTypes from "prop-types";
 
 export const ActiveChat = ({ activeChat }) => {
 	const { store, actions } = useContext(Context);
-
-	const [chatInHTML, setChatInHTML] = useState(
-		<div className="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">Select a chat.</div>
+	let emptyChat = (
+		<div className="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+			¡Vaya! ¡No tienes piñas añadidas, comienza a buscar!
+		</div>
 	);
-	let emptyChat = <div className="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">Select a chat.</div>;
+	const [chatInHTML, setChatInHTML] = useState(emptyChat);
 
 	useEffect(() => {
 		activeChat !== null
@@ -65,5 +66,5 @@ export const ActiveChat = ({ activeChat }) => {
 };
 
 ActiveChat.propTypes = {
-	activeChat: PropTypes.obj
+	activeChat: PropTypes.object
 };
