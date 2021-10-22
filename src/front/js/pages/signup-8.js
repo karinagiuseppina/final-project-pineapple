@@ -1,47 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { ButtonType } from "../component/buttonType";
 import { SelectOptionForm } from "../component/selectOptionForm";
+import { Context } from "../store/appContext";
 
 export const Signup8 = () => {
 	let History = useHistory();
 	const [centers, setCenters] = useState([]);
 	const [centerid, setCenterid] = useState("");
 	const [centersInHTML, setCentersInHTML] = useState([]);
+	const { actions } = useContext(Context);
 
 	useEffect(() => {
-		(async () => {
-			const res = await fetch(`${process.env.BACKEND_URL}/api/centers`, {
-				method: "GET",
-				headers: { "Content-Type": "application/json" }
-			});
-			const data = await res.json();
-			setCenters(data);
-		})();
+		actions.getElements("centers", setCenters);
 	}, []);
-	useEffect(
-		() => {
-			setCentersInHTML(
-				centers.map(center => {
-					let isChecked = center.id === centerid ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-12 col-md-4 p-1"
-							code={`t-${center.id}`}
-							key={`t-${center.id}`}
-							generalName="center"
-							id={center.id}
-							set={setCenterid}
-							option={center.type}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[centers, centerid]
-	);
+	useEffect(() => {
+		setCentersInHTML(
+			centers.map(center => {
+				let isChecked = center.id === centerid ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-12 col-md-4 p-1"
+						code={`t-${center.id}`}
+						key={`t-${center.id}`}
+						generalName="center"
+						id={center.id}
+						set={setCenterid}
+						option={center.type}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [centers, centerid]);
 
 	async function updateInfo(event) {
 		event.preventDefault();

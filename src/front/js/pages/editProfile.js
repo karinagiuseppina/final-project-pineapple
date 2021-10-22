@@ -17,9 +17,11 @@ export const EditProfile = () => {
 		treatment_id: -1,
 		process_id: -1,
 		couple_id: -1,
-		center_id: -1
+		center_id: -1,
+		profile_img: null
 	});
 
+	const [file, setFile] = useState([]);
 	const [treatments, setTreatments] = useState([]);
 	const [centers, setCenters] = useState([]);
 	const [couples, setCouples] = useState([]);
@@ -30,16 +32,6 @@ export const EditProfile = () => {
 	const [couplesInHTML, setCouplesInHTML] = useState([]);
 	const [processInHTML, setProcessInHTML] = useState([]);
 
-	const getElements = async (elements, set) => {
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/${elements}`, {
-			method: "GET",
-			headers: { "Content-Type": "applicacion/json" }
-		});
-		if (resp.ok) {
-			const data = await resp.json();
-			set(data);
-		}
-	};
 	const getUserData = async id => {
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/${id}`, {
 			method: "GET",
@@ -65,19 +57,50 @@ export const EditProfile = () => {
 		});
 	};
 
-	const handleUpdateProfile = () => {
-		updateProfile(
-			user.user_id,
-			user.age,
-			user.name,
-			user.password,
-			user.email,
-			user.treatment_id,
-			user.process_id,
-			user.couple_id,
-			user.center_id,
-			user.description
-		);
+	const save_data = () => {
+		if (file.length === 0) {
+			updateProfile(
+				user.user_id,
+				user.age,
+				user.name,
+				user.password,
+				user.email,
+				user.treatment_id,
+				user.process_id,
+				user.couple_id,
+				user.center_id,
+				user.description
+			);
+		} else save_profile_img();
+	};
+
+	const save_profile_img = async () => {
+		let data = new FormData();
+		data.append("file", file[0]);
+		let resp = await fetch(`${process.env.BACKEND_URL}/api/upload-file`, {
+			method: "PUT",
+			headers: { Authorization: "Bearer " + store.access_token },
+			body: data
+		});
+		if (resp.ok) {
+			const profile_image_url = await resp.json();
+			handleUpdateUser("profile_img", profile_image_url.profile_image);
+			updateProfile(
+				user.user_id,
+				user.age,
+				user.name,
+				user.password,
+				user.email,
+				user.treatment_id,
+				user.process_id,
+				user.couple_id,
+				user.center_id,
+				user.description,
+				profile_image_url.profile_image
+			);
+		} else {
+			alert("ERROR");
+		}
 	};
 
 	const updateProfile = async (
@@ -90,11 +113,13 @@ export const EditProfile = () => {
 		process_id,
 		couple_id,
 		center_id,
-		description
+		description,
+		profile_image_url
 	) => {
+		let profile_pic = profile_image_url ? profile_image_url : null;
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/editProfile`, {
 			method: "PUT",
-			headers: { "Content-Type": "application/json" },
+			headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
 			body: JSON.stringify({
 				user_id: user_id,
 				age: age,
@@ -105,7 +130,8 @@ export const EditProfile = () => {
 				process_id: process_id,
 				couple_id: couple_id,
 				center_id: center_id,
-				description: description
+				description: description,
+				profile_img: profile_pic
 			})
 		});
 		if (resp.ok) {
@@ -114,11 +140,15 @@ export const EditProfile = () => {
 	};
 
 	useEffect(() => {
-		getElements("treatments", setTreatments);
-		getElements("centers", setCenters);
-		getElements("couples", setCouples);
-		getElements("processtimeslots", setProcesses);
-		getUserData(1);
+		// setTreatments(store.treatments);
+		// setCenters(store.centers);
+		// setCouples(store.couples);
+		// setProcesses(store.processes);
+		actions.getElements("treatments", setTreatments);
+		actions.getElements("centers", setCenters);
+		actions.getElements("couples", setCouples);
+		actions.getElements("processtimeslots", setProcesses);
+		getUserData(store.user_id);
 	}, []);
 
 	const handleUpdateUser = (attr, value) => {
@@ -127,107 +157,93 @@ export const EditProfile = () => {
 		setUser(new_user);
 	};
 
-	useEffect(
-		() => {
-			setCentersInHTML(
-				centers.map(center => {
-					let isChecked = center.id === user.center_id ? true : false;
-					return (
-						<SelectOptionForm
-							key={`c-${center.id}`}
-							colClass="col-12 col-md-4 p-1"
-							code={`c-${center.id}`}
-							generalName="centers"
-							id={center.id}
-							set={handleUpdateUser}
-							attr="center_id"
-							option={center.type}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[centers, user]
-	);
+	useEffect(() => {
+		setCentersInHTML(
+			centers.map(center => {
+				let isChecked = center.id === user.center_id ? true : false;
+				return (
+					<SelectOptionForm
+						key={`c-${center.id}`}
+						colClass="col-12 col-md-4 p-1"
+						code={`c-${center.id}`}
+						generalName="centers"
+						id={center.id}
+						set={handleUpdateUser}
+						attr="center_id"
+						option={center.type}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [centers, user]);
 
-	useEffect(
-		() => {
-			setTreatmentsInHTML(
-				treatments.map(treatment => {
-					let isChecked = treatment.id === user.treatment_id ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-12 col-md-4 p-1"
-							key={`t-${treatment.id}`}
-							code={`t-${treatment.id}`}
-							generalName="treatments"
-							id={treatment.id}
-							set={handleUpdateUser}
-							attr="treatment_id"
-							option={treatment.type}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[treatments, user]
-	);
+	useEffect(() => {
+		setTreatmentsInHTML(
+			treatments.map(treatment => {
+				let isChecked = treatment.id === user.treatment_id ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-12 col-md-4 p-1"
+						key={`t-${treatment.id}`}
+						code={`t-${treatment.id}`}
+						generalName="treatments"
+						id={treatment.id}
+						set={handleUpdateUser}
+						attr="treatment_id"
+						option={treatment.type}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [treatments, user]);
 
-	useEffect(
-		() => {
-			setCouplesInHTML(
-				couples.map(couple => {
-					let isChecked = couple.id === user.couple_id ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-12 col-md-6 p-1"
-							key={`co-${couple.id}`}
-							code={`co-${couple.id}`}
-							generalName="couples"
-							id={couple.id}
-							set={handleUpdateUser}
-							attr="couple_id"
-							option={couple.option}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[couples, user]
-	);
+	useEffect(() => {
+		setCouplesInHTML(
+			couples.map(couple => {
+				let isChecked = couple.id === user.couple_id ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-12 col-md-6 p-1"
+						key={`co-${couple.id}`}
+						code={`co-${couple.id}`}
+						generalName="couples"
+						id={couple.id}
+						set={handleUpdateUser}
+						attr="couple_id"
+						option={couple.option}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [couples, user]);
 
-	useEffect(
-		() => {
-			setProcessInHTML(
-				processes.map(process => {
-					let range =
-						process.min_value === process.max_value
-							? "> 5 años"
-							: `${process.min_value} - ${process.max_value} años`;
-					let isChecked = process.id === user.process_id ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-12 col-md-6 p-1"
-							code={`pr-${process.id}`}
-							key={`pr-${process.id}`}
-							generalName="process"
-							id={process.id}
-							set={handleUpdateUser}
-							attr="process_id"
-							option={range}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[processes, user]
-	);
-
-	const handleUpdateImage = () => {};
+	useEffect(() => {
+		setProcessInHTML(
+			processes.map(process => {
+				let range =
+					process.min_value === process.max_value
+						? "> 5 años"
+						: `${process.min_value} - ${process.max_value} años`;
+				let isChecked = process.id === user.process_id ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-12 col-md-6 p-1"
+						code={`pr-${process.id}`}
+						key={`pr-${process.id}`}
+						generalName="process"
+						id={process.id}
+						set={handleUpdateUser}
+						attr="process_id"
+						option={range}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [processes, user]);
 
 	return (
 		<div className="container-fluid bg-lightgray p-4">
@@ -237,6 +253,7 @@ export const EditProfile = () => {
 						<div className="row justify-content-center">
 							<div className="col">
 								<FormTitle title="Datos Generales" />
+								<input type="file" onChange={e => setFile(e.target.files)} />
 								<NormalInput
 									type="text"
 									placeholder="Nombre"
@@ -304,7 +321,7 @@ export const EditProfile = () => {
 						</div>
 						<div className="row justify-content-center">
 							<div className="col text-center">
-								<button type="button" className="btn bg-prin" onClick={handleUpdateProfile}>
+								<button type="button" className="btn bg-prin" onClick={save_data}>
 									Actualizar
 								</button>
 							</div>

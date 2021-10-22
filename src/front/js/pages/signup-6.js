@@ -1,48 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { SelectOptionForm } from "../component/selectOptionForm";
 import { ButtonType } from "../component/buttonType";
+import { Context } from "../store/appContext";
 
 export const Signup6 = () => {
+	const { actions } = useContext(Context);
 	let History = useHistory();
 	const [coupleOPtions, setCoupleOPtions] = useState([]);
 	const [coupleid, setCoupleid] = useState("");
 	const [couplesInHTML, setCouplesInHTML] = useState([]);
 
 	useEffect(() => {
-		(async () => {
-			const res = await fetch(`${process.env.BACKEND_URL}/api/couples`, {
-				method: "GET",
-				headers: { "Content-Type": "application/json" }
-			});
-			const data = await res.json();
-			setCoupleOPtions(data);
-		})();
+		actions.getElements("couples", setCoupleOPtions);
 	}, []);
 
-	useEffect(
-		() => {
-			setCouplesInHTML(
-				coupleOPtions.map(couple => {
-					let isChecked = couple.id === coupleid ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-12 col-md-6 p-1"
-							code={`c-${couple.id}`}
-							key={`c-${couple.id}`}
-							generalName="couple"
-							id={couple.id}
-							set={setCoupleid}
-							option={couple.option}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[coupleOPtions, coupleid]
-	);
+	useEffect(() => {
+		setCouplesInHTML(
+			coupleOPtions.map(couple => {
+				let isChecked = couple.id === coupleid ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-12 col-md-6 p-1"
+						code={`c-${couple.id}`}
+						key={`c-${couple.id}`}
+						generalName="couple"
+						id={couple.id}
+						set={setCoupleid}
+						option={couple.option}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [coupleOPtions, coupleid]);
 
 	async function updateInfo(event) {
 		event.preventDefault();
