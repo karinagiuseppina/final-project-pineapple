@@ -137,12 +137,12 @@ select{
   font-size: 0.9rem;
 }
 
-input[type="radio"] + label,
+/* input[type="radio"] + label,
 input[type="checkbox"] + label:before, input,
 select option,
 select, .button{
 text-transform: uppercase;
-}
+} */
 
 input:focus {
   outline: 0;
