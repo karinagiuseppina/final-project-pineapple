@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
-import ProgressBar from "react-bootstrap/ProgressBar";
+
 import { ButtonType } from "../component/buttonType";
 import { SelectOptionForm } from "../component/selectOptionForm";
 import { Context } from "../store/appContext";
@@ -15,25 +15,28 @@ export const Signup8 = () => {
 	useEffect(() => {
 		actions.getElements("centers", setCenters);
 	}, []);
-	useEffect(() => {
-		setCentersInHTML(
-			centers.map(center => {
-				let isChecked = center.id === centerid ? true : false;
-				return (
-					<SelectOptionForm
-						colClass="col-12 col-md-4 p-1"
-						code={`t-${center.id}`}
-						key={`t-${center.id}`}
-						generalName="center"
-						id={center.id}
-						set={setCenterid}
-						option={center.type}
-						isChecked={isChecked}
-					/>
-				);
-			})
-		);
-	}, [centers, centerid]);
+	useEffect(
+		() => {
+			setCentersInHTML(
+				centers.map(center => {
+					let isChecked = center.id === centerid ? true : false;
+					return (
+						<SelectOptionForm
+							colClass="col-12 col-md-4 p-1"
+							code={`t-${center.id}`}
+							key={`t-${center.id}`}
+							generalName="center"
+							id={center.id}
+							set={setCenterid}
+							option={center.type}
+							isChecked={isChecked}
+						/>
+					);
+				})
+			);
+		},
+		[centers, centerid]
+	);
 
 	async function updateInfo(event) {
 		event.preventDefault();
@@ -53,7 +56,6 @@ export const Signup8 = () => {
 		<div className="container-fluid bg-lightgray p-4">
 			<div className="row justify-content-center">
 				<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white text-center">
-					<ProgressBar now={100} />
 					<h1 className="pt-3">¿A que centros has acudido?</h1>
 					<form onSubmit={updateInfo}>
 						<div className="row p-2">{centersInHTML}</div>

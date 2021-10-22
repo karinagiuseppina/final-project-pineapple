@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
-import ProgressBar from "react-bootstrap/ProgressBar";
+
 import { ButtonType } from "../component/buttonType";
 import { NormalInput } from "../component/normalInput";
 
@@ -53,8 +53,6 @@ export const Signup5 = () => {
 							</div>
 						</div>
 					</form>
-
-					<ProgressBar now={40} />
 				</div>
 			</div>
 		</div>

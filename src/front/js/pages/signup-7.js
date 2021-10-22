@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
-import ProgressBar from "react-bootstrap/ProgressBar";
+
 import { ButtonType } from "../component/buttonType";
 import { SelectOptionForm } from "../component/selectOptionForm";
 import { Context } from "../store/appContext";
@@ -15,25 +15,28 @@ export const Signup7 = () => {
 	useEffect(() => {
 		actions.getElements("treatments", setTreatments);
 	}, []);
-	useEffect(() => {
-		setTreatmentsInHTML(
-			treatments.map(treatment => {
-				let isChecked = treatment.id === treatmentid ? true : false;
-				return (
-					<SelectOptionForm
-						colClass="col-12 col-md-4 p-1"
-						code={`t-${treatment.id}`}
-						key={`t-${treatment.id}`}
-						generalName="treatment"
-						id={treatment.id}
-						set={setTreatmentid}
-						option={treatment.type}
-						isChecked={isChecked}
-					/>
-				);
-			})
-		);
-	}, [treatments, treatmentid]);
+	useEffect(
+		() => {
+			setTreatmentsInHTML(
+				treatments.map(treatment => {
+					let isChecked = treatment.id === treatmentid ? true : false;
+					return (
+						<SelectOptionForm
+							colClass="col-12 col-md-4 p-1"
+							code={`t-${treatment.id}`}
+							key={`t-${treatment.id}`}
+							generalName="treatment"
+							id={treatment.id}
+							set={setTreatmentid}
+							option={treatment.type}
+							isChecked={isChecked}
+						/>
+					);
+				})
+			);
+		},
+		[treatments, treatmentid]
+	);
 
 	async function updateInfo(event) {
 		event.preventDefault();
@@ -53,7 +56,6 @@ export const Signup7 = () => {
 		<div className="container-fluid bg-lightgray p-4">
 			<div className="row justify-content-center">
 				<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white text-center">
-					<ProgressBar now={80} />
 					<h1 className="pt-3">¿Que tratamiento estas siguendo?</h1>
 					<form onSubmit={updateInfo}>
 						<div className="row p-2">{treatmentsInHTML}</div>

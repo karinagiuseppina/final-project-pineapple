@@ -33,9 +33,12 @@ export const FilterUsers = () => {
 		actions.getElements("processtimeslots", setProcesses);
 	}, []);
 
-	useEffect(() => {
-		buildUsersInHTML(users);
-	}, [users]);
+	useEffect(
+		() => {
+			buildUsersInHTML(users);
+		},
+		[users]
+	);
 
 	const buildUsersInHTML = users_array => {
 		setUsersInHTML(
@@ -94,26 +97,29 @@ export const FilterUsers = () => {
 		setTreatmentsSelected(treatments);
 	};
 
-	useEffect(() => {
-		setTreatmentsInHTML(
-			treatments.map(treatment => {
-				let isChecked = treatmentsSelected.includes(treatment) ? true : false;
-				return (
-					<SelectOptionForm
-						colClass="col-12 col-md-4 p-1"
-						key={`t-${treatment.id}`}
-						code={`t-${treatment.id}`}
-						generalName="treatments"
-						id={treatment.id}
-						set={() => handleSelectTreatment(treatment)}
-						attr="treatment_id"
-						option={treatment.type}
-						isChecked={isChecked}
-					/>
-				);
-			})
-		);
-	}, [treatments, treatmentsSelected]);
+	useEffect(
+		() => {
+			setTreatmentsInHTML(
+				treatments.map(treatment => {
+					let isChecked = treatmentsSelected.includes(treatment) ? true : false;
+					return (
+						<SelectOptionForm
+							colClass="col-12 col-md-4 p-1"
+							key={`t-${treatment.id}`}
+							code={`t-${treatment.id}`}
+							generalName="treatments"
+							id={treatment.id}
+							set={() => handleSelectTreatment(treatment)}
+							attr="treatment_id"
+							option={treatment.type}
+							isChecked={isChecked}
+						/>
+					);
+				})
+			);
+		},
+		[treatments, treatmentsSelected]
+	);
 
 	return (
 		<div className="container">

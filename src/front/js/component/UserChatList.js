@@ -57,28 +57,33 @@ export const UserChatList = ({ setActiveChat }) => {
 		getChats();
 	}, []);
 
-	useEffect(() => {
-		setChatsInHTML(
-			chats.map(chat => {
-				return (
-					<li className="person" key={chat.id} onClick={() => setActiveChat(chat)}>
-						<div className="d-flex justify-content-end">
-							<i className="fas fa-times" onClick={() => confirmDelete(chat)}></i>
-						</div>
-						<div className="user">
-							<img
-								src={chat.user.profile_img ? chat.user.profile_img : "https://via.placeholder.com/48"}
-								alt={`profile image of ${chat.user.name}`}
-							/>
-						</div>
-						<p className="name-time">
-							<span className="name">{chat.user.name}</span>
-						</p>
-					</li>
-				);
-			})
-		);
-	}, [chats]);
+	useEffect(
+		() => {
+			setChatsInHTML(
+				chats.map(chat => {
+					return (
+						<li className="person" key={chat.id} onClick={() => setActiveChat(chat)}>
+							<div className="d-flex justify-content-end">
+								<i className="fas fa-times" onClick={() => confirmDelete(chat)} />
+							</div>
+							<div className="user">
+								<img
+									src={
+										chat.user.profile_img ? chat.user.profile_img : "https://via.placeholder.com/48"
+									}
+									alt={`profile image of ${chat.user.name}`}
+								/>
+							</div>
+							<p className="name-time">
+								<span className="name">{chat.user.name}</span>
+							</p>
+						</li>
+					);
+				})
+			);
+		},
+		[chats]
+	);
 
 	return (
 		<div className="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
