@@ -94,9 +94,7 @@ export const Login = () => {
 				/>
 				<div className="row">
 					<div className="col-12 col-md-6">
-						<Link to={"/signup-4"}>
-							<ButtonType classN="button primary" type="submit" value="Log In" />
-						</Link>
+						<ButtonType classN="button primary" type="submit" value="Log In" onClick={handleLogin} />
 					</div>
 					<div className="col-12 col-md-6">
 						<Link to={"/signup-1"}>

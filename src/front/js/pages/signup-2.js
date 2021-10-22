@@ -40,10 +40,12 @@ export const Signup2 = () => {
 		// if (responseJson.access_token) {
 		// 	localStorage.setItem("access_token", responseJson.access_token);
 		// }
-		const resJson = await res.json();
-		if (resJson) {
-			localStorage.setItem("user_id", resJson);
-		}
+		// const resJson = await res.json();
+		// if (resJson) {
+		// 	localStorage.setItem("user_id", resJson);
+		// }
+		actions.setUserSession(data.token, data.user_id);
+		console.log(store.access_token);
 		actions.updateInitialUser({});
 		History.push("/signup-3");
 	}
