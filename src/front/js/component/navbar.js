@@ -12,6 +12,9 @@ export const Navbar = () => {
 				<Link to="/profile">Perfil</Link>
 			</li>
 			<LogoutButton />
+			<li className="nav-item">
+				<Link to="/chat">Chat</Link>
+			</li>
 		</>
 	);
 
