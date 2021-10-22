@@ -304,12 +304,14 @@ def login():
     return jsonify({"user_id": user.id, "name": user.name, "token": access_token})
 
 @api.route("/user/<id_asking>/asks/<id_listening>", methods=["PUT"])
-#@jwt_required()
+@jwt_required()
 def user_connects_with_user(id_asking, id_listening):
-    # user_id = get_jwt_identity()
-
+    user_id = get_jwt_identity()
     user_asking = User.get_user_by_id(id_asking)
     user_listening = User.get_user_by_id(id_listening)
+
+    if user_id != user_asking:
+        return jsonify({"msg": "Not authorized"}), 401
 
     user_asking.users_connected.append(user_listening)
 
@@ -334,15 +336,23 @@ def get_users_connected(id):
 
     return jsonify({"connected": users_connected}), 200
 
-@api.route('/user/<id>/chats', methods=['GET'])
-def get_user_chats(id):
-    user = User.get_user_by_id(id)
+@api.route('/user/chats', methods=['GET'])
+@jwt_required()
+def get_user_chats():
+    current_user_id = get_jwt_identity()
+    current_user = User.get_user_by_id(current_user_id)
 
-    chats = user.get_chats()
+    chats = current_user.get_chats()
 
-    chats = list(map(lambda chat: chat.serialize(), chats))
+    chat_list = []
+    for chat in chats:
+        if chat.is_active:
+            users = chat.get_chat_users()
+            user_chatting_with = next(user for user in users if user is not current_user)
+            temp = {"id": chat.id, "is_active": chat.is_active, "user": {"name": user_chatting_with.name, "profile_img": user_chatting_with.profile_img}}
+            chat_list.append(temp)
 
-    return jsonify({"chats": chats}), 200
+    return jsonify(chat_list), 200
 
 @api.route('/chat/<id>', methods=['GET'])
 def get_chat_info(id):
@@ -351,8 +361,9 @@ def get_chat_info(id):
 
 
 @api.route('/delete_chat/<id>', methods=['PUT'])
+@jwt_required()
 def delete_chat(id):
-    user_requesting = request.json.get("user_id")
+    user_requesting = get_jwt_identity()
     user_requesting = User.get_user_by_id(user_requesting)
     chat = Chat.get_chat_by_id(id)
 
