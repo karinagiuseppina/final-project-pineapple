@@ -1,3 +1,4 @@
+
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -16,6 +17,7 @@ class User(db.Model):
     treatment_id = db.Column(db.Integer, db.ForeignKey('treatment.id'), nullable=True)
     description = db.Column(db.String(500), unique=False, nullable=True)
 
+    # conversations = 
 
     def __repr__(self):
         return '<User %r>' % self.name
@@ -94,4 +96,40 @@ class Treatment(db.Model):
         return {
             "id": self.id,
             "type": self.type
+        }
+
+class Conversation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # user1_id = db.Column(db.String(60), unique=True, nullable=False)
+    # user2_id = db.Column(db.String(60), unique=True, nullable=False)
+    
+    # messages = 
+
+    def __repr__(self):
+        return '<Conversation %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id
+        }
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String(120), unique=True, nullable=False)
+    created_at =db.Column(db.Date, unique=False, nullable=False)
+    user_id = db.Column(db.Integer, primary_key=True)
+    conversation_id = db.Column(db.Integer, primary_key=True)
+    
+    def __repr__(self):
+        return '<Message %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "value": self.value,
+            "created_at": self.created_at,
+            "user_id": self.user_id,
         }

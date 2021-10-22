@@ -2,10 +2,12 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Couple, Treatment, Process, Center
+from api.models import db, User, Couple, Treatment, Process, Center, Conversation, Message
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
 import json
+from datetime import datetime
+from datetime import timedelta
 import bcrypt
 from sqlalchemy import update
 from sqlalchemy import and_
@@ -13,6 +15,7 @@ from sqlalchemy import and_
 
 api = Blueprint('api', __name__)
 
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 
 # TEST DB    
 @api.route("/testdb", methods=['GET'])
@@ -292,8 +295,30 @@ def login():
     print(access_token)
     return jsonify({"user_id": user.id, "name": user.name, "token": access_token})
 
+@api.route('/start-conversation', methods=["POST"])
+def start_conversation():
+    conversation = Conversation()
+    conversation.save()
+    return jsonify(conversation.serialize), 200
 
+@api.route('/conversation/<int:conversation_id>/messages', methods=["GET"])
+def get_conversation_messages():
+    messages = Message.query.filter_by(conversation_id=conversation_id).all()
+    messages = list(map(lambda message: message.serialize(), messages))
+    return jsonify(messages), 200
 
+@api.route('/conversation/<int:conversation_id>/send-message', methods=["POST"])
+def send_message(conversation_id):
+    json = request.get_json()
 
+    new_message_text = json.get('message')
+    sender_id = json.get('sender_id')
 
+    message = Message(
+        value=new_message_text, 
+        created_at=datetime.date(year=2021, month=1, day=1), 
+        user_id=sender_id, 
+        conversation_id=conversation_id)
+    message.save()
+    return jsonify(message.serialize()), 200
 

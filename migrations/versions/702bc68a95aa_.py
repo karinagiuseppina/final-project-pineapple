@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 000bd0f20343
+Revision ID: 702bc68a95aa
 Revises: 
-Create Date: 2021-10-14 10:00:29.094572
+Create Date: 2021-10-21 21:51:48.475372
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '000bd0f20343'
+revision = '702bc68a95aa'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,12 +25,25 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('type')
     )
+    op.create_table('conversation',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('couple',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('option', sa.String(length=50), nullable=False),
     sa.Column('weight', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('option')
+    )
+    op.create_table('message',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('value', sa.String(length=120), nullable=False),
+    sa.Column('created_at', sa.Date(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('conversation_id', sa.Integer(), nullable=False),
+    sa.PrimaryKeyConstraint('id', 'user_id', 'conversation_id'),
+    sa.UniqueConstraint('value')
     )
     op.create_table('process',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -73,6 +86,8 @@ def downgrade():
     op.drop_table('user')
     op.drop_table('treatment')
     op.drop_table('process')
+    op.drop_table('message')
     op.drop_table('couple')
+    op.drop_table('conversation')
     op.drop_table('center')
     # ### end Alembic commands ###
