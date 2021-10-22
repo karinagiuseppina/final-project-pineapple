@@ -17,32 +17,29 @@ export const Signup4 = () => {
 		actions.getElements("processtimeslots", setProcesstimeslots);
 	}, []);
 
-	useEffect(
-		() => {
-			setProcessInHTML(
-				processtimeslots.map(process => {
-					let range =
-						process.min_value === process.max_value
-							? "> 5 años"
-							: `${process.min_value} - ${process.max_value} años`;
-					let isChecked = process.id === processtimeslotsid ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-12 col-md-6 p-1"
-							code={`pr-${process.id}`}
-							key={`pr-${process.id}`}
-							generalName="process"
-							id={process.id}
-							set={setProcesstimeslotsid}
-							option={range}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[processtimeslots, processtimeslotsid]
-	);
+	useEffect(() => {
+		setProcessInHTML(
+			processtimeslots.map(process => {
+				let range =
+					process.min_value === process.max_value
+						? "> 5 años"
+						: `${process.min_value} - ${process.max_value} años`;
+				let isChecked = process.id === processtimeslotsid ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-12 col-md-6 p-1"
+						code={`pr-${process.id}`}
+						key={`pr-${process.id}`}
+						generalName="process"
+						id={process.id}
+						set={setProcesstimeslotsid}
+						option={range}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [processtimeslots, processtimeslotsid]);
 
 	async function updateInfo(event) {
 		event.preventDefault();

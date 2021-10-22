@@ -16,28 +16,25 @@ export const Signup6 = () => {
 		actions.getElements("couples", setCoupleOPtions);
 	}, []);
 
-	useEffect(
-		() => {
-			setCouplesInHTML(
-				coupleOPtions.map(couple => {
-					let isChecked = couple.id === coupleid ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-12 col-md-6 p-1"
-							code={`c-${couple.id}`}
-							key={`c-${couple.id}`}
-							generalName="couple"
-							id={couple.id}
-							set={setCoupleid}
-							option={couple.option}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[coupleOPtions, coupleid]
-	);
+	useEffect(() => {
+		setCouplesInHTML(
+			coupleOPtions.map(couple => {
+				let isChecked = couple.id === coupleid ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-12 col-md-6 p-1"
+						code={`c-${couple.id}`}
+						key={`c-${couple.id}`}
+						generalName="couple"
+						id={couple.id}
+						set={setCoupleid}
+						option={couple.option}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [coupleOPtions, coupleid]);
 
 	async function updateInfo(event) {
 		event.preventDefault();

@@ -157,105 +157,93 @@ export const EditProfile = () => {
 		setUser(new_user);
 	};
 
-	useEffect(
-		() => {
-			setCentersInHTML(
-				centers.map(center => {
-					let isChecked = center.id === user.center_id ? true : false;
-					return (
-						<SelectOptionForm
-							key={`c-${center.id}`}
-							colClass="col-12 col-md-4 p-1"
-							code={`c-${center.id}`}
-							generalName="centers"
-							id={center.id}
-							set={handleUpdateUser}
-							attr="center_id"
-							option={center.type}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[centers, user]
-	);
+	useEffect(() => {
+		setCentersInHTML(
+			centers.map(center => {
+				let isChecked = center.id === user.center_id ? true : false;
+				return (
+					<SelectOptionForm
+						key={`c-${center.id}`}
+						colClass="col-12 col-md-4 p-1"
+						code={`c-${center.id}`}
+						generalName="centers"
+						id={center.id}
+						set={handleUpdateUser}
+						attr="center_id"
+						option={center.type}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [centers, user]);
 
-	useEffect(
-		() => {
-			setTreatmentsInHTML(
-				treatments.map(treatment => {
-					let isChecked = treatment.id === user.treatment_id ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-12 col-md-4 p-1"
-							key={`t-${treatment.id}`}
-							code={`t-${treatment.id}`}
-							generalName="treatments"
-							id={treatment.id}
-							set={handleUpdateUser}
-							attr="treatment_id"
-							option={treatment.type}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[treatments, user]
-	);
+	useEffect(() => {
+		setTreatmentsInHTML(
+			treatments.map(treatment => {
+				let isChecked = treatment.id === user.treatment_id ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-12 col-md-4 p-1"
+						key={`t-${treatment.id}`}
+						code={`t-${treatment.id}`}
+						generalName="treatments"
+						id={treatment.id}
+						set={handleUpdateUser}
+						attr="treatment_id"
+						option={treatment.type}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [treatments, user]);
 
-	useEffect(
-		() => {
-			setCouplesInHTML(
-				couples.map(couple => {
-					let isChecked = couple.id === user.couple_id ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-12 col-md-6 p-1"
-							key={`co-${couple.id}`}
-							code={`co-${couple.id}`}
-							generalName="couples"
-							id={couple.id}
-							set={handleUpdateUser}
-							attr="couple_id"
-							option={couple.option}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[couples, user]
-	);
+	useEffect(() => {
+		setCouplesInHTML(
+			couples.map(couple => {
+				let isChecked = couple.id === user.couple_id ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-12 col-md-6 p-1"
+						key={`co-${couple.id}`}
+						code={`co-${couple.id}`}
+						generalName="couples"
+						id={couple.id}
+						set={handleUpdateUser}
+						attr="couple_id"
+						option={couple.option}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [couples, user]);
 
-	useEffect(
-		() => {
-			setProcessInHTML(
-				processes.map(process => {
-					let range =
-						process.min_value === process.max_value
-							? "> 5 años"
-							: `${process.min_value} - ${process.max_value} años`;
-					let isChecked = process.id === user.process_id ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-12 col-md-6 p-1"
-							code={`pr-${process.id}`}
-							key={`pr-${process.id}`}
-							generalName="process"
-							id={process.id}
-							set={handleUpdateUser}
-							attr="process_id"
-							option={range}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[processes, user]
-	);
+	useEffect(() => {
+		setProcessInHTML(
+			processes.map(process => {
+				let range =
+					process.min_value === process.max_value
+						? "> 5 años"
+						: `${process.min_value} - ${process.max_value} años`;
+				let isChecked = process.id === user.process_id ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-12 col-md-6 p-1"
+						code={`pr-${process.id}`}
+						key={`pr-${process.id}`}
+						generalName="process"
+						id={process.id}
+						set={handleUpdateUser}
+						attr="process_id"
+						option={range}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [processes, user]);
 
 	return (
 		<div className="container-fluid bg-lightgray p-4">
