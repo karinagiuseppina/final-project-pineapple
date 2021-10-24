@@ -50,9 +50,12 @@ const ChatVictor = () => {
 			<button onClick={getMessages}>Recibir Mensajes</button>
 			<div className="messages">
 				{messages.map(message => {
-					<p key={message.id}>
-						{message.created_at} - {message.value}
-					</p>;
+					console.log(message);
+					return (
+						<p key={message.id}>
+							{message.pub_date} - {message.value}
+						</p>
+					);
 				})}
 			</div>
 			<div>

@@ -1,14 +1,8 @@
 """empty message
 
-<<<<<<< HEAD:migrations/versions/6120f5ec08d5_.py
-Revision ID: 6120f5ec08d5
+Revision ID: f61c2fc59f78
 Revises: 
-Create Date: 2021-10-24 11:55:47.942375
-=======
-Revision ID: 061510ebfdd1
-Revises: 
-Create Date: 2021-10-19 11:26:32.322718
->>>>>>> 3306ad65a3771790e80bb9c3bd4a11d301b616c5:migrations/versions/061510ebfdd1_.py
+Create Date: 2021-10-24 18:45:35.707003
 
 """
 from alembic import op
@@ -16,11 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-<<<<<<< HEAD:migrations/versions/6120f5ec08d5_.py
-revision = '6120f5ec08d5'
-=======
-revision = '061510ebfdd1'
->>>>>>> 3306ad65a3771790e80bb9c3bd4a11d301b616c5:migrations/versions/061510ebfdd1_.py
+revision = 'f61c2fc59f78'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -35,11 +25,12 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('type')
     )
-<<<<<<< HEAD:migrations/versions/6120f5ec08d5_.py
-    op.create_table('conversation',
-=======
     op.create_table('chat',
->>>>>>> 3306ad65a3771790e80bb9c3bd4a11d301b616c5:migrations/versions/061510ebfdd1_.py
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('is_active', sa.Boolean(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('conversation',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
@@ -52,11 +43,11 @@ def upgrade():
     )
     op.create_table('message',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('value', sa.String(length=120), nullable=False),
-    sa.Column('created_at', sa.Date(), nullable=False),
+    sa.Column('value', sa.String(length=250), nullable=False),
+    sa.Column('pub_date', sa.DateTime(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('value')
+    sa.Column('conversation_id', sa.Integer(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('process',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -118,10 +109,7 @@ def downgrade():
     op.drop_table('process')
     op.drop_table('message')
     op.drop_table('couple')
-<<<<<<< HEAD:migrations/versions/6120f5ec08d5_.py
     op.drop_table('conversation')
-=======
     op.drop_table('chat')
->>>>>>> 3306ad65a3771790e80bb9c3bd4a11d301b616c5:migrations/versions/061510ebfdd1_.py
     op.drop_table('center')
     # ### end Alembic commands ###
