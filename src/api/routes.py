@@ -6,8 +6,7 @@ from api.models import db, User, Couple, Treatment, Process, Center, Conversatio
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
 import json
-from datetime import datetime
-from datetime import timedelta
+import datetime
 import bcrypt
 from sqlalchemy import update
 from sqlalchemy import and_
@@ -15,7 +14,7 @@ from sqlalchemy import and_
 
 api = Blueprint('api', __name__)
 
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+
 
 # TEST DB    
 @api.route("/testdb", methods=['GET'])
@@ -299,7 +298,7 @@ def login():
 def start_conversation():
     conversation = Conversation()
     conversation.save()
-    return jsonify(conversation.serialize), 200
+    return jsonify(conversation.serialize()), 200
 
 @api.route('/conversation/<int:conversation_id>/messages', methods=["GET"])
 def get_conversation_messages():
