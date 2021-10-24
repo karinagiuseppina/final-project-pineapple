@@ -18,7 +18,7 @@ class User(db.Model):
     description = db.Column(db.String(500), unique=False, nullable=True)
 
     
-    #conversations = db.relationship('Conversation', backref='conversation_list', lazy=True)
+   
 
 
     def __repr__(self):
@@ -102,9 +102,7 @@ class Treatment(db.Model):
 
 class Conversation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, primary_key=True)
-   
-    #messages = db.relationship('Message', backref='conversation', lazy=True)
+     
 
     def __repr__(self):
         return '<Conversation %r>' % self.id
@@ -121,8 +119,9 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String(120), unique=True, nullable=False)
     created_at =db.Column(db.Date, unique=False, nullable=False)
-    user_id = db.Column(db.Integer, primary_key=True)
-    conversation_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    conversation_id = db.Column(db.Integer)
+    
     
     def __repr__(self):
         return '<Message %r>' % self.id

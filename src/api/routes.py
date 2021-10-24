@@ -301,7 +301,7 @@ def start_conversation():
     return jsonify(conversation.serialize()), 200
 
 @api.route('/conversation/<int:conversation_id>/messages', methods=["GET"])
-def get_conversation_messages():
+def get_conversation_messages(conversation_id):
     messages = Message.query.filter_by(conversation_id=conversation_id).all()
     messages = list(map(lambda message: message.serialize(), messages))
     return jsonify(messages), 200
@@ -317,7 +317,8 @@ def send_message(conversation_id):
         value=new_message_text, 
         created_at=datetime.date(year=2021, month=1, day=1), 
         user_id=sender_id, 
-        conversation_id=conversation_id)
+        conversation_id=conversation_id
+    )
     message.save()
     return jsonify(message.serialize()), 200
 
