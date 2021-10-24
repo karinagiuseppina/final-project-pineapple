@@ -14,6 +14,9 @@ export const Home = () => {
 			<Link to={"/signup-1"}>Encuentra tu media piña</Link>
 			<Link to={"/login"}>Log In</Link>
 			<Link to={"/chat"}>Chat</Link>
+			<Link to={"/list-of-women"} className="text-decoration-none">
+				Lista
+			</Link>
 		</div>
 	);
 };

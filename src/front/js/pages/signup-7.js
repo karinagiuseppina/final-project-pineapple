@@ -1,47 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { ButtonType } from "../component/buttonType";
 import { SelectOptionForm } from "../component/selectOptionForm";
+import { Context } from "../store/appContext";
 
 export const Signup7 = () => {
 	let History = useHistory();
 	const [treatments, setTreatments] = useState([]);
 	const [treatmentid, setTreatmentid] = useState("");
 	const [treatmentsInHTML, setTreatmentsInHTML] = useState([]);
+	const { actions } = useContext(Context);
 
 	useEffect(() => {
-		(async () => {
-			const res = await fetch(`${process.env.BACKEND_URL}/api/treatments`, {
-				method: "GET",
-				headers: { "Content-Type": "application/json" }
-			});
-			const data = await res.json();
-			setTreatments(data);
-		})();
+		actions.getElements("treatments", setTreatments);
 	}, []);
-	useEffect(
-		() => {
-			setTreatmentsInHTML(
-				treatments.map(treatment => {
-					let isChecked = treatment.id === treatmentid ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-12 col-md-4 p-1"
-							code={`t-${treatment.id}`}
-							key={`t-${treatment.id}`}
-							generalName="treatment"
-							id={treatment.id}
-							set={setTreatmentid}
-							option={treatment.type}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[treatments, treatmentid]
-	);
+	useEffect(() => {
+		setTreatmentsInHTML(
+			treatments.map(treatment => {
+				let isChecked = treatment.id === treatmentid ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-12 col-md-4 p-1"
+						code={`t-${treatment.id}`}
+						key={`t-${treatment.id}`}
+						generalName="treatment"
+						id={treatment.id}
+						set={setTreatmentid}
+						option={treatment.type}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [treatments, treatmentid]);
 
 	async function updateInfo(event) {
 		event.preventDefault();

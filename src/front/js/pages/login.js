@@ -17,7 +17,6 @@ export const Login = () => {
 	};
 
 	const getLoginData = (attr, value) => {
-		console.log("from getLoginData: ", attr, value);
 		setLoginData(prev => {
 			let logged_user = { ...prev };
 			logged_user[attr] = value;
@@ -25,10 +24,8 @@ export const Login = () => {
 			return logged_user;
 		});
 	};
-	console.log("loginData: ", loginData);
 
 	const logUserIn = async (email, password) => {
-		console.log("from logUserIn: ", email, password);
 		if (loginData.email === "" || loginData.password === "") {
 			actions.notificationAlert(badLogin.title, badLogin.text, badLogin.icon, badLogin.confirmButtonText);
 			return;
@@ -43,8 +40,6 @@ export const Login = () => {
 		});
 		if (response.ok) {
 			let data = await response.json();
-			console.log(data);
-
 			actions.setUserSession(data.token, data.user_id);
 			History.push("/");
 		} else {
