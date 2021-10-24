@@ -294,6 +294,7 @@ def login():
     print(access_token)
     return jsonify({"user_id": user.id, "name": user.name, "token": access_token})
 
+
 @api.route('/start-conversation', methods=["POST"])
 def start_conversation():
     conversation = Conversation()
@@ -306,7 +307,7 @@ def get_conversation_messages(conversation_id):
     messages = list(map(lambda message: message.serialize(), messages))
     return jsonify(messages), 200
 
-@api.route('/conversation/<int:conversation_id>/send-message', methods=["POST"])
+@api.route('/conversation/<int:conversation_id>/send-message', methods=["GET","POST"])
 def send_message(conversation_id):
     json = request.get_json()
 
