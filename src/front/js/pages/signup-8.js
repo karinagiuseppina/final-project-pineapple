@@ -15,28 +15,25 @@ export const Signup8 = () => {
 	useEffect(() => {
 		actions.getElements("centers", setCenters);
 	}, []);
-	useEffect(
-		() => {
-			setCentersInHTML(
-				centers.map(center => {
-					let isChecked = center.id === centerid ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-12 col-md-4 p-1"
-							code={`t-${center.id}`}
-							key={`t-${center.id}`}
-							generalName="center"
-							id={center.id}
-							set={setCenterid}
-							option={center.type}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[centers, centerid]
-	);
+	useEffect(() => {
+		setCentersInHTML(
+			centers.map(center => {
+				let isChecked = center.id === centerid ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-12 col-md-4 p-1"
+						code={`t-${center.id}`}
+						key={`t-${center.id}`}
+						generalName="center"
+						id={center.id}
+						set={setCenterid}
+						option={center.type}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [centers, centerid]);
 
 	async function updateInfo(event) {
 		event.preventDefault();

@@ -15,28 +15,25 @@ export const Signup7 = () => {
 	useEffect(() => {
 		actions.getElements("treatments", setTreatments);
 	}, []);
-	useEffect(
-		() => {
-			setTreatmentsInHTML(
-				treatments.map(treatment => {
-					let isChecked = treatment.id === treatmentid ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-12 col-md-4 p-1"
-							code={`t-${treatment.id}`}
-							key={`t-${treatment.id}`}
-							generalName="treatment"
-							id={treatment.id}
-							set={setTreatmentid}
-							option={treatment.type}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[treatments, treatmentid]
-	);
+	useEffect(() => {
+		setTreatmentsInHTML(
+			treatments.map(treatment => {
+				let isChecked = treatment.id === treatmentid ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-12 col-md-4 p-1"
+						code={`t-${treatment.id}`}
+						key={`t-${treatment.id}`}
+						generalName="treatment"
+						id={treatment.id}
+						set={setTreatmentid}
+						option={treatment.type}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [treatments, treatmentid]);
 
 	async function updateInfo(event) {
 		event.preventDefault();
