@@ -51,6 +51,8 @@ class User(db.Model, GeneralModel):
     chats = db.relationship('Chat', secondary=chats, lazy='subquery',
         backref=db.backref('users', lazy=True))
 
+    notifications = db.relationship('Notification', backref='user', lazy=True)
+
     def __repr__(self):
         return '<User %r>' % self.name
 
@@ -107,6 +109,9 @@ class User(db.Model, GeneralModel):
     
     def get_chats (self):
         return self.chats
+    
+    def get_notifications (self):
+        return self.notifications
     
 
 class Couple(db.Model, GeneralModel):
@@ -220,3 +225,26 @@ class Chat(db.Model, GeneralModel):
     def get_chat_users(self):
         return self.users
     
+
+class Notification(db.Model, GeneralModel):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    is_new = db.Column(db.Boolean, primary_key=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+
+    def __repr__(self):
+        return '%r' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name, 
+            "is_new": self.is_new, 
+            "user_id": self.user_id
+        }
+    
+    def get_all_notifications ():
+        return Notification.query.all()
+    
+    def get_notification_by_id (id):
+        return Notification.query.filter_by(id=id).first()

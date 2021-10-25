@@ -320,6 +320,18 @@ def user_connects_with_user(id_asking, id_listening):
         user_asking.chats.append(new_chat)
         user_listening.chats.append(new_chat)
         Chat.save(new_chat)
+
+        noti_user_asking = Notification(name = "¡{0} es tu nueva piña!".format(user_listening.name), is_new= True)
+        user_asking.notifications.append(noti_user_asking)
+        Notification.add(noti_user_asking)
+
+        noti_user_listening = Notification(name = "¡{0} es tu nueva piña!".format(user_asking.name), is_new= True)
+        user_listening.notifications.append(noti_user_listening)
+        Notification.add(noti_user_listening)
+
+        Notification.commit()
+
+        Chat.save(new_chat)
         return jsonify({"chat" : True}), 200
 
     User.commit()
