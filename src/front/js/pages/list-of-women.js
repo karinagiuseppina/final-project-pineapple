@@ -22,7 +22,7 @@ export const ListOfWomen = () => {
 			setResults(data);
 			setwaiting(waiting + 1);
 		})();
-	}, []);
+	}, [results]);
 
 	console.log(results);
 
