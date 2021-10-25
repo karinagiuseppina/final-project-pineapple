@@ -86,19 +86,19 @@
     
     "couples": [
         {
-            "option": "no tengo", 
+            "option": "No tengo", 
             "weight": 1
         },
         {
-            "option": "tengo una relacion con una mujer", 
+            "option": "Si tengo", 
             "weight": 2
         },
         {
-            "option": "tengo una relacion con un hombre", 
+            "option": "Con un mujer", 
             "weight": 3
         },
         {
-            "option": "tengo una relacion", 
+            "option": "Con una hombre", 
             "weight": 4
         }
     ]

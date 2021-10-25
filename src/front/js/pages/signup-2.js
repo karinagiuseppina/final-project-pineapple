@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { NormalInput } from "../component/normalInput";
 import { ButtonType } from "../component/buttonType";
+import { NormalInputPassword } from "../component/normalInputPassword";
+import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
 
 export const Signup2 = () => {
 	const eye = <FontAwesomeIcon icon={faEye} />;
@@ -33,43 +35,59 @@ export const Signup2 = () => {
 			})
 		});
 
+		const response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
+			method: "POST",
+			headers: { "content-Type": "application/json" },
+			body: JSON.stringify({
+				email: email,
+				password: password
+			})
+		});
+		if (response.ok) {
+			let data = await response.json();
+			actions.setUserSession(data.token, data.user_id);
+		}
+
 		// const responseJson = await response.json();
 
 		// if (responseJson.access_token) {
 		// 	localStorage.setItem("access_token", responseJson.access_token);
 		// }
-		const resJson = await res.json();
-		if (resJson) {
-			localStorage.setItem("user_id", resJson);
-		}
+		// const resJson = await res.json();
+		// if (resJson) {
+		// 	localStorage.setItem("user_id", resJson);
+		// }
+		console.log(store.access_token);
 		actions.updateInitialUser({});
 		History.push("/signup-3");
 	}
 
 	return (
-		<div className="container-fluid bg-lightgray p-4">
-			<div className="row justify-content-center">
-				<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white">
-					<h1 className="question-text">Hola {name}, lo primero es tu seguridad</h1>
-					<form onSubmit={createUser}>
-						<div className="d-flex flex-nowrap align-items-center">
-							<NormalInput
-								type={passwordShown ? "text" : "password"}
-								placeholder="Contraseña"
-								value={password}
-								set={setPassword}
-								icon="fa fa-userfas fa-key"
-								required={false}
-							/>
-
-							<i onClick={togglePasswordVisiblity} className="mb-3 mx-2 p-3">
-								{eye}
-							</i>
-						</div>
-						<ButtonType type="submit" value="Siguiente" />
-					</form>
+		<div className="App-box">
+			<div className="signup-header">
+				<h1 className="question-text">Hola {name}, lo primero es tu seguridad</h1>
+				<div className="image-box">
+					<img className="piña-partida-sinnombre" src={pinaPartidaNombre} alt="dibujo piña partida" />
 				</div>
 			</div>
+			<form onSubmit={createUser}>
+				<div>
+					<NormalInputPassword
+						type={passwordShown ? "text" : "password"}
+						placeholder="Contraseña"
+						value={password}
+						set={setPassword}
+						required={true}
+						click={togglePasswordVisiblity}
+						icon={<FontAwesomeIcon icon={faEye} />}
+					/>
+				</div>
+				<div className="row">
+					<div className="col-12 col-md-4">
+						<ButtonType classN="button primary" type="submit" value="Guardar" />
+					</div>
+				</div>
+			</form>
 		</div>
 	);
 };
