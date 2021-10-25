@@ -55,6 +55,8 @@ class User(db.Model, GeneralModel):
 
     notifications = db.relationship('Notification', backref='user', lazy=True)
 
+    messages = db.relationship('Message', backref='user', lazy=True)
+
     def __repr__(self):
         return '<User %r>' % self.name
 
@@ -205,6 +207,8 @@ class Treatment(db.Model, GeneralModel):
 class Chat(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     is_active = db.Column(db.Boolean, primary_key=False)
+    
+    messages = db.relationship('Message', backref='chat', lazy=True)
 
     def __repr__(self):
         return '%r' % self.id
@@ -227,6 +231,25 @@ class Chat(db.Model, GeneralModel):
     def get_chat_users(self):
         return self.users
     
+class Message(db.Model, GeneralModel):
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String(250), unique=False, nullable=False)
+    pub_date = db.Column(db.DateTime, nullable=False,
+        default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    chat_id = db.Column(db.Integer, db.ForeignKey('chat.id'), nullable=True)
+
+    def __repr__(self):
+        return '<Message %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "value": self.value,
+            "pub_date": self.pub_date,
+            "user_id": self.user_id,
+            "chat_id": self.chat_id        
+            }
 
 class Notification(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
@@ -252,36 +275,6 @@ class Notification(db.Model, GeneralModel):
         return Notification.query.filter_by(id=id).first()
 
 
-
-class Conversation(db.Model, GeneralModel):
-    id = db.Column(db.Integer, primary_key=True)
-
-    def __repr__(self):
-        return '<Conversation %r>' % self.id
-    
-    def serialize(self):
-        return {
-            "id": self.id
-        }
-
-class Message(db.Model, GeneralModel):
-    id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String(250), unique=False, nullable=False)
-    pub_date = db.Column(db.DateTime, nullable=False,
-        default=datetime.utcnow)
-    user_id = db.Column(db.Integer)
-    conversation_id = db.Column(db.Integer)
-
-    def __repr__(self):
-        return '<Message %r>' % self.id
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "value": self.value,
-            "pub_date": self.pub_date,
-            "user_id": self.user_id
-        }
             
             
             

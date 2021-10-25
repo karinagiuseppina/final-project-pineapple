@@ -10,6 +10,33 @@ export const ActiveChat = ({ activeChat }) => {
 		</div>
 	);
 	const [chatInHTML, setChatInHTML] = useState(emptyChat);
+	const [messages, setMessages] = useState([]);
+	const [newMessage, setNewMessage] = useState("");
+
+	const getMessages = async () => {
+		const response = await fetch(`${process.env.BACKEND_URL}/api/chat/${activeChat.id}/messages`, {
+			headers: {
+				"Content-Type": "application/json"
+			}
+		});
+		const responseJson = await response.json();
+		setMessages(responseJson);
+	};
+
+	const sendMessage = async () => {
+		const response = await fetch(`${process.env.BACKEND_URL}/api/conversation/${activeChat.id}/send-message`, {
+			headers: {
+				"Content-Type": "application/json"
+			},
+			method: "POST",
+			body: JSON.stringify({
+				sender_id: 1,
+				message: newMessage
+			})
+		});
+		const responseJson = await response.json();
+		setMessages([...messages, responseJson]);
+	};
 
 	useEffect(() => {
 		activeChat !== null

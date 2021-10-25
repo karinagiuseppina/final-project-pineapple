@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 import os
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Couple, Treatment, Process, Center, Chat, Conversation, Message
+from api.models import db, User, Couple, Treatment, Process, Center, Chat, Message, Notification
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
 import json
@@ -311,14 +311,16 @@ def start_conversation():
     conversation.save()
     return jsonify(conversation.serialize()), 200
 
-@api.route('/conversation/<int:conversation_id>/messages', methods=["GET"])
-def get_conversation_messages(conversation_id):
-    messages = Message.query.filter_by(conversation_id=conversation_id).all()
+@api.route('/chat/<int:chat_id>/messages', methods=["GET"])
+def get_conversation_messages(chat_id):
+    chat = Chat.get_chat_by_id(chat_id)
+    messages = chat.messages
     messages = list(map(lambda message: message.serialize(), messages))
     return jsonify(messages), 200
 
-@api.route('/conversation/<int:conversation_id>/send-message', methods=["POST"])
-def send_message_conversation(conversation_id):
+@api.route('/chat/<int:chat_id>/send-message', methods=["POST"])
+# @jwt_required()
+def send_message_conversation(chat_id):
     json = request.get_json()
 
     new_message_text = json.get('message')
@@ -329,7 +331,7 @@ def send_message_conversation(conversation_id):
         value=new_message_text,
         pub_date=date,
         user_id=sender_id,
-        conversation_id=conversation_id
+        chat_id=chat_id
     )
     message.save()
 
