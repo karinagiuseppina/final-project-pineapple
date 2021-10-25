@@ -316,12 +316,12 @@ def get_conversation_messages(chat_id):
     return jsonify(messages), 200
 
 @api.route('/chat/<int:chat_id>/send-message', methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def send_message_conversation(chat_id):
     json = request.get_json()
 
     new_message_text = json.get('message')
-    sender_id = json.get('sender_id')
+    sender_id = get_jwt_identity()
     date = datetime.datetime.utcnow()
 
     message = Message(
@@ -335,14 +335,14 @@ def send_message_conversation(chat_id):
     return jsonify(message.serialize()), 200
 
 @api.route("/user/<id_asking>/asks/<id_listening>", methods=["PUT"])
-@jwt_required()
+# @jwt_required()
 def user_connects_with_user(id_asking, id_listening):
-    user_id = get_jwt_identity()
+    # user_id = get_jwt_identity()
     user_asking = User.get_user_by_id(id_asking)
     user_listening = User.get_user_by_id(id_listening)
 
-    if user_id != user_asking:
-        return jsonify({"msg": "Not authorized"}), 401
+    # if user_id != user_asking:
+    #     return jsonify({"msg": "Not authorized"}), 401
 
     user_asking.users_connected.append(user_listening)
 
@@ -378,6 +378,16 @@ def get_users_connected(id):
     users_connected = list(map(lambda user: user.serialize(), users_connected))
 
     return jsonify({"connected": users_connected}), 200
+
+@api.route('user/<id>/notifications', methods=['GET'])
+def get_user_notifications(id):
+    user = User.get_user_by_id(id)
+
+    notifications = user.notifications
+
+    notifications = list(map(lambda notification: notification.serialize(), notifications))
+
+    return jsonify({"notification": notifications}), 200
 
 @api.route('/user/chats', methods=['GET'])
 @jwt_required()

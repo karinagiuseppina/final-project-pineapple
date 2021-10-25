@@ -253,7 +253,7 @@ class Message(db.Model, GeneralModel):
 
 class Notification(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), unique=True, nullable=False)
+    name = db.Column(db.String(100), unique=False, nullable=False)
     is_new = db.Column(db.Boolean, primary_key=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
 

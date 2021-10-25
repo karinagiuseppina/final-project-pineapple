@@ -26,9 +26,10 @@ export const UserChatList = ({ setActiveChat }) => {
 	};
 
 	const deleteChat = async chat => {
+		let token = actions.getAccessToken();
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/delete_chat/${chat.id}`, {
 			method: "PUT",
-			headers: { "Content-Type": "applicacion/json", Authorization: `Bearer ${store.access_token}` }
+			headers: { "Content-Type": "applicacion/json", Authorization: `Bearer ${token}` }
 		});
 		if (resp.ok) {
 			actions.notificationAlert(
@@ -42,9 +43,10 @@ export const UserChatList = ({ setActiveChat }) => {
 	};
 
 	const getChats = async () => {
+		let token = actions.getAccessToken();
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/chats`, {
 			method: "GET",
-			headers: { "Content-Type": "applicacion/json", Authorization: `Bearer ${store.access_token}` }
+			headers: { "Content-Type": "applicacion/json", Authorization: `Bearer ${token}` }
 		});
 		if (resp.ok) {
 			const data = await resp.json();

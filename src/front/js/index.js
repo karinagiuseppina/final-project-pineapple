@@ -3,9 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 //include bootstrap npm library into the bundle
-import $ from "jquery";
 import "bootstrap/dist/css/bootstrap.css";
-import Popper from "popper.js";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
 //include your index.scss file into the bundle
