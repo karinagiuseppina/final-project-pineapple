@@ -64,7 +64,7 @@ export const UserChatList = ({ setActiveChat }) => {
 				return (
 					<li className="person" key={chat.id} onClick={() => setActiveChat(chat)}>
 						<div className="d-flex justify-content-end">
-							<i className="fas fa-times" onClick={() => confirmDelete(chat)}></i>
+							<i className="fas fa-times" onClick={() => confirmDelete(chat)} />
 						</div>
 						<div className="user">
 							<img

@@ -5,17 +5,18 @@ import { oneOfType } from "prop-types";
 
 export const NormalInput = ({ type, placeholder, set, value, icon, attr, required }) => {
 	return (
-		<div className="input-group input-group-icon">
+		<div className="input">
+			<label>{placeholder}</label>
 			<input
 				type={type}
-				placeholder={placeholder}
+				// placeholder={placeholder}
 				value={value}
 				onChange={e => (attr === undefined ? set(e.target.value) : set(attr, e.target.value))}
 				required={required === undefined ? false : true}
 			/>
-			<div className="input-icon">
+			{/* <div className="input-icon">
 				<i className={icon} />
-			</div>
+			</div> */}
 		</div>
 	);
 };

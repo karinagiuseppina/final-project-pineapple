@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import "../../styles/home.scss";
 import { Link, useHistory } from "react-router-dom";
-import ProgressBar from "react-bootstrap/ProgressBar";
+import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
 import { SelectOptionForm } from "../component/selectOptionForm";
 import { ButtonType } from "../component/buttonType";
 import { Context } from "../store/appContext";
 
 export const Signup4 = () => {
-	const { actions } = useContext(Context);
+	const { store, actions } = useContext(Context);
 	let History = useHistory();
 	const [processtimeslots, setProcesstimeslots] = useState([]);
 	const [processtimeslotsid, setProcesstimeslotsid] = useState(null);
@@ -27,7 +27,7 @@ export const Signup4 = () => {
 				let isChecked = process.id === processtimeslotsid ? true : false;
 				return (
 					<SelectOptionForm
-						colClass="col-12 col-md-6 p-1"
+						colClass="col-6 p-1"
 						code={`pr-${process.id}`}
 						key={`pr-${process.id}`}
 						generalName="process"
@@ -46,7 +46,7 @@ export const Signup4 = () => {
 		const userId = localStorage.getItem("user_id");
 		await fetch(`${process.env.BACKEND_URL}/api/update-processtimeslot`, {
 			method: "PUT",
-			headers: { "Content-Type": "application/json" },
+			headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
 			body: JSON.stringify({
 				process_id: processtimeslotsid,
 				user_id: userId
@@ -56,22 +56,33 @@ export const Signup4 = () => {
 	}
 
 	return (
-		<div className="container-fluid bg-lightgray p-4">
-			<div className="row justify-content-center">
-				<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white text-center">
-					<h1 className="question-text">¿Cuánto llevas en busqueda? </h1>
-					<form onSubmit={updateInfo}>
-						<div className="row p-4">{processInHTML}</div>
-						<Link to={"/signup-5"}>
-							<ButtonType type="button" value="Saltar Cuestionario" />
-						</Link>
-
-						<ButtonType type="submit" value="Siguiente" />
-					</form>
-
-					<ProgressBar now={20} />
+		<div className="App-box">
+			<div className="signup-header">
+				<h1 className="question-text">¿Cuanto tiempo llevas en tu busqueda?</h1>
+				<div className="image-box">
+					<img className="piña-partida-sinnombre" src={pinaPartidaNombre} alt="dibujo piña partida" />
 				</div>
 			</div>
+			<form onSubmit={updateInfo}>
+				<div className="row">{processInHTML}</div>
+				<div className="row">
+					<div className="col-12 col-md-4">
+						<ButtonType classN="button primary" type="submit" value="Continuar" />
+					</div>
+					<div className="col-6 col-md-4">
+						<Link to={"/signup-5"}>
+							<ButtonType classN="button secondary" type="button" value="Omitir" />
+						</Link>
+					</div>
+					<div className="col-6 col-md-4">
+						<Link to={"/list-of-women"}>
+							<ButtonType classN="button alert" type="button" value="Terminar" />
+						</Link>
+					</div>
+				</div>
+			</form>
+
+			{/* <ProgressBar now={20} /> */}
 		</div>
 	);
 };
