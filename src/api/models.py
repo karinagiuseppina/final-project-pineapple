@@ -1,4 +1,6 @@
+
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -233,7 +235,7 @@ class Notification(db.Model, GeneralModel):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
 
     def __repr__(self):
-        return '%r' % self.id
+        return  '%r' % self.id
 
     def serialize(self):
         return {
@@ -248,3 +250,40 @@ class Notification(db.Model, GeneralModel):
     
     def get_notification_by_id (id):
         return Notification.query.filter_by(id=id).first()
+
+
+
+class Conversation(db.Model, GeneralModel):
+    id = db.Column(db.Integer, primary_key=True)
+
+    def __repr__(self):
+        return '<Conversation %r>' % self.id
+    
+    def serialize(self):
+        return {
+            "id": self.id
+        }
+
+class Message(db.Model, GeneralModel):
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String(250), unique=False, nullable=False)
+    pub_date = db.Column(db.DateTime, nullable=False,
+        default=datetime.utcnow)
+    user_id = db.Column(db.Integer)
+    conversation_id = db.Column(db.Integer)
+
+    def __repr__(self):
+        return '<Message %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "value": self.value,
+            "pub_date": self.pub_date,
+            "user_id": self.user_id
+        }
+            
+            
+            
+            
+            
