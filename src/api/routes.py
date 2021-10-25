@@ -57,22 +57,20 @@ def fill_database():
 @api.route("/findpossiblematches", methods=["GET"])
 # @jwt_required()
 def find_possible_matches():
-    # actual_user_id = get_jwt_identity()
-    user_id = 2
+    user_id = 8
+    # user_id = get_jwt_identity()
     actual_user = User.query.filter_by(id=user_id).first()
 
     result = User.query.filter(and_(User.age <= (actual_user.age+8), User.age > (actual_user.age-8), User.id != user_id)).all()
     
     print(result)
-    array_users= result
-    # for user in result:
-    #     # if actual_user.treatment_id is not None:
-    #     #     print(user)
-    #         if user.treatment_id == actual_user.treatment_id:
-                
-    #             # if actual_user.process_id is not None and user.process_id is not None: 
-    #                 if user.process_id <= (actual_user.process_id + 4) and (user.process_id > actual_user.process_id -4 ):
-    #                     array_users.append(user)
+    array_users= []
+    for user in result:
+        if actual_user.treatment_id is not None:
+            if user.treatment_id == actual_user.treatment_id:
+                if actual_user.process_id is not None and user.process_id is not None: 
+                    if user.process_id <= (actual_user.process_id + 4) and (user.process_id > actual_user.process_id -4 ):
+                        array_users.append(user)
            
         
     print(array_users)            
@@ -200,10 +198,10 @@ def create_user():
     return jsonify(user.id), 200
 
 @api.route("/update-abortion", methods=["PUT"])
-# @jwt_required()
+@jwt_required()
 def update_abortion():
     
-    # user_id = get_jwt_identity()
+    user_id = get_jwt_identity()
     abortion_num = request.json.get("abortion_num", None) 
     user_id = request.json.get("user_id")
     user= User.get_user_by_id(user_id)
@@ -213,10 +211,10 @@ def update_abortion():
     return jsonify(user.id), 200
 
 @api.route("/update-center", methods=["PUT"])
-# @jwt_required()
+@jwt_required()
 def update_center():
     
-    # user_id = get_jwt_identity()
+    user_id = get_jwt_identity()
     center_id = request.json.get("center_id", None) 
     user_id = request.json.get("user_id")
     user= User.get_user_by_id(user_id)
@@ -226,10 +224,10 @@ def update_center():
     return jsonify(user.id), 200
 
 @api.route("/update-couple", methods=["PUT"])
-# @jwt_required()
+@jwt_required()
 def update_couple():
     
-    # user_id = get_jwt_identity()
+    user_id = get_jwt_identity()
     couple_id = request.json.get("couple_id", None) 
     user_id = request.json.get("user_id")
     user= User.get_user_by_id(user_id)
@@ -240,10 +238,10 @@ def update_couple():
 
 
 @api.route("/update-treatment", methods=["PUT"])
-# @jwt_required()
+@jwt_required()
 def update_treatment():
     
-    # user_id = get_jwt_identity()
+    user_id = get_jwt_identity()
     treatment_id = request.json.get("treatment_id", None) 
     user_id = request.json.get("user_id")
     user= User.get_user_by_id(user_id)
@@ -253,10 +251,10 @@ def update_treatment():
     return jsonify(user.id), 200
 
 @api.route("/update-processtimeslot", methods=["PUT"])
-# @jwt_required()
+@jwt_required()
 def update_processtimeslot():
     
-    # user_id = get_jwt_identity()
+    user_id = get_jwt_identity()
     process_id = request.json.get("process_id", None) 
     user_id = request.json.get("user_id")
     user= User.get_user_by_id(user_id)
@@ -300,7 +298,6 @@ def login():
         return jsonify({"msg": "Bad username or password"}), 401
         
     access_token = create_access_token(identity=user.id)
-    print(access_token)
     return jsonify({"user_id": user.id, "name": user.name, "token": access_token})
 
 @api.route("/user/<id_asking>/asks/<id_listening>", methods=["PUT"])

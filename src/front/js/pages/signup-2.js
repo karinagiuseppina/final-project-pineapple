@@ -35,6 +35,19 @@ export const Signup2 = () => {
 			})
 		});
 
+		const response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
+			method: "POST",
+			headers: { "content-Type": "application/json" },
+			body: JSON.stringify({
+				email: email,
+				password: password
+			})
+		});
+		if (response.ok) {
+			let data = await response.json();
+			actions.setUserSession(data.token, data.user_id);
+		}
+
 		// const responseJson = await response.json();
 
 		// if (responseJson.access_token) {
@@ -44,7 +57,6 @@ export const Signup2 = () => {
 		// if (resJson) {
 		// 	localStorage.setItem("user_id", resJson);
 		// }
-		actions.setUserSession(data.token, data.user_id);
 		console.log(store.access_token);
 		actions.updateInitialUser({});
 		History.push("/signup-3");

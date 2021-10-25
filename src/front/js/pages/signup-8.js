@@ -10,40 +10,37 @@ export const Signup8 = () => {
 	const [centers, setCenters] = useState([]);
 	const [centerid, setCenterid] = useState("");
 	const [centersInHTML, setCentersInHTML] = useState([]);
-	const { actions } = useContext(Context);
+	const { store, actions } = useContext(Context);
 
 	useEffect(() => {
 		actions.getElements("centers", setCenters);
 	}, []);
-	useEffect(
-		() => {
-			setCentersInHTML(
-				centers.map(center => {
-					let isChecked = center.id === centerid ? true : false;
-					return (
-						<SelectOptionForm
-							colClass={center.id == 3 ? "col-12 p-1" : "col-6 p-1"}
-							code={`t-${center.id}`}
-							key={`t-${center.id}`}
-							generalName="center"
-							id={center.id}
-							set={setCenterid}
-							option={center.type}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[centers, centerid]
-	);
+	useEffect(() => {
+		setCentersInHTML(
+			centers.map(center => {
+				let isChecked = center.id === centerid ? true : false;
+				return (
+					<SelectOptionForm
+						colClass={center.id == 3 ? "col-12 p-1" : "col-6 p-1"}
+						code={`t-${center.id}`}
+						key={`t-${center.id}`}
+						generalName="center"
+						id={center.id}
+						set={setCenterid}
+						option={center.type}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [centers, centerid]);
 
 	async function updateInfo(event) {
 		event.preventDefault();
 		const userId = localStorage.getItem("user_id");
 		await fetch(`${process.env.BACKEND_URL}/api/update-center`, {
 			method: "PUT",
-			headers: { "Content-Type": "application/json" },
+			headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
 			body: JSON.stringify({
 				center_id: centerid,
 				user_id: userId

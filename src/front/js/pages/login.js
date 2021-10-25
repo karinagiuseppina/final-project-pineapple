@@ -27,6 +27,7 @@ export const Login = () => {
 
 	const getLoginData = (attr, value) => {
 		setLoginData(prev => {
+			console.log(attr);
 			let logged_user = { ...prev };
 			logged_user[attr] = value;
 
@@ -35,22 +36,22 @@ export const Login = () => {
 	};
 
 	const logUserIn = async (email, password) => {
-		if (loginData.email === "" || loginData.password === "") {
+		if (email === "" || password === "") {
 			actions.notificationAlert(badLogin.title, badLogin.text, badLogin.icon, badLogin.confirmButtonText);
-			return;
 		}
+		console.log(email, password);
 		const response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
 			method: "POST",
 			headers: { "content-Type": "application/json" },
 			body: JSON.stringify({
-				email: loginData.email,
-				password: loginData.password
+				email: email,
+				password: password
 			})
 		});
 		if (response.ok) {
 			let data = await response.json();
 			actions.setUserSession(data.token, data.user_id);
-			History.push("/");
+			History.push("/list-of-women");
 		} else {
 			actions.notificationAlert(badLogin.title, badLogin.text, badLogin.icon, badLogin.confirmButtonText);
 		}
@@ -68,7 +69,7 @@ export const Login = () => {
 				</div>
 			</div>
 
-			<form onSubmit={handleLogin}>
+			<form>
 				<NormalInput type="email" placeholder="email" value={loginData.email} set={getLoginData} attr="email" />
 				{/* <NormalInput
 					type="password"
@@ -82,14 +83,13 @@ export const Login = () => {
 					placeholder="Contraseña"
 					value={loginData.password}
 					set={getLoginData}
-					required={false}
 					click={togglePasswordVisiblity}
-					icon={<FontAwesomeIcon icon={faEye} />}
 					attr="password"
+					icon={<FontAwesomeIcon icon={faEye} />}
 				/>
 				<div className="row">
 					<div className="col-12 col-md-6">
-						<ButtonType classN="button primary" type="submit" value="Log In" onClick={handleLogin} />
+						<ButtonType classN="button primary" type="button" value="Log In" onClick={handleLogin} />
 					</div>
 					<div className="col-12 col-md-6">
 						<Link to={"/signup-1"}>

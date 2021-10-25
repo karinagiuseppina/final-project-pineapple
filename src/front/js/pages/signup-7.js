@@ -10,40 +10,37 @@ export const Signup7 = () => {
 	const [treatments, setTreatments] = useState([]);
 	const [treatmentid, setTreatmentid] = useState("");
 	const [treatmentsInHTML, setTreatmentsInHTML] = useState([]);
-	const { actions } = useContext(Context);
+	const { store, actions } = useContext(Context);
 
 	useEffect(() => {
 		actions.getElements("treatments", setTreatments);
 	}, []);
-	useEffect(
-		() => {
-			setTreatmentsInHTML(
-				treatments.map(treatment => {
-					let isChecked = treatment.id === treatmentid ? true : false;
-					return (
-						<SelectOptionForm
-							colClass={treatment.id == 3 ? "col-12 p-1" : "col-6 p-1"}
-							code={`t-${treatment.id}`}
-							key={`t-${treatment.id}`}
-							generalName="treatment"
-							id={treatment.id}
-							set={setTreatmentid}
-							option={treatment.type}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[treatments, treatmentid]
-	);
+	useEffect(() => {
+		setTreatmentsInHTML(
+			treatments.map(treatment => {
+				let isChecked = treatment.id === treatmentid ? true : false;
+				return (
+					<SelectOptionForm
+						colClass={treatment.id == 3 ? "col-12 p-1" : "col-6 p-1"}
+						code={`t-${treatment.id}`}
+						key={`t-${treatment.id}`}
+						generalName="treatment"
+						id={treatment.id}
+						set={setTreatmentid}
+						option={treatment.type}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [treatments, treatmentid]);
 
 	async function updateInfo(event) {
 		event.preventDefault();
 		const userId = localStorage.getItem("user_id");
 		await fetch(`${process.env.BACKEND_URL}/api/update-treatment`, {
 			method: "PUT",
-			headers: { "Content-Type": "application/json" },
+			headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
 			body: JSON.stringify({
 				treatment_id: treatmentid,
 				user_id: userId
@@ -81,6 +78,5 @@ export const Signup7 = () => {
 
 			{/* <ProgressBar now={20} /> */}
 		</div>
-
 	);
 };

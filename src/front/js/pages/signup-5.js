@@ -3,9 +3,11 @@ import { Link, useHistory } from "react-router-dom";
 import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
 import { ButtonType } from "../component/buttonType";
 import { NormalInput } from "../component/normalInput";
+import { Context } from "../store/appContext";
 
 export const Signup5 = () => {
 	const [numAbortos, SetNumAbortos] = useState("");
+	const { store, actions } = useContext(Context);
 	let History = useHistory();
 
 	function updateInfo(event) {
@@ -14,7 +16,7 @@ export const Signup5 = () => {
 
 		fetch(`${process.env.BACKEND_URL}/api/update-abortion`, {
 			method: "PUT",
-			headers: { "Content-Type": "application/json" },
+			headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
 			body: JSON.stringify({
 				abortion_num: numAbortos,
 				user_id: userId

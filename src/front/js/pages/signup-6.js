@@ -6,7 +6,7 @@ import { ButtonType } from "../component/buttonType";
 import { Context } from "../store/appContext";
 
 export const Signup6 = () => {
-	const { actions } = useContext(Context);
+	const { store, actions } = useContext(Context);
 	let history = useHistory();
 	const [coupleOPtions, setCoupleOPtions] = useState([]);
 	const [coupleid, setCoupleid] = useState("");
@@ -16,35 +16,32 @@ export const Signup6 = () => {
 		actions.getElements("couples", setCoupleOPtions);
 	}, []);
 
-	useEffect(
-		() => {
-			setCouplesInHTML(
-				coupleOPtions.map(couple => {
-					let isChecked = couple.id === coupleid ? true : false;
-					return (
-						<SelectOptionForm
-							colClass="col-6 p-1"
-							code={`c-${couple.id}`}
-							key={`c-${couple.id}`}
-							generalName="couple"
-							id={couple.id}
-							set={setCoupleid}
-							option={couple.option}
-							isChecked={isChecked}
-						/>
-					);
-				})
-			);
-		},
-		[coupleOPtions, coupleid]
-	);
+	useEffect(() => {
+		setCouplesInHTML(
+			coupleOPtions.map(couple => {
+				let isChecked = couple.id === coupleid ? true : false;
+				return (
+					<SelectOptionForm
+						colClass="col-6 p-1"
+						code={`c-${couple.id}`}
+						key={`c-${couple.id}`}
+						generalName="couple"
+						id={couple.id}
+						set={setCoupleid}
+						option={couple.option}
+						isChecked={isChecked}
+					/>
+				);
+			})
+		);
+	}, [coupleOPtions, coupleid]);
 
 	async function updateInfo(event) {
 		event.preventDefault();
 		const userId = localStorage.getItem("user_id");
 		await fetch(`${process.env.BACKEND_URL}/api/update-couple`, {
 			method: "PUT",
-			headers: { "Content-Type": "application/json" },
+			headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
 			body: JSON.stringify({
 				couple_id: coupleid,
 				user_id: userId

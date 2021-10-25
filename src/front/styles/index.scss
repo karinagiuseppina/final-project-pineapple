@@ -3,6 +3,41 @@
 */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: 1s all;
+  opacity: 0;
+}
+.loading.show {
+  opacity: 1;
+}
+.loading .spin {
+  border: 3px solid hsla(185, 100%, 62%, 0.2);
+  border-top-color: #3cefff;
+  border-radius: 50%;
+  width: 3em;
+  height: 3em;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+to {
+  transform: rotate(360deg);
+}
+}            
+
+
+
+
+
 .logo{
   font: var(--logo);
   color: var(--primary);
@@ -132,7 +167,7 @@ body{
 -20deg);
 }
 
-.question-text{
+.question-text, .title{
   text-align: left;
   font: var(--title);
   color: var(--main-text);
@@ -325,7 +360,7 @@ select option {
   margin-bottom: 20px
 }
 
-.little-profile .pro-img img {
+.little-profile .pro-img .profile-circle {
   width: 128px;
   height: 128px;
   -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
@@ -334,8 +369,22 @@ select option {
 }
 .card-top-banner {
   height: 100px;
-  background-color: var(--main-text);
+  background-color: var(--details);
 }
 .font-size-small {
   font-size: 0.6em;
+}
+
+img{
+  object-fit: contain;
+}
+
+.card-result{
+  border-radius: 8px;
+
+  position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
 }

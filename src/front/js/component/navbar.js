@@ -7,9 +7,6 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { AltLogo } from "./altLogo";
 
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faEye } from "@fortawesome/";
-
 export const Navbar = () => {
 	const MenuItems = [
 		{
@@ -23,9 +20,15 @@ export const Navbar = () => {
 			cName: "nav-links"
 		},
 		{
+			title: "Piñas madurando",
+			// solicitudes si contestar
+			url: "/chat",
+			cName: "nav-links"
+		},
+		{
 			title: "Tus Piñas",
 			// lista de chats
-			url: "",
+			url: "/chat",
 			cName: "nav-links"
 		}
 	];
@@ -36,33 +39,17 @@ export const Navbar = () => {
 		setIsClicked(isClicked ? false : true);
 		console.log(isClicked);
 	};
-	let logOut = (
-		<>
-			<li className="nav-item">
-				<Link to="/profile">Perfil</Link>
-			</li>
-			<LogoutButton />
-			<li className="nav-item">
-				<Link to="/chat">Chat</Link>
-			</li>
-		</>
-	);
 
 	const logIn = (
-		<>
-			<li>
-				<Link className="nav-links-mobile secondary" to="/login">
-					Log In
-				</Link>
-			</li>
-			{/* <li className="nav-links-mobile">
-				<Link to="/signup-1">Sign Up</Link>
-			</li> */}
-		</>
+		<li>
+			<Link className="nav-links-mobile secondary" to="/login">
+				Log In
+			</Link>
+		</li>
 	);
 
-	if (store.user_id == null && store.access_token == null) {
-		console.log(store.user_id);
+	if (store.user_id === null && store.access_token === null) {
+		console.log(store.user_id, store.access_token);
 		return (
 			<nav className="navbarItems">
 				<AltLogo />
@@ -76,7 +63,8 @@ export const Navbar = () => {
 				<div className="menu-icon" onClick={handleClicked}>
 					{isClicked ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
 				</div>
-				<ul className={isClicked ? "nav-menu active" : "nav-menu"}>
+
+				<ul className={isClicked ? "nav-menu active App-box" : "nav-menu"}>
 					{MenuItems.map((Item, index) => {
 						return (
 							<li key={index}>
