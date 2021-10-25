@@ -21,43 +21,24 @@ export const Signup1 = () => {
 	}
 
 	return (
-		<div className="container-fluid bg-lightgray p-4">
-			<div className="row justify-content-center">
-				<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white">
-					<div className="signup-header text-center">
-						<h1 className="question-text">¿Nos conocemos?</h1>
-						<img className="piña-partida-sinnombre" src={pinaPartidaNombre} alt="dibujo piña partida" />
-					</div>
-
-					<form onSubmit={saveInfo}>
-						<NormalInput
-							type="text"
-							placeholder="Nombre"
-							value={name}
-							set={setName}
-							icon="fa fa-user"
-							required={true}
-						/>
-						<NormalInput
-							type="number"
-							placeholder="Edad"
-							value={age}
-							set={setAge}
-							icon="fas fa-calendar-check"
-							required={true}
-						/>
-						<NormalInput
-							type="email"
-							placeholder="Email"
-							value={email}
-							set={setEmail}
-							icon="fa fa-envelope"
-							required={true}
-						/>
-						<ButtonType type="submit" value="Siguiente" />
-					</form>
+		<div className="App-box">
+			<div className="signup-header">
+				<h1 className="question-text">¿Nos conocemos?</h1>
+				<div className="image-box">
+					<img className="piña-partida-sinnombre" src={pinaPartidaNombre} alt="dibujo piña partida" />
 				</div>
 			</div>
+
+			<form onSubmit={saveInfo}>
+				<NormalInput type="text" placeholder="Nombre" value={name} set={setName} required={true} />
+				<NormalInput type="number" placeholder="Edad" value={age} set={setAge} required={true} />
+				<NormalInput type="email" placeholder="Email" value={email} set={setEmail} required={true} />
+				<div className="row">
+					<div className="col-12 col-md-4">
+						<ButtonType classN="button primary" type="submit" value="Continuar" />
+					</div>
+				</div>
+			</form>
 		</div>
 	);
 };
