@@ -76,7 +76,7 @@ def find_possible_matches():
            
         
     print(array_users)            
-    posibles_matches_users = list(map (lambda user: user.serialize(), array_users))
+    posibles_matches_users = list(map (lambda user: user.serialize(), result))
     
     return jsonify(posibles_matches_users), 200
 
