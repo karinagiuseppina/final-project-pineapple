@@ -16,6 +16,7 @@ import { ListOfWomen } from "./pages/list-of-women";
 import { Profile } from "./pages/profile";
 import { EditProfile } from "./pages/editProfile";
 import { MoreUserInfo } from "./pages/moreUserInfo";
+import ChatList from "./pages/ChatList.jsx";
 
 import injectContext from "./store/appContext";
 
@@ -80,8 +81,8 @@ const Layout = () => {
 						<Route exact path="/editProfile">
 							<EditProfile />
 						</Route>
-						<Route exact path="/filter">
-							<FilterUsers />
+						<Route exact path="/chatList">
+							<ChatList />
 						</Route>
 						<Route>
 							<h1>Not found!</h1>

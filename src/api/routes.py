@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 import os
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Couple, Treatment, Process, Center, Chat, Conversation, Message
+from api.models import db, User, Couple, Treatment, Process, Center, Chat, Message, Notification
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get_jwt_identity
 import json
@@ -357,45 +357,41 @@ def login():
     access_token = create_access_token(identity=user.id)
     return jsonify({"user_id": user.id, "name": user.name, "token": access_token})
 
-@api.route('/start-conversation', methods=["POST"])
-def start_conversation():
-    conversation = Conversation()
-    conversation.save()
-    return jsonify(conversation.serialize()), 200
-
-@api.route('/conversation/<int:conversation_id>/messages', methods=["GET"])
-def get_conversation_messages(conversation_id):
-    messages = Message.query.filter_by(conversation_id=conversation_id).all()
+@api.route('/chat/<int:chat_id>/messages', methods=["GET"])
+def get_conversation_messages(chat_id):
+    chat = Chat.get_chat_by_id(chat_id)
+    messages = chat.messages
     messages = list(map(lambda message: message.serialize(), messages))
     return jsonify(messages), 200
 
-@api.route('/conversation/<int:conversation_id>/send-message', methods=["POST"])
-def send_message_conversation(conversation_id):
+@api.route('/chat/<int:chat_id>/send-message', methods=["POST"])
+@jwt_required()
+def send_message_conversation(chat_id):
     json = request.get_json()
 
     new_message_text = json.get('message')
-    sender_id = json.get('sender_id')
+    sender_id = get_jwt_identity()
     date = datetime.datetime.utcnow()
 
     message = Message(
         value=new_message_text,
         pub_date=date,
         user_id=sender_id,
-        conversation_id=conversation_id
+        chat_id=chat_id
     )
     message.save()
 
     return jsonify(message.serialize()), 200
 
 @api.route("/user/<id_asking>/asks/<id_listening>", methods=["PUT"])
-@jwt_required()
+# @jwt_required()
 def user_connects_with_user(id_asking, id_listening):
-    user_id = get_jwt_identity()
+    # user_id = get_jwt_identity()
     user_asking = User.get_user_by_id(id_asking)
     user_listening = User.get_user_by_id(id_listening)
 
-    if user_id != user_asking:
-        return jsonify({"msg": "Not authorized"}), 401
+    # if user_id != user_asking:
+    #     return jsonify({"msg": "Not authorized"}), 401
 
     user_asking.users_connected.append(user_listening)
 
@@ -403,6 +399,18 @@ def user_connects_with_user(id_asking, id_listening):
         new_chat = Chat(is_active = True)
         user_asking.chats.append(new_chat)
         user_listening.chats.append(new_chat)
+        Chat.save(new_chat)
+
+        noti_user_asking = Notification(name = "¡{0} es tu nueva piña!".format(user_listening.name), is_new= True)
+        user_asking.notifications.append(noti_user_asking)
+        Notification.add(noti_user_asking)
+
+        noti_user_listening = Notification(name = "¡{0} es tu nueva piña!".format(user_asking.name), is_new= True)
+        user_listening.notifications.append(noti_user_listening)
+        Notification.add(noti_user_listening)
+
+        Notification.commit()
+
         Chat.save(new_chat)
         return jsonify({"chat" : True}), 200
 
@@ -419,6 +427,16 @@ def get_users_connected(id):
     users_connected = list(map(lambda user: user.serialize(), users_connected))
 
     return jsonify({"connected": users_connected}), 200
+
+@api.route('user/<id>/notifications', methods=['GET'])
+def get_user_notifications(id):
+    user = User.get_user_by_id(id)
+
+    notifications = user.notifications
+
+    notifications = list(map(lambda notification: notification.serialize(), notifications))
+
+    return jsonify({"notification": notifications}), 200
 
 @api.route('/user/chats', methods=['GET'])
 @jwt_required()

@@ -53,6 +53,10 @@ class User(db.Model, GeneralModel):
     chats = db.relationship('Chat', secondary=chats, lazy='subquery',
         backref=db.backref('users', lazy=True))
 
+    notifications = db.relationship('Notification', backref='user', lazy=True)
+
+    messages = db.relationship('Message', backref='user', lazy=True)
+
     def __repr__(self):
         return '<User %r>' % self.name
 
@@ -82,20 +86,16 @@ class User(db.Model, GeneralModel):
         }
     
         if self.center_id is not None: 
-            center_type = Center.get_center_by_id(self.center_id)
-            user_obj["center"] = center_type.type
+            user_obj["center"] = self.center.type
 
         if self.treatment_id is not None:    
-            treatment_type = Treatment.get_treatment_by_id(self.treatment_id)
-            user_obj["treatment"] = treatment_type.type
+            user_obj["treatment"] = self.treatment.type
 
         if self.process_id is not None: 
-            process_range = Process.get_process_by_id(self.treatment_id)
-            user_obj["process"] = '{0} - {1}'.format(process_range.min_value, process_range.max_value)
+            user_obj["process"] = '{0} - {1}'.format(self.process.min_value, self.process.max_value)
 
         if self.couple_id is not None: 
-            couple_type = Couple.get_couple_by_id(self.treatment_id)
-            user_obj["couple"] = couple_type.option
+            user_obj["couple"] = self.couple.option
         
         return user_obj
     
@@ -113,6 +113,9 @@ class User(db.Model, GeneralModel):
     
     def get_chats (self):
         return self.chats
+    
+    def get_notifications (self):
+        return self.notifications
     
 
 class Couple(db.Model, GeneralModel):
@@ -204,6 +207,8 @@ class Treatment(db.Model, GeneralModel):
 class Chat(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     is_active = db.Column(db.Boolean, primary_key=False)
+    
+    messages = db.relationship('Message', backref='chat', lazy=True)
 
     def __repr__(self):
         return '%r' % self.id
@@ -226,24 +231,13 @@ class Chat(db.Model, GeneralModel):
     def get_chat_users(self):
         return self.users
     
-class Conversation(db.Model, GeneralModel):
-    id = db.Column(db.Integer, primary_key=True)
-
-    def __repr__(self):
-        return '<Conversation %r>' % self.id
-    
-    def serialize(self):
-        return {
-            "id": self.id
-        }
-
 class Message(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.String(250), unique=False, nullable=False)
     pub_date = db.Column(db.DateTime, nullable=False,
         default=datetime.utcnow)
-    user_id = db.Column(db.Integer)
-    conversation_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    chat_id = db.Column(db.Integer, db.ForeignKey('chat.id'), nullable=True)
 
     def __repr__(self):
         return '<Message %r>' % self.id
@@ -252,6 +246,38 @@ class Message(db.Model, GeneralModel):
         return {
             "id": self.id,
             "value": self.value,
-            "pub_date": self.pub_date,
+            "pub_date": "{0}/{1}/{2}".format(self.pub_date.day,self.pub_date.month,self.pub_date.year),
+            "hour":"{0}:{1}".format(self.pub_date.hour,self.pub_date.minute),
+            "user_id": self.user_id,
+            "chat_id": self.chat_id        
+            }
+
+class Notification(db.Model, GeneralModel):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=False, nullable=False)
+    is_new = db.Column(db.Boolean, primary_key=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+
+    def __repr__(self):
+        return  '%r' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name, 
+            "is_new": self.is_new, 
             "user_id": self.user_id
         }
+    
+    def get_all_notifications ():
+        return Notification.query.all()
+    
+    def get_notification_by_id (id):
+        return Notification.query.filter_by(id=id).first()
+
+
+            
+            
+            
+            
+            

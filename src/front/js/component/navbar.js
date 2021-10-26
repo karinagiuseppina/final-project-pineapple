@@ -28,7 +28,7 @@ export const Navbar = () => {
 		{
 			title: "Tus Piñas",
 			// lista de chats
-			url: "/chat",
+			url: "/chatList",
 			cName: "nav-links"
 		}
 	];

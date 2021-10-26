@@ -85,11 +85,12 @@ export const EditProfile = () => {
 	};
 
 	const save_profile_img = async () => {
+		let token = actions.getAccessToken();
 		let data = new FormData();
 		data.append("file", file[0]);
 		let resp = await fetch(`${process.env.BACKEND_URL}/api/upload-file`, {
 			method: "PUT",
-			headers: { Authorization: "Bearer " + store.access_token },
+			headers: { Authorization: "Bearer " + token },
 			body: data
 		});
 		if (resp.ok) {
@@ -127,9 +128,10 @@ export const EditProfile = () => {
 		profile_image_url
 	) => {
 		let profile_pic = profile_image_url ? profile_image_url : null;
+		let token = actions.getAccessToken();
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/editProfile`, {
 			method: "PUT",
-			headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
+			headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
 			body: JSON.stringify({
 				user_id: user_id,
 				age: age,
@@ -150,10 +152,6 @@ export const EditProfile = () => {
 	};
 
 	useEffect(() => {
-		// setTreatments(store.treatments);
-		// setCenters(store.centers);
-		// setCouples(store.couples);
-		// setProcesses(store.processes);
 		actions.getElements("treatments", setTreatments);
 		actions.getElements("centers", setCenters);
 		actions.getElements("couples", setCouples);
