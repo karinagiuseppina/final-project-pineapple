@@ -22,7 +22,7 @@ export const ListOfWomen = () => {
 			setResults(data);
 			setwaiting(waiting + 1);
 		})();
-	}, [results]);
+	}, []);
 
 	console.log(results);
 
@@ -44,8 +44,8 @@ export const ListOfWomen = () => {
 			return (
 				<div className="App-box">
 					<div className="col">
-						{results.map(result => {
-							return <Card result={result} key={result.id} />;
+						{results.map((result, i) => {
+							return <Card result={result} key={i} />;
 						})}
 					</div>
 				</div>
