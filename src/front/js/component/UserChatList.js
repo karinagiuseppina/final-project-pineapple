@@ -7,7 +7,9 @@ export const UserChatList = ({ setActiveChat }) => {
 	const { store, actions } = useContext(Context);
 
 	const [chats, setChats] = useState([]);
+	const [chatsSelected, setChatsSelected] = useState([]);
 	const [chatsInHTML, setChatsInHTML] = useState([]);
+	const [searchInput, setSearchInput] = useState("");
 
 	const confirmDelete = chat => {
 		Swal.fire({
@@ -42,8 +44,19 @@ export const UserChatList = ({ setActiveChat }) => {
 		}
 	};
 
+	useEffect(() => {
+		let regular_exp = new RegExp(`${searchInput}`);
+		let temp = [];
+		for (let i = 0; i < chats.length; i++) {
+			let name = chats[i].user.name.toLowerCase();
+			if (regular_exp.test(name)) temp.push(chats[i]);
+		}
+		setChatsSelected(temp);
+	}, [searchInput]);
+
 	const getChats = async () => {
 		let token = actions.getAccessToken();
+		console.log(token);
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/chats`, {
 			method: "GET",
 			headers: { "Content-Type": "applicacion/json", Authorization: `Bearer ${token}` }
@@ -51,18 +64,18 @@ export const UserChatList = ({ setActiveChat }) => {
 		if (resp.ok) {
 			const data = await resp.json();
 			setChats(data);
+			setChatsSelected(data);
 			if (data.length > 0) setActiveChat(data[0]);
 		}
 	};
 
 	useEffect(() => {
-		actions.syncUserFromLocalStorage();
 		getChats();
 	}, []);
 
 	useEffect(() => {
 		setChatsInHTML(
-			chats.map(chat => {
+			chatsSelected.map(chat => {
 				return (
 					<li className="person" key={chat.id} onClick={() => setActiveChat(chat)}>
 						<div className="d-flex justify-content-end">
@@ -81,19 +94,19 @@ export const UserChatList = ({ setActiveChat }) => {
 				);
 			})
 		);
-	}, [chats]);
+	}, [chats, chatsSelected]);
 
 	return (
 		<div className="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
 			<div className="users-container">
 				<div className="chat-search-box">
 					<div className="input-group">
-						<input className="form-control" placeholder="Search" />
-						<div className="input-group-btn">
-							<button type="button" className="btn btn-info">
-								<i className="fa fa-search" />
-							</button>
-						</div>
+						<input
+							className="form-control"
+							placeholder="Buscar piña"
+							value={searchInput}
+							onChange={e => setSearchInput(e.target.value)}
+						/>
 					</div>
 				</div>
 				<ul className="users">{chatsInHTML}</ul>

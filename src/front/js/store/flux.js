@@ -29,7 +29,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getAccessToken: () => {
 				let token = getStore().access_token;
 				if (token === null) {
-					const token = localStorage.getItem("access_token");
+					token = localStorage.getItem("access_token");
 					const user_id = JSON.parse(localStorage.getItem("user_id"));
 					let isUserLogged = user_id && user_id !== undefined && user_id !== "";
 					let TokenExist = token && token !== undefined && token !== "";
