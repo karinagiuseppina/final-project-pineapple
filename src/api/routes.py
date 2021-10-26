@@ -302,12 +302,6 @@ def login():
     access_token = create_access_token(identity=user.id)
     return jsonify({"user_id": user.id, "name": user.name, "token": access_token})
 
-@api.route('/start-conversation', methods=["POST"])
-def start_conversation():
-    conversation = Conversation()
-    conversation.save()
-    return jsonify(conversation.serialize()), 200
-
 @api.route('/chat/<int:chat_id>/messages', methods=["GET"])
 def get_conversation_messages(chat_id):
     chat = Chat.get_chat_by_id(chat_id)

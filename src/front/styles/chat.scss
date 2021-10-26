@@ -227,35 +227,21 @@
 .chat-container li.chat-right {
     display: flex;
     flex: 1;
-    flex-direction: row;
-    margin-bottom: 40px;
+    flex-direction: column;
+    margin-bottom: 20px;
 }
 
-.chat-container li img {
+.selected-user span img {
     width: 48px;
     height: 48px;
     -webkit-border-radius: 30px;
     -moz-border-radius: 30px;
     border-radius: 30px;
+    margin-right: 10px;
 }
-
-.chat-container li .chat-avatar {
-    margin-right: 20px;
-}
-
 .chat-container li.chat-right {
     justify-content: flex-end;
-}
-
-.chat-container li.chat-right > .chat-avatar {
-    margin-left: 20px;
-    margin-right: 0;
-}
-
-.chat-container li .chat-name {
-    font-size: .75rem;
-    color: #999999;
-    text-align: center;
+    align-items: flex-end;
 }
 
 .chat-container li .chat-text {
@@ -267,27 +253,21 @@
     font-weight: 300;
     line-height: 150%;
     position: relative;
+    width: max-content;
 }
 
-.chat-container li .chat-text:before {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 0;
-    top: 10px;
-    left: -20px;
-    border: 10px solid;
-    border-color: transparent #ffffff transparent transparent;
-}
-
-.chat-container li.chat-right > .chat-text {
+.chat-container li.chat-right > .first-row .chat-text {
     text-align: right;
 }
-
-.chat-container li.chat-right > .chat-text:before {
-    right: -20px;
-    border-color: transparent transparent transparent #ffffff;
-    left: inherit;
+.first-row{
+    display: flex;
+}
+.chat-date{
+    font-size: 0.5rem;
+    margin: 2px 5px;
+}
+.chat-container li.chat-right > .first-row {
+    flex-direction:row-reverse;
 }
 
 .chat-container li .chat-hour {
@@ -296,9 +276,9 @@
     font-size: .75rem;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin: 0 0 0 15px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 5px;
 }
 
 .chat-container li .chat-hour > span {
@@ -306,8 +286,9 @@
     color: #9ec94a;
 }
 
-.chat-container li.chat-right > .chat-hour {
-    margin: 0 15px 0 0;
+.chat-box {
+    overflow:auto;
+    height: 80vh;
 }
 
 @media (max-width: 767px) {

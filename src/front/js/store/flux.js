@@ -30,7 +30,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				let token = getStore().access_token;
 				if (token === null) {
 					const token = localStorage.getItem("access_token");
-					const user_id = localStorage.getItem("user_id");
+					const user_id = JSON.parse(localStorage.getItem("user_id"));
 					let isUserLogged = user_id && user_id !== undefined && user_id !== "";
 					let TokenExist = token && token !== undefined && token !== "";
 					if (isUserLogged && TokenExist) {
@@ -41,7 +41,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return token;
 			},
 			syncUserFromLocalStorage: () => {
-				const user_id = localStorage.getItem("user_id");
+				const user_id = JSON.parse(localStorage.getItem("user_id"));
 				const token = localStorage.getItem("access_token");
 				let isUserLogged = user_id && user_id !== undefined && user_id !== "";
 				let TokenExist = token && token !== undefined && token !== "";

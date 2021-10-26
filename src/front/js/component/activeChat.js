@@ -8,6 +8,26 @@ export const ActiveChat = ({ activeChat }) => {
 	const [messages, setMessages] = useState([]);
 	const [message, setMessage] = useState("");
 	const [messagesInHTML, setMessagesInHTML] = useState([]);
+	const [counter, setCounter] = useState(0);
+
+	useEffect(() => {
+		if (activeChat) getMessages();
+		beginCounter();
+	}, []);
+
+	useEffect(() => {
+		if (activeChat) getMessages();
+	}, [activeChat]);
+
+	function beginCounter() {
+		setInterval(() => {
+			setCounter(count => count + 1);
+		}, 60000);
+	}
+
+	useEffect(() => {
+		if (activeChat) getMessages();
+	}, [counter]);
 
 	const getMessages = async () => {
 		let token = actions.getAccessToken();
@@ -22,7 +42,6 @@ export const ActiveChat = ({ activeChat }) => {
 
 	async function sendMessage() {
 		let token = actions.getAccessToken();
-		console.log(message);
 		const response = await fetch(`${process.env.BACKEND_URL}/api/chat/${activeChat.id}/send-message`, {
 			headers: {
 				"Content-Type": "application/json",
@@ -35,14 +54,21 @@ export const ActiveChat = ({ activeChat }) => {
 		});
 		const responseJson = await response.json();
 		setMessages([...messages, responseJson]);
+		setMessage("");
 	}
 
 	useEffect(() => {
 		setMessagesInHTML(
 			messages.map(message => {
-				let chat_align = message.user_id === store.user_id ? "chat-left" : "chat-right";
+				let chat_align = message.user_id === store.user_id ? "chat-right" : "chat-left";
 				return (
-					<ChatMessage key={message.id} text={message.value} time={message.pub_date} chatAlign={chat_align} />
+					<ChatMessage
+						key={message.id}
+						text={message.value}
+						time={message.hour}
+						date={message.pub_date}
+						chatAlign={chat_align}
+					/>
 				);
 			})
 		);
@@ -76,7 +102,7 @@ export const ActiveChat = ({ activeChat }) => {
 						type="text"
 						className="form-control"
 						onChange={e => setMessage(e.target.value)}
-						defaultValue={message}
+						value={message}
 					/>
 					<button onClick={sendMessage}>Enviar</button>
 				</div>

@@ -246,7 +246,8 @@ class Message(db.Model, GeneralModel):
         return {
             "id": self.id,
             "value": self.value,
-            "pub_date": self.pub_date,
+            "pub_date": "{0}/{1}/{2}".format(self.pub_date.day,self.pub_date.month,self.pub_date.year),
+            "hour":"{0}:{1}".format(self.pub_date.hour,self.pub_date.minute),
             "user_id": self.user_id,
             "chat_id": self.chat_id        
             }
