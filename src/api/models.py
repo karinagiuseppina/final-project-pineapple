@@ -1,6 +1,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from sqlalchemy import and_
 
 db = SQLAlchemy()
 
@@ -117,6 +118,20 @@ class User(db.Model, GeneralModel):
     def get_notifications (self):
         return self.notifications
     
+    def filter_by_age (self):
+        return User.query.filter(and_(User.age <= (self.age+8), User.age > (self.age-8), User.id != self.id)).all()
+    
+    def filter_by_treatment(self):
+        return User.query.filter(and_(User.treatment_id == self.treatment_id, User.id != self.id)).all()
+
+    def filter_by_process(self):
+        return User.query.filter(and_(User.process_id is not None, User.process_id <= (self.process_id + 1), User.process_id > (self.process_id - 1), User.id != self.id)).all()
+
+    def filter_by_abortion (self):
+        return User.query.filter(and_(User.abortion_num is not None, User.abortion_num <= (self.abortion_num+2), User.abortion_num > (self.abortion_num-2), User.id != self.id)).all()
+
+    def filter_by_center(self):
+        return User.query.filter(and_(User.center_id == self.center_id, User.id != self.id)).all()
 
 class Couple(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)

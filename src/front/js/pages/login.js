@@ -39,7 +39,6 @@ export const Login = () => {
 		if (email === "" || password === "") {
 			actions.notificationAlert(badLogin.title, badLogin.text, badLogin.icon, badLogin.confirmButtonText);
 		}
-		console.log(email, password);
 		const response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
 			method: "POST",
 			headers: { "content-Type": "application/json" },

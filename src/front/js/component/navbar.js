@@ -22,7 +22,7 @@ export const Navbar = () => {
 		{
 			title: "Piñas madurando",
 			// solicitudes si contestar
-			url: "/chat",
+			url: "/users-connected",
 			cName: "nav-links"
 		},
 		{

@@ -15,11 +15,15 @@ export const Profile = () => {
 		if (resp.ok) {
 			const user_data = await resp.json();
 			setUser(user_data);
+		} else if (resp.status === 401 || resp.status == 422) {
+			let resp = await actions.refresh_token();
+			if (resp.error) History.push("/login");
+			else getUserData();
 		}
 	};
 
 	useEffect(() => {
-		getUserData(1);
+		getUserData(actions.getUserId());
 	}, []);
 
 	return (
