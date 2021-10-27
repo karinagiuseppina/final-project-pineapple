@@ -56,83 +56,59 @@ def fill_database():
 
     return jsonify({"msg": "OK!"})
 
+def append_user(users, array):
+    for user in array:
+        if user in users:
+            users[user] = users[user] + 1
+        else :
+            users[user] = 1
+    
 @api.route("/findpossiblematches", methods=["GET"])
 @jwt_required()
 def find_possible_matches():
-    # user_id = 8
     user_id = get_jwt_identity()
     actual_user = User.query.filter_by(id=user_id).first()
 
-    def append_user(array):
-        for user in array:
-            if user in users:
-                users[user] = users[user] + 1
-            else :
-                users[user] = 1
+    # def append_user(users, array):
+    #     for user in array:
+    #         if user in users:
+    #             users[user] = users[user] + 1
+    #         else :
+    #             users[user] = 1
 
     users= {}
     array_users=[]
 
-    result_filter_by_age = User.query.filter(and_(User.age <= (actual_user.age+8), User.age > (actual_user.age-8), User.id != user_id)).all()
-    append_user(result_filter_by_age)
+    result_filter_by_age = User.filter_by_age(actual_user)
+    append_user(users, result_filter_by_age)
 
-    result_filter_by_treatment = User.query.filter(and_(User.treatment_id == actual_user.treatment_id, User.id != user_id)).all()
-    print(actual_user.process_id)
-    append_user(result_filter_by_treatment)
+    result_filter_by_treatment = User.filter_by_treatment(actual_user)
+    append_user(users, result_filter_by_treatment)
 
     if actual_user.process_id is not None: 
-        result_filter_by_process = User.query.filter(and_(User.process_id is not None, User.process_id <= (actual_user.process_id + 1), User.process_id > (actual_user.process_id - 1), User.id != user_id)).all()
-        append_user(result_filter_by_process) 
+        result_filter_by_procress = User.filter_by_process(actual_user)
+        append_user(users, result_filter_by_process) 
 
     result_filter_by_couples = User.query.filter(and_(User.couple_id == actual_user.couple_id, User.id != user_id)).all()
-    append_user(result_filter_by_couples)
+    append_user(users, result_filter_by_couples)
     
 
     if actual_user.abortion_num is not None:
-        result_filter_by_abortion = User.query.filter(and_(User.abortion_num is not None, User.abortion_num <= (actual_user.abortion_num+2), User.abortion_num > (actual_user.abortion_num-2), User.id != user_id)).all()
-        append_user(result_filter_by_abortion)
+        result_filter_by_abortion = User.filter_by_abortion(actual_user)
+        append_user(users, result_filter_by_abortion)
 
-    result_filter_by_centers = User.query.filter(and_(User.center_id == actual_user.center_id, User.id != user_id)).all()
-    append_user(result_filter_by_centers)
-
-    print(users)
+    result_filter_by_centers = User.filter_by_center(actual_user)
+    append_user(users, result_filter_by_centers)
 
     for user in users:
-        if users[user] == 6:
-            array_users.append(user)
-    for user in users:
-        if users[user] == 5:
-            array_users.append(user)
-    for user in users:
-        if users[user] == 4:
-            array_users.append(user)
-    for user in users:
-        if users[user] == 3:
-            array_users.append(user)
-    for user in users:
-        if users[user] == 2:
-            array_users.append(user)
-    for user in users:
-        if users[user] == 1:
-            array_users.append(user)
-
-
-
-    # array_users= []
-    # result = User.query.filter(and_(User.age <= (actual_user.age+8), User.age > (actual_user.age-8), User.id != user_id)).all()
-   
-    # for user in result:
-    #     if actual_user.treatment_id is not None:
-    #         if user.treatment_id == actual_user.treatment_id:
-    #             if actual_user.process_id is not None and user.process_id is not None: 
-    #                 if user.process_id <= (actual_user.process_id + 1) and (user.process_id > actual_user.process_id -1 ):
-    #                     array_users.append(user)
-           
-        
-    print(array_users)            
+        if users[user] > 0:
+            if user not in actual_user.users_connected:
+                array_users.append(user)
+    
     posibles_matches_users = list(map (lambda user: user.serialize_to_show(), array_users))
     
     return jsonify(posibles_matches_users), 200
+
 
 @api.route("/editProfile", methods=["PUT"])
 @jwt_required()
@@ -430,17 +406,22 @@ def get_users_connected(id):
 
     return jsonify({"connected": users_connected}), 200
 
-@api.route('user/<id>/users_connected', methods=['GET'])
-def get_users_connected(id):
-    user = User.get_user_by_id(id)
+@api.route('user/users_pending', methods=['GET'])
+@jwt_required()
+def get_users_pending():
+    user = User.get_user_by_id(get_jwt_identity())
 
     users_connected = user.get_connected()
 
+    users_pending = []
 
+    for user_connected in users_connected:
+        if user not in user_connected.users_connected:
+            users_pending.append(user_connected)
 
-    users_connected = list(map(lambda user: user.serialize(), users_connected))
+    users_pending = list(map(lambda user: user.serialize_to_show(), users_pending))
 
-    return jsonify({"connected": users_connected}), 200
+    return jsonify(users_pending), 200
 
 @api.route('user/<id>/notifications', methods=['GET'])
 def get_user_notifications(id):
