@@ -1,21 +1,20 @@
 import React, { useContext, useState, useEffect } from "react";
 import "../../styles/home.scss";
-import { Card } from "../component/card";
-import { Link } from "react-router-dom";
+import { FriendRequestElement } from "../component/friendRequestElement";
 import { Context } from "../store/appContext";
 
-export const ListOfWomen = () => {
+export const FriendRequestList = () => {
 	const { store, actions } = useContext(Context);
 	const [waiting, setwaiting] = useState(0);
 	const [results, setResults] = useState([]);
 
 	useEffect(() => {
-		getPossibleMatches();
+		getFriendRequests();
 	}, []);
 
-	const getPossibleMatches = async () => {
+	const getFriendRequests = async () => {
 		let token = actions.getAccessToken();
-		const res = await fetch(`${process.env.BACKEND_URL}/api/findpossiblematches`, {
+		const res = await fetch(`${process.env.BACKEND_URL}/api/user/users_asking`, {
 			method: "GET",
 			headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }
 		});
@@ -26,7 +25,7 @@ export const ListOfWomen = () => {
 		} else if (res.status === 401 || res.status == 422) {
 			let resp = await actions.refresh_token();
 			if (resp.error) History.push("/login");
-			else getPossibleMatches();
+			else getFriendRequests();
 		}
 	};
 
@@ -41,16 +40,18 @@ export const ListOfWomen = () => {
 			return (
 				<div className="box-notfound">
 					{/* <img src={pinaNotFound} /> */}
-					<p>Tu media piña aun esta madurando, puedes probar ha cambiar algunas opciones en el filtro.</p>
+					<p>No tienes medias piñas pendientes. </p>
 				</div>
 			);
 		} else {
 			return (
 				<div className="App-box">
-					<div className="col">
-						{results.map((result, i) => {
-							return <Card result={result} key={i} />;
-						})}
+					<div className="row">
+						<div className="col">
+							{results.map((result, i) => {
+								return <FriendRequestElement result={result} key={i} asking={true} />;
+							})}
+						</div>
 					</div>
 				</div>
 			);

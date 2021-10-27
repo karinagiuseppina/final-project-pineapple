@@ -26,6 +26,12 @@ export const Navbar = () => {
 			cName: "nav-links"
 		},
 		{
+			title: "Piñas esperando",
+			// solicitudes si contestar
+			url: "/friend-requests",
+			cName: "nav-links"
+		},
+		{
 			title: "Tus Piñas",
 			// lista de chats
 			url: "/chatList",

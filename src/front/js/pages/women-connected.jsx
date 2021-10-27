@@ -1,9 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import "../../styles/home.scss";
 import { PendingUsersCard } from "../component/pendingUsersCard";
-import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-//import { Filter } from "../component/filter";
 
 export const WomenConnected = () => {
 	const { store, actions } = useContext(Context);
@@ -50,7 +48,7 @@ export const WomenConnected = () => {
 				<div className="App-box">
 					<div className="col">
 						{results.map((result, i) => {
-							return <PendingUsersCard result={result} key={i} />;
+							return <PendingUsersCard result={result} key={i} asking={false} />;
 						})}
 					</div>
 				</div>
