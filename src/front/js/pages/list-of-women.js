@@ -6,25 +6,30 @@ import { Context } from "../store/appContext";
 //import { Filter } from "../component/filter";
 
 export const ListOfWomen = () => {
-	const { store } = useContext(Context);
+	const { store, actions } = useContext(Context);
 	const [waiting, setwaiting] = useState(0);
 	const [results, setResults] = useState([]);
 
 	useEffect(() => {
-		(async () => {
-			const res = await fetch(`${process.env.BACKEND_URL}/api/findpossiblematches`, {
-				method: "GET",
-				headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token }
-			});
-			const data = await res.json();
-			console.log(store.access_token);
-			console.log(data);
-			setResults(data);
-			setwaiting(waiting + 1);
-		})();
+		getPossibleMatches();
 	}, []);
 
-	console.log(results);
+	const getPossibleMatches = async () => {
+		let token = actions.getAccessToken();
+		const res = await fetch(`${process.env.BACKEND_URL}/api/findpossiblematches`, {
+			method: "GET",
+			headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }
+		});
+		if (res.ok) {
+			const data = await res.json();
+			setResults(data);
+			setwaiting(waiting + 1);
+		} else if (res.status === 401 || res.status == 422) {
+			let resp = await actions.refresh_token();
+			if (resp.error) History.push("/login");
+			else getPossibleMatches();
+		}
+	};
 
 	if (waiting === 0) {
 		return (

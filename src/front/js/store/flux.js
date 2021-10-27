@@ -40,6 +40,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				return token;
 			},
+			getUserId: () => {
+				let user_id = getStore().user_id;
+				if (user_id === null) {
+					const token = localStorage.getItem("access_token");
+					user_id = JSON.parse(localStorage.getItem("user_id"));
+					let isUserLogged = user_id && user_id !== undefined && user_id !== "";
+					let TokenExist = token && token !== undefined && token !== "";
+					if (isUserLogged && TokenExist) {
+						setStore({ user_id: user_id });
+						setStore({ access_token: token });
+					}
+				}
+				return user_id;
+			},
+			refresh_token: async () => {
+				let user_id = getActions().getUserId;
+				if (user_id !== null) {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/refresh-token`, {
+						method: "POST",
+						headers: { "content-Type": "application/json" },
+						body: JSON.stringify({
+							user_id: user_id
+						})
+					});
+					if (response.ok) {
+						let data = await response.json();
+						getActions().setUserSession(data.token, user_id);
+						return { msg: "ok" };
+					}
+				}
+				return { msg: "Es necesario volver a logearse.", error: 401 };
+			},
 			syncUserFromLocalStorage: () => {
 				const user_id = JSON.parse(localStorage.getItem("user_id"));
 				const token = localStorage.getItem("access_token");

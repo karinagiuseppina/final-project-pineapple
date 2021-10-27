@@ -23,6 +23,7 @@ import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { FilterUsers } from "./pages/filterUsers";
+import { WomenConnected } from "./pages/women-connected.jsx";
 
 //create your first component
 const Layout = () => {
@@ -77,6 +78,9 @@ const Layout = () => {
 						</Route>
 						<Route exact path="/moreUserInfo/:id">
 							<MoreUserInfo />
+						</Route>
+						<Route exact path="/users-connected">
+							<WomenConnected />
 						</Route>
 						<Route exact path="/editProfile">
 							<EditProfile />

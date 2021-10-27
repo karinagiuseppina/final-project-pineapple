@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
+import { useHistory } from "react-router";
 
 export const UserChatList = ({ setActiveChat }) => {
 	const { store, actions } = useContext(Context);
@@ -10,6 +11,7 @@ export const UserChatList = ({ setActiveChat }) => {
 	const [chatsSelected, setChatsSelected] = useState([]);
 	const [chatsInHTML, setChatsInHTML] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
+	let History = useHistory();
 
 	const confirmDelete = chat => {
 		Swal.fire({
@@ -41,6 +43,10 @@ export const UserChatList = ({ setActiveChat }) => {
 				`cerrar`
 			);
 			getChats();
+		} else if (resp.status === 401 || resp.status == 422) {
+			let resp = await actions.refresh_token();
+			if (resp.error) History.push("/login");
+			else getChats();
 		}
 	};
 
@@ -57,6 +63,7 @@ export const UserChatList = ({ setActiveChat }) => {
 	const getChats = async () => {
 		let token = actions.getAccessToken();
 		console.log(token);
+
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/chats`, {
 			method: "GET",
 			headers: { "Content-Type": "applicacion/json", Authorization: `Bearer ${token}` }
@@ -66,6 +73,10 @@ export const UserChatList = ({ setActiveChat }) => {
 			setChats(data);
 			setChatsSelected(data);
 			if (data.length > 0) setActiveChat(data[0]);
+		} else if (resp.status === 401 || resp.status == 422) {
+			let resp = await actions.refresh_token();
+			if (resp.error) History.push("/login");
+			else getChats();
 		}
 	};
 
