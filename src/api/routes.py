@@ -96,41 +96,14 @@ def find_possible_matches():
     append_user(result_filter_by_centers)
 
     print(users)
-
-    for user in users:
-        if users[user] == 6:
-            array_users.append(user)
-    for user in users:
-        if users[user] == 5:
-            array_users.append(user)
-    for user in users:
-        if users[user] == 4:
-            array_users.append(user)
-    for user in users:
-        if users[user] == 3:
-            array_users.append(user)
-    for user in users:
-        if users[user] == 2:
-            array_users.append(user)
-    for user in users:
-        if users[user] == 1:
-            array_users.append(user)
-
-
     
+    sort_users = sorted(users.items(), key=lambda x: x[1], reverse= True )
 
-    # array_users= []
-    # result = User.query.filter(and_(User.age <= (actual_user.age+8), User.age > (actual_user.age-8), User.id != user_id)).all()
-   
-    # for user in result:
-    #     if actual_user.treatment_id is not None:
-    #         if user.treatment_id == actual_user.treatment_id:
-    #             if actual_user.process_id is not None and user.process_id is not None: 
-    #                 if user.process_id <= (actual_user.process_id + 1) and (user.process_id > actual_user.process_id -1 ):
-    #                     array_users.append(user)
-           
-        
-    print(array_users)            
+    for user in sort_users:
+        array_users.append(user[0])
+
+    print(array_users)         
+       
     posibles_matches_users = list(map (lambda user: user.serialize_to_show(), array_users))
     
     return jsonify(posibles_matches_users), 200
