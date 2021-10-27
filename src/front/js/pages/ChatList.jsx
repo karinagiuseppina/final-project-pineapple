@@ -8,9 +8,6 @@ const ChatList = () => {
 		<div className="container">
 			<div className="page-title">
 				<div className="row gutters">
-					<div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-						<h5 className="title">Chat App</h5>
-					</div>
 					<div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"> </div>
 				</div>
 			</div>

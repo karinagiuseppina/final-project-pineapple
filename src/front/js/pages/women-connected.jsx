@@ -1,22 +1,22 @@
 import React, { useContext, useState, useEffect } from "react";
 import "../../styles/home.scss";
-import { Card } from "../component/card";
+import { PendingUsersCard } from "../component/pendingUsersCard";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 //import { Filter } from "../component/filter";
 
-export const ListOfWomen = () => {
+export const WomenConnected = () => {
 	const { store, actions } = useContext(Context);
 	const [waiting, setwaiting] = useState(0);
 	const [results, setResults] = useState([]);
 
 	useEffect(() => {
-		getPossibleMatches();
+		getPendingUsers();
 	}, []);
 
-	const getPossibleMatches = async () => {
+	const getPendingUsers = async () => {
 		let token = actions.getAccessToken();
-		const res = await fetch(`${process.env.BACKEND_URL}/api/findpossiblematches`, {
+		const res = await fetch(`${process.env.BACKEND_URL}/api/user/users_pending`, {
 			method: "GET",
 			headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }
 		});
@@ -42,7 +42,7 @@ export const ListOfWomen = () => {
 			return (
 				<div className="box-notfound">
 					{/* <img src={pinaNotFound} /> */}
-					<p>Tu media piña aun esta madurando, puedes probar ha cambiar algunas opciones en el filtro.</p>
+					<p>No tienes medias piñas pendientes. </p>
 				</div>
 			);
 		} else {
@@ -50,7 +50,7 @@ export const ListOfWomen = () => {
 				<div className="App-box">
 					<div className="col">
 						{results.map((result, i) => {
-							return <Card result={result} key={i} />;
+							return <PendingUsersCard result={result} key={i} />;
 						})}
 					</div>
 				</div>

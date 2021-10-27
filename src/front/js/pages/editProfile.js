@@ -22,6 +22,7 @@ export const EditProfile = () => {
 		name: "",
 		email: "",
 		age: 0,
+		password: "",
 		abortion_num: 0,
 		description: "",
 		treatment_id: -1,
@@ -57,6 +58,7 @@ export const EditProfile = () => {
 			user_id: user.id,
 			name: user.name,
 			email: user.email,
+			password: "",
 			age: user.age,
 			abortion_num: user.abortion_num || "",
 			description: user.description ? user.description : "",
@@ -69,18 +71,7 @@ export const EditProfile = () => {
 
 	const save_data = () => {
 		if (file.length === 0) {
-			updateProfile(
-				user.user_id,
-				user.age,
-				user.name,
-				user.password,
-				user.email,
-				user.treatment_id,
-				user.process_id,
-				user.couple_id,
-				user.center_id,
-				user.description
-			);
+			updateProfile(null);
 		} else save_profile_img();
 	};
 
@@ -96,58 +87,54 @@ export const EditProfile = () => {
 		if (resp.ok) {
 			const profile_image_url = await resp.json();
 			handleUpdateUser("profile_img", profile_image_url.profile_image);
-			updateProfile(
-				user.user_id,
-				user.age,
-				user.name,
-				user.password,
-				user.email,
-				user.treatment_id,
-				user.process_id,
-				user.couple_id,
-				user.center_id,
-				user.description,
-				profile_image_url.profile_image
-			);
-		} else {
-			alert("ERROR");
+			updateProfile(profile_image_url.profile_image);
+		} else if (resp.status === 401 || resp.status == 422) {
+			let resp = await actions.refresh_token();
+			if (resp.error) History.push("/login");
+			else save_profile_img();
 		}
 	};
 
-	const updateProfile = async (
-		user_id,
-		age,
-		name,
-		password,
-		email,
-		treatment_id,
-		process_id,
-		couple_id,
-		center_id,
-		description,
-		profile_image_url
-	) => {
+	const updateProfile = async profile_image_url => {
 		let profile_pic = profile_image_url ? profile_image_url : null;
 		let token = actions.getAccessToken();
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/editProfile`, {
 			method: "PUT",
 			headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
 			body: JSON.stringify({
-				user_id: user_id,
-				age: age,
-				name: name,
-				password: password,
-				email: email,
-				treatment_id: treatment_id,
-				process_id: process_id,
-				couple_id: couple_id,
-				center_id: center_id,
-				description: description,
+				user_id: user.user_id,
+				age: user.age,
+				name: user.name,
+				password: user.password,
+				email: user.email,
+				abortion_num: user.abortion_num,
+				treatment_id: user.treatment_id,
+				process_id: user.process_id,
+				couple_id: user.couple_id,
+				center_id: user.center_id,
+				description: user.description,
 				profile_img: profile_pic
 			})
 		});
 		if (resp.ok) {
 			const data = await resp.json();
+			actions.notificationAlert(
+				"Perfil Actualizado!",
+				"Tu perfil se ha actualizado correctamente. ",
+				"success",
+				"cerrar"
+			);
+		} else if (resp.status === 401 || resp.status == 422) {
+			let resp = await actions.refresh_token();
+			if (resp.error) History.push("/login");
+			else updateProfile();
+		} else {
+			actions.notificationAlert(
+				"0H, OH!",
+				"Ha habido un error, no hemos podido actualizar los datos",
+				"warning",
+				"cerrar"
+			);
 		}
 	};
 
@@ -156,7 +143,7 @@ export const EditProfile = () => {
 		actions.getElements("centers", setCenters);
 		actions.getElements("couples", setCouples);
 		actions.getElements("processtimeslots", setProcesses);
-		getUserData(store.user_id);
+		getUserData(actions.getUserId());
 	}, []);
 
 	const handleUpdateUser = (attr, value) => {

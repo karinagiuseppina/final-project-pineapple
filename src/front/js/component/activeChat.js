@@ -22,7 +22,7 @@ export const ActiveChat = ({ activeChat }) => {
 	function beginCounter() {
 		setInterval(() => {
 			setCounter(count => count + 1);
-		}, 60000);
+		}, 10000);
 	}
 
 	useEffect(() => {
