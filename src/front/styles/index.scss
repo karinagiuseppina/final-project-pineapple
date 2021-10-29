@@ -178,8 +178,8 @@ body{
 .bg-lightgray{
     background-color: #f9f9f9;
   }
-  .border-lightgray{
-    border: 1px solid #e5e5e5;
+  .border-orange{
+    border: 1px solid var(--details);
   }
   .bg-prin{
     background-color: var(--main-text);
@@ -197,7 +197,7 @@ input, input[type="text"]
 input[type="radio"] + label,
 input[type="checkbox"] + label:before,
 select option,
-select, .form-control, .input-group-text {
+select, .form-control, .input-group-text{
   width: 100%;
   padding: 0.8em;
   line-height: 1.4;
@@ -358,8 +358,15 @@ select option {
 }
 /*Perfil*/
 .pro-img {
-  margin-top: -80px;
-  margin-bottom: 20px
+  width: 150px;
+  height: 150px;
+  align-items: center;
+  margin: 16px auto 8px auto;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid var(--details);
+  background-color:var(--neutral) ;
 }
 
 .little-profile .pro-img .profile-circle {
@@ -382,16 +389,37 @@ img{
 }
 
 .card-result{
+  margin: 16px;
+  border: 1px solid var(--details);
   border-radius: 8px;
-
   position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  
 }
 
-.pro-img img{
-  width: 100px;
-  height:100px;
+.card-footer{
+  border: none;
+  background-color: var(--neutral-ligth);
+  
+}
+
+.card-body{
+  display: flex;
+    text-align: center;
+    padding-bottom: 5px;
+    background: linear-gradient(to left, var(--details), var(--neutral-ligth), var(--details)) left bottom var(--neutral-ligth) no-repeat;
+    background-size: 100% 1px;
+    flex-direction: column;
+    align-items: center;
+    min-height: 370px;
+}
+
+.text-description{
+  font: var(--text);
+  color: var(--main-text);
+  border: 1px solid var(--details);
+  padding: 8px;
 }

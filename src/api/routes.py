@@ -69,13 +69,6 @@ def find_possible_matches():
     user_id = get_jwt_identity()
     actual_user = User.query.filter_by(id=user_id).first()
 
-    # def append_user(users, array):
-    #     for user in array:
-    #         if user in users:
-    #             users[user] = users[user] + 1
-    #         else :
-    #             users[user] = 1
-
     users= {}
     array_users=[]
 
@@ -86,7 +79,7 @@ def find_possible_matches():
     append_user(users, result_filter_by_treatment)
 
     if actual_user.process_id is not None: 
-        result_filter_by_procress = User.filter_by_process(actual_user)
+        result_filter_by_process = User.filter_by_process(actual_user)
         append_user(users, result_filter_by_process) 
 
     result_filter_by_couples = User.query.filter(and_(User.couple_id == actual_user.couple_id, User.id != user_id)).all()
@@ -96,14 +89,21 @@ def find_possible_matches():
     if actual_user.abortion_num is not None:
         result_filter_by_abortion = User.filter_by_abortion(actual_user)
         append_user(users, result_filter_by_abortion)
-
+      
+       
     result_filter_by_centers = User.filter_by_center(actual_user)
     append_user(users, result_filter_by_centers)
 
-    for user in users:
-        if users[user] > 0:
-            if user not in actual_user.users_connected:
-                array_users.append(user)
+    print(users)
+    
+    sort_users = sorted(users.items(), key=lambda x: x[1], reverse= True )
+
+    for user in sort_users:
+        if user[0] not in actual_user.users_connected:
+            array_users.append(user[0])
+
+    print(array_users)
+
     
     posibles_matches_users = list(map (lambda user: user.serialize_to_show(), array_users))
     
