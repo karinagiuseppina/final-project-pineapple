@@ -417,3 +417,9 @@ img{
     min-height: 370px;
 }
 
+.text-description{
+  font: var(--text);
+  color: var(--main-text);
+  border: 1px solid var(--details);
+  padding: 8px;
+}

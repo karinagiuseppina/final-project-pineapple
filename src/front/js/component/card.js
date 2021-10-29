@@ -4,7 +4,7 @@ import propTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { HashtagProfile } from "./hashtagProfile";
 import avatar1 from "../../img/avatar1.png";
-import { Swiper, SwiperSlide } from "swiper/react";
+
 export const Card = ({ result }) => {
 	const { store, actions } = useContext(Context);
 	const [buttonText, setButtonText] = useState("Conectar");
