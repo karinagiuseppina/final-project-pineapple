@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import LogoutButton from "./LogoutButton.jsx";
+import NotificationsButton from "./notificationsButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -63,7 +64,7 @@ export const Navbar = () => {
 				<div className="menu-icon" onClick={handleClicked}>
 					{isClicked ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
 				</div>
-
+				<NotificationsButton />
 				<ul className={isClicked ? "nav-menu active App-box" : "nav-menu"}>
 					{MenuItems.map((Item, index) => {
 						return (
@@ -74,6 +75,7 @@ export const Navbar = () => {
 							</li>
 						);
 					})}
+
 					<LogoutButton />
 				</ul>
 			</nav>
