@@ -3,6 +3,9 @@ import "../../styles/home.scss";
 import { Card } from "../component/card";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+//import { Filter } from "../component/filter";
 
 export const ListOfWomen = () => {
 	const { store, actions } = useContext(Context);
@@ -46,12 +49,21 @@ export const ListOfWomen = () => {
 			);
 		} else {
 			return (
-				<div className="App-box">
-					<div className="col">
+				<div className="swiper-container">
+					<Swiper
+						slidesPerView={"auto"}
+						centeredSlides={true}
+						spaceBetween={30}
+						grabCursor={true}
+						className="mySwiper">
 						{results.map((result, i) => {
-							return <Card result={result} key={i} />;
+							return (
+								<SwiperSlide key={i}>
+									<Card result={result} />
+								</SwiperSlide>
+							);
 						})}
-					</div>
+					</Swiper>
 				</div>
 			);
 		}

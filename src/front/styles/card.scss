@@ -1,0 +1,30 @@
+.avatar-img{
+    top: 0;
+    left: 0;
+    width: 150px;
+    object-fit: cover;
+    position: absolute;
+   
+}
+
+
+.hastag-profile{
+  padding: 0.8em;
+  line-height: 1.4;
+  background-color: var(--neutral-ligth);
+  border: 1px solid var(--details);
+  border-radius: 8px;
+  -webkit-transition: 0.35s ease-in-out;
+  -moz-transition: 0.35s ease-in-out;
+  -o-transition: 0.35s ease-in-out;
+  transition: 0.35s ease-in-out;
+  transition: all 0.35s ease-in-out;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.card-details{
+    grid-gap: 16px;
+    grid-template-columns: repeat(3, 200px);
+    display: grid;
+}
