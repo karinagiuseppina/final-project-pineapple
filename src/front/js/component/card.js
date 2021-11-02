@@ -58,7 +58,7 @@ export const Card = ({ result }) => {
 			<div className="card-footer p-4">
 				<div className="row justify-content-center">
 					<div className="col-12 col-md-6">
-						<button className="button primary " onClick={matchUser}>
+						<button className="button primary" onClick={matchUser}>
 							{buttonText}
 						</button>
 					</div>

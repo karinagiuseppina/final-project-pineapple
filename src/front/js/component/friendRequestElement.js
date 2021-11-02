@@ -40,8 +40,8 @@ export const FriendRequestElement = ({ result }) => {
 			const data = await res.json();
 			if (data.chat) {
 				actions.notificationAlert(
-					"¡Media piña aceptada!",
-					`Ahora tienes disponible un chat con ${result.name}.`,
+					"¡Media piña rechazada!",
+					`Has rechazado la solicitud de ${result.name}.`,
 					"success",
 					"cerrar"
 				);
@@ -54,21 +54,25 @@ export const FriendRequestElement = ({ result }) => {
 	};
 
 	return (
-		<div className="row">
-			<div className="col-2">
-				<img src={result.profile_img ? result.profile_img : avatar1} className="w-25" alt="user" />
+		<div className="row list-box">
+			<div className="col-4 col-lg-2">
+				<img src={result.profile_img ? result.profile_img : avatar1} className="w-75" alt="user" />
 			</div>
-			<div className="col-3">
-				<Link to={`/moreUserInfo/${result.id}`}>
+			<div className="col-8 col-lg-4 d-flex align-items-center">
+				<Link to={`/moreUserInfo/${result.id}`} className="text-decoration-none">
 					<h3 className="text-center text-prin">{result.name ? result.name : ""}</h3>
 				</Link>
 			</div>
 
-			<div className="col-3">
-				<button onClick={acceptFriendRequest}>Aceptar piña</button>
+			<div className="col-12 col-lg-3 d-flex align-items-center">
+				<button onClick={acceptFriendRequest} className="button primary">
+					Aceptar piña
+				</button>
 			</div>
-			<div className="col-3">
-				<button onClick={declineFriendRequest}>Rechazar piña</button>
+			<div className="col-12 col-lg-3 d-flex align-items-center">
+				<button onClick={declineFriendRequest} className="button secondary">
+					Rechazar piña
+				</button>
 			</div>
 		</div>
 	);

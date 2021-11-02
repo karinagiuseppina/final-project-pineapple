@@ -33,18 +33,20 @@ export const PendingUsersCard = ({ result }) => {
 	};
 
 	return (
-		<div className="row">
-			<div className="col-2">
-				<img src={result.profile_img ? result.profile_img : avatar1} className="w-25" alt="user" />
+		<div className="row list-box">
+			<div className="col-4 col-lg-2">
+				<img src={result.profile_img ? result.profile_img : avatar1} className="w-75" alt="user" />
 			</div>
-			<div className="col-3">
-				<Link to={`/moreUserInfo/${result.id}`}>
+			<div className="col-8 col-lg-6 d-flex align-items-center">
+				<Link to={`/moreUserInfo/${result.id}`} className="text-decoration-none">
 					<h3 className="text-center text-prin">{result.name ? result.name : ""}</h3>
 				</Link>
 			</div>
 
-			<div className="col-3">
-				<button onClick={deleteFriendRequest}>Eliminar solicitud enviada</button>
+			<div className="col-12 col-lg-4 d-flex align-items-center">
+				<button onClick={deleteFriendRequest} className="button primary">
+					Cancelar solicitud
+				</button>
 			</div>
 		</div>
 	);

@@ -49,7 +49,7 @@ export const FriendRequestList = () => {
 					<div className="row">
 						<div className="col">
 							{results.map((result, i) => {
-								return <FriendRequestElement result={result} key={i} asking={true} />;
+								return <FriendRequestElement result={result} key={i} />;
 							})}
 						</div>
 					</div>
