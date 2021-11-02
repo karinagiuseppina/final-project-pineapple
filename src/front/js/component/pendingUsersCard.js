@@ -6,65 +6,53 @@ import { HashtagProfile } from "./hashtagProfile";
 import avatar1 from "../../img/avatar1.png";
 
 export const PendingUsersCard = ({ result }) => {
+	const [buttonText, setButtonText] = useState("Aceptar piña");
 	const { store, actions } = useContext(Context);
-	const [buttonText, setButtonText] = useState("Conectar");
+
+	const deleteFriendRequest = async () => {
+		let token = actions.getAccessToken();
+		const res = await fetch(`${process.env.BACKEND_URL}/api/delete_user_connected/${result.id}`, {
+			method: "PUT",
+			headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }
+		});
+		if (res.ok) {
+			const data = await res.json();
+			if (data.chat) {
+				actions.notificationAlert(
+					"¡Solicitud Cancelada!",
+					`Has cancelado tu solicitud con ${result.name}.`,
+					"success",
+					"cerrar"
+				);
+			}
+		} else if (res.status === 401 || res.status == 422) {
+			let resp = await actions.refresh_token();
+			if (resp.error) History.push("/login");
+			else deleteFriendRequest();
+		}
+	};
 
 	return (
-		<div className="card-result">
-			<div className="card-top-banner" />
-			<div className="card-body little-profile px-4 pt-0 pb-4">
-				<div className="pro-img text-center">
-					<img src={result.profile_img ? result.profile_img : avatar1} alt="user" />
-				</div>
-				<h3 className="text-center text-prin">{result.name ? result.name : ""}</h3>
-				<p className="text-start px-md-4 py-md-2 p-1">{result.description ? result.description : ""}</p>
-
-				<div className="row justify-content-end">
-					<div className="col-12 d-flex flex-wrap justify-content-center">
-						{result.age ? <HashtagProfile icon="fas fa-history" text={`${result.age} años`} /> : ""}
-						{result.abortion_num ? (
-							<HashtagProfile
-								icon="fas fa-hand-holding-medical"
-								text={`${result.abortion_num} pérdida(s)`}
-							/>
-						) : (
-							""
-						)}
-						{result.center ? (
-							<HashtagProfile icon="fas fa-map-marker" text={`Centro ${result.center}`} />
-						) : (
-							""
-						)}
-
-						{result.process ? (
-							<HashtagProfile icon="fas fa-search" text={`${result.process} año(s) en búsqueda`} />
-						) : (
-							""
-						)}
-
-						{result.treatment ? (
-							<HashtagProfile icon="fas fa-briefcase-medical" text={result.treatment} />
-						) : (
-							""
-						)}
-
-						{result.couple ? <HashtagProfile icon="fas fa-heart" text={result.couple} /> : ""}
-					</div>
-				</div>
+		<div className="row list-box">
+			<div className="col-4 col-lg-2">
+				<img src={result.profile_img ? result.profile_img : avatar1} className="w-75" alt="user" />
 			</div>
-			<div className="card-footer p-4">
-				<div className="row justify-content-center">
-					<div className="col-8 col-md-4 text-center">
-						<Link to={`/moreUserInfo/${result.id}`}>
-							<button>mas info</button>
-						</Link>
-					</div>
-				</div>
+			<div className="col-8 col-lg-6 d-flex align-items-center">
+				<Link to={`/moreUserInfo/${result.id}`} className="text-decoration-none">
+					<h3 className="text-center text-prin">{result.name ? result.name : ""}</h3>
+				</Link>
+			</div>
+
+			<div className="col-12 col-lg-4 d-flex align-items-center">
+				<button onClick={deleteFriendRequest} className="button primary">
+					Cancelar solicitud
+				</button>
 			</div>
 		</div>
 	);
 };
 
 PendingUsersCard.propTypes = {
-	result: propTypes.object
+	result: propTypes.object,
+	asking: propTypes.bool
 };
