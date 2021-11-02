@@ -11,6 +11,7 @@ export const Signup6 = () => {
 	const [coupleOPtions, setCoupleOPtions] = useState([]);
 	const [coupleid, setCoupleid] = useState("");
 	const [couplesInHTML, setCouplesInHTML] = useState([]);
+	const [oneTimeNotification, setOneTimeNotification] = useState(0);
 
 	useEffect(() => {
 		actions.getElements("couples", setCoupleOPtions);
@@ -38,16 +39,23 @@ export const Signup6 = () => {
 
 	async function updateInfo(event) {
 		event.preventDefault();
-		const userId = localStorage.getItem("user_id");
-		await fetch(`${process.env.BACKEND_URL}/api/update-couple`, {
-			method: "PUT",
-			headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
-			body: JSON.stringify({
-				couple_id: coupleid,
-				user_id: userId
-			})
-		});
-		history.push("/signup-7");
+		if ((oneTimeNotification == 0) & (coupleid == "")) {
+			actions.notificationAlert("Ups", "Puede que hayas olvidado elegir una opción", "question", "cerrar");
+			setOneTimeNotification(1);
+		} else if ((oneTimeNotification == 1) & (coupleid == "")) {
+			history.push("/signup-7");
+		} else {
+			const userId = localStorage.getItem("user_id");
+			await fetch(`${process.env.BACKEND_URL}/api/update-couple`, {
+				method: "PUT",
+				headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
+				body: JSON.stringify({
+					couple_id: coupleid,
+					user_id: userId
+				})
+			});
+			history.push("/signup-7");
+		}
 	}
 
 	return (

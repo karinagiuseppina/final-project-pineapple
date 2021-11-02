@@ -6,11 +6,12 @@ import { SelectOptionForm } from "../component/selectOptionForm";
 import { Context } from "../store/appContext";
 
 export const Signup8 = () => {
-	let History = useHistory();
+	let history = useHistory();
 	const [centers, setCenters] = useState([]);
 	const [centerid, setCenterid] = useState("");
 	const [centersInHTML, setCentersInHTML] = useState([]);
 	const { store, actions } = useContext(Context);
+	const [oneTimeNotification, setOneTimeNotification] = useState(0);
 
 	useEffect(() => {
 		actions.getElements("centers", setCenters);
@@ -37,16 +38,23 @@ export const Signup8 = () => {
 
 	async function updateInfo(event) {
 		event.preventDefault();
-		const userId = localStorage.getItem("user_id");
-		await fetch(`${process.env.BACKEND_URL}/api/update-center`, {
-			method: "PUT",
-			headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
-			body: JSON.stringify({
-				center_id: centerid,
-				user_id: userId
-			})
-		});
-		History.push("/list-of-women");
+		if ((oneTimeNotification == 0) & (centerid == "")) {
+			actions.notificationAlert("Ups", "Puede que hayas olvidado elegir una opción", "question", "cerrar");
+			setOneTimeNotification(1);
+		} else if ((oneTimeNotification == 1) & (centerid == "")) {
+			history.push("/list-of-women");
+		} else {
+			const userId = localStorage.getItem("user_id");
+			await fetch(`${process.env.BACKEND_URL}/api/update-center`, {
+				method: "PUT",
+				headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
+				body: JSON.stringify({
+					center_id: centerid,
+					user_id: userId
+				})
+			});
+			history.push("/list-of-women");
+		}
 	}
 
 	return (

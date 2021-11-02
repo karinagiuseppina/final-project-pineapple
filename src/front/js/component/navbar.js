@@ -67,7 +67,7 @@ export const Navbar = () => {
 				<ul className={isClicked ? "nav-menu active App-box" : "nav-menu"}>
 					{MenuItems.map((Item, index) => {
 						return (
-							<li key={index}>
+							<li key={index} onClick={handleClicked}>
 								<Link className={Item.cName} to={Item.url}>
 									{Item.title}
 								</Link>
