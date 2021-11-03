@@ -12,6 +12,7 @@ export const Signup4 = () => {
 	const [processtimeslots, setProcesstimeslots] = useState([]);
 	const [processtimeslotsid, setProcesstimeslotsid] = useState(null);
 	const [processInHTML, setProcessInHTML] = useState([]);
+	const [oneTimeNotification, setOneTimeNotification] = useState(0);
 
 	useEffect(() => {
 		actions.getElements("processtimeslots", setProcesstimeslots);
@@ -43,16 +44,21 @@ export const Signup4 = () => {
 
 	async function updateInfo(event) {
 		event.preventDefault();
-		const userId = localStorage.getItem("user_id");
-		await fetch(`${process.env.BACKEND_URL}/api/update-processtimeslot`, {
-			method: "PUT",
-			headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
-			body: JSON.stringify({
-				process_id: processtimeslotsid,
-				user_id: userId
-			})
-		});
-		History.push("/signup-5");
+		if ((processtimeslotsid == null) & (oneTimeNotification == 0)) {
+			actions.notificationAlert("Ups", "Puede que hayas olvidado elegir una opción", "question", "cerrar");
+			setOneTimeNotification(1);
+		} else {
+			const userId = localStorage.getItem("user_id");
+			await fetch(`${process.env.BACKEND_URL}/api/update-processtimeslot`, {
+				method: "PUT",
+				headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
+				body: JSON.stringify({
+					process_id: processtimeslotsid,
+					user_id: userId
+				})
+			});
+			History.push("/signup-5");
+		}
 	}
 
 	return (

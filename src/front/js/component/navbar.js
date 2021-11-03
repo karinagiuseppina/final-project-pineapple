@@ -70,10 +70,10 @@ export const Navbar = () => {
 					{isClicked ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
 				</div>
 
-				<ul className={isClicked ? "nav-menu active App-box" : "nav-menu"}>
+				<ul className={isClicked ? "nav-menu active" : "nav-menu"}>
 					{MenuItems.map((Item, index) => {
 						return (
-							<li key={index}>
+							<li key={index} onClick={handleClicked}>
 								<Link className={Item.cName} to={Item.url}>
 									{Item.title}
 								</Link>
