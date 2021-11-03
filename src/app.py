@@ -23,7 +23,8 @@ app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(weeks=12)
 jwt = JWTManager(app)
 
 # database condiguration
-if os.getenv("DATABASE_URL") is not None:
+db_url = os.getenv("DATABASE_URL")
+if db_url is not None:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace("postgres://", "postgresql://")
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
