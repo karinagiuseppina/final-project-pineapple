@@ -24,6 +24,7 @@ import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { FilterUsers } from "./pages/filterUsers";
 import { WomenConnected } from "./pages/women-connected.jsx";
+import { FriendRequestList } from "./pages/friendRequestList";
 
 //create your first component
 const Layout = () => {
@@ -81,6 +82,9 @@ const Layout = () => {
 						</Route>
 						<Route exact path="/users-connected">
 							<WomenConnected />
+						</Route>
+						<Route exact path="/friend-requests">
+							<FriendRequestList />
 						</Route>
 						<Route exact path="/editProfile">
 							<EditProfile />

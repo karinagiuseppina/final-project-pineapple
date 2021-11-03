@@ -6,11 +6,12 @@ import { SelectOptionForm } from "../component/selectOptionForm";
 import { Context } from "../store/appContext";
 
 export const Signup7 = () => {
-	let History = useHistory();
+	let history = useHistory();
 	const [treatments, setTreatments] = useState([]);
 	const [treatmentid, setTreatmentid] = useState("");
 	const [treatmentsInHTML, setTreatmentsInHTML] = useState([]);
 	const { store, actions } = useContext(Context);
+	const [oneTimeNotification, setOneTimeNotification] = useState(0);
 
 	useEffect(() => {
 		actions.getElements("treatments", setTreatments);
@@ -37,16 +38,23 @@ export const Signup7 = () => {
 
 	async function updateInfo(event) {
 		event.preventDefault();
-		const userId = localStorage.getItem("user_id");
-		await fetch(`${process.env.BACKEND_URL}/api/update-treatment`, {
-			method: "PUT",
-			headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
-			body: JSON.stringify({
-				treatment_id: treatmentid,
-				user_id: userId
-			})
-		});
-		History.push("/signup-8");
+		if ((oneTimeNotification == 0) & (treatmentid == "")) {
+			actions.notificationAlert("Ups", "Puede que hayas olvidado elegir una opción", "question", "cerrar");
+			setOneTimeNotification(1);
+		} else if ((oneTimeNotification == 1) & (treatmentid == "")) {
+			history.push("/signup-8");
+		} else {
+			const userId = localStorage.getItem("user_id");
+			await fetch(`${process.env.BACKEND_URL}/api/update-treatment`, {
+				method: "PUT",
+				headers: { "Content-Type": "application/json", Authorization: "Bearer " + store.access_token },
+				body: JSON.stringify({
+					treatment_id: treatmentid,
+					user_id: userId
+				})
+			});
+			history.push("/signup-8");
+		}
 	}
 
 	return (

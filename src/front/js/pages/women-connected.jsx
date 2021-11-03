@@ -1,9 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import "../../styles/home.scss";
 import { PendingUsersCard } from "../component/pendingUsersCard";
-import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-//import { Filter } from "../component/filter";
+import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
 
 export const WomenConnected = () => {
 	const { store, actions } = useContext(Context);
@@ -48,9 +47,15 @@ export const WomenConnected = () => {
 		} else {
 			return (
 				<div className="App-box">
-					<div className="col">
+					<div className="signup-header">
+						<h1 className="question-text">Piñas madurando</h1>
+						<div className="image-box">
+							<img className="piña-partida-sinnombre" src={pinaPartidaNombre} alt="dibujo piña partida" />
+						</div>
+					</div>
+					<div className="women-conected-list col">
 						{results.map((result, i) => {
-							return <PendingUsersCard result={result} key={i} />;
+							return <PendingUsersCard result={result} key={i} asking={false} />;
 						})}
 					</div>
 				</div>

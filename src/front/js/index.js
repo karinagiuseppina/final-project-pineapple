@@ -18,6 +18,7 @@ import "../styles/list-of-women.scss";
 import "../styles/navbar.scss";
 import "../styles/editProfile.scss";
 import "../styles/card.scss";
+import "../styles/pending-users-cards.scss";
 
 //import your own components
 import Layout from "./layout";

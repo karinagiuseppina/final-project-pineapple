@@ -28,6 +28,12 @@ export const Navbar = () => {
 			cName: "nav-links"
 		},
 		{
+			title: "Piñas esperando",
+			// solicitudes si contestar
+			url: "/friend-requests",
+			cName: "nav-links"
+		},
+		{
 			title: "Tus Piñas",
 			// lista de chats
 			url: "/chatList",
@@ -73,9 +79,11 @@ export const Navbar = () => {
 				/>
 				{displayNotifications ? <NotificationsList /> : null}
 				<ul className={isClicked ? "nav-menu active App-box" : "nav-menu"}>
+
+				<ul className={isClicked ? "nav-menu active" : "nav-menu"}>
 					{MenuItems.map((Item, index) => {
 						return (
-							<li key={index}>
+							<li key={index} onClick={handleClicked}>
 								<Link className={Item.cName} to={Item.url}>
 									{Item.title}
 								</Link>

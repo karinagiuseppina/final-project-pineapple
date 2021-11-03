@@ -12,7 +12,7 @@ export const MoreUserInfo = () => {
 
 	const matchUser = async () => {
 		let token = actions.getAccessToken();
-		const res = await fetch(`${process.env.BACKEND_URL}/api/user/asks/${result.id}`, {
+		const res = await fetch(`${process.env.BACKEND_URL}/api/user/asks/${id}`, {
 			method: "PUT",
 			headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }
 		});

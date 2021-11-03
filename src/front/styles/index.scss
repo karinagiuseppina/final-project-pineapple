@@ -37,9 +37,6 @@ to {
 }            
 
 
-
-
-
 .logo{
   font: var(--logo);
   color: var(--primary);
@@ -120,14 +117,50 @@ body{
       margin: 4px 2px;
       width: 20%;
     }
+.button{
+  padding: 0.8em 0.8em;
+  background: var(--primary);
+  border-radius: 8px;
+  font: var(--button);
+  color: var(--main-text);
+  text-decoration: none !important;
+  margin: 8px 4px;
+  text-align: center;
+  border: 0px;
+  width: 100%;
+}
+   a:hover{
+    color: var(--main-text);
+   } 
 
   .button:hover{
-    font: var(--button-hover);
-    border: 2px solid var(--main-text);
+    border: 0px;
+    
     transition: 250ms ease-out;
   }
   .primary:hover{
-    background-color: var(--primary);
+    background-color: var(--primary-ligth);
+    box-shadow: var(--primary-shadow) 0px 6px 8px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  }
+  .primary:active{
+    background-color: var(--primary-dark);
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+  }
+  .secondary:hover{
+    background-color: var(--secondary-light);
+    box-shadow: var(--secondary-shadow) 0px 6px 8px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  }
+  .secondary:active{
+    background-color: var(--secondary-dark);
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+  }
+  .alert:hover{
+    background-color: var(--warning-light);
+    box-shadow: var(--warning-shadow) 0px 6px 8px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  }
+  .alert:active{
+    background-color: var(--warning-dark);
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
   }
 
   .primary{
@@ -187,17 +220,17 @@ body{
 }
 /*General classes*/
 .bg-lightgray{
-    background-color: #f9f9f9;
-  }
-  .border-orange{
-    border: 1px solid var(--details);
-  }
-  .bg-prin{
-    background-color: var(--main-text);
-  }
-  .text-prin{
-    color: var(--main-text);
-  }
+  background-color: #f9f9f9;
+}
+.border-orange{
+  border: 1px solid var(--details);
+}
+.bg-prin{
+  background-color: var(--main-text);
+}
+.text-prin{
+  color: var(--main-text);
+}
 /*Form*/
 form{
   display: grid;
@@ -232,13 +265,6 @@ select, .form-control, .input-group-text{
   font-size: 17px;
   color: var(--main-text);
 }
-
-/* input[type="radio"] + label,
-input[type="checkbox"] + label:before, input,
-select option,
-select, .input-group-text{
-text-transform: uppercase;
-} */
 
 input:focus {
   outline: 0;
@@ -369,15 +395,15 @@ select option {
 }
 /*Perfil*/
 .pro-img {
-  width: 150px;
-  height: 150px;
-  align-items: center;
-  margin: 16px auto 8px auto;
-  position: relative;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 4px solid var(--details);
-  background-color:var(--neutral) ;
+  // width: 150px;
+  // height: 150px;
+  // align-items: center;
+  // margin: 16px auto 8px auto;
+  // position: relative;
+  // border-radius: 50%;
+  // overflow: hidden;
+  // border: 4px solid var(--details);
+  // background-color:var(--neutral) ;
 }
 
 .little-profile .pro-img .profile-circle {
@@ -418,14 +444,15 @@ img{
 }
 
 .card-body{
+  padding: 16px;
   display: flex;
-    text-align: center;
-    padding-bottom: 5px;
-    background: linear-gradient(to left, var(--details), var(--neutral-ligth), var(--details)) left bottom var(--neutral-ligth) no-repeat;
-    background-size: 100% 1px;
-    flex-direction: column;
-    align-items: center;
-    min-height: 370px;
+  text-align: center;
+  background: linear-gradient(to left, var(--details), var(--neutral-ligth), var(--details)) left bottom var(--neutral-ligth) no-repeat;
+  background-size: 100% 1px;
+  flex-direction: column;
+  align-items: center;
+  min-height: 370px;
+  grid-gap: 16px;
 }
 
 .text-description{
@@ -457,3 +484,5 @@ img{
 .notifications-li {
   list-style: none;
 }
+/*List of friend requests*/
+

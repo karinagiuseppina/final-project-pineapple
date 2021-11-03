@@ -1,24 +1,21 @@
 import React, { useContext, useState, useEffect } from "react";
 import "../../styles/home.scss";
-import { Card } from "../component/card";
-import { Link } from "react-router-dom";
+import { FriendRequestElement } from "../component/friendRequestElement";
 import { Context } from "../store/appContext";
-import { Swiper, SwiperSlide } from "swiper/react";
+import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
 
-//import { Filter } from "../component/filter";
-
-export const ListOfWomen = () => {
+export const FriendRequestList = () => {
 	const { store, actions } = useContext(Context);
 	const [waiting, setwaiting] = useState(0);
 	const [results, setResults] = useState([]);
 
 	useEffect(() => {
-		getPossibleMatches();
+		getFriendRequests();
 	}, []);
 
-	const getPossibleMatches = async () => {
+	const getFriendRequests = async () => {
 		let token = actions.getAccessToken();
-		const res = await fetch(`${process.env.BACKEND_URL}/api/findpossiblematches`, {
+		const res = await fetch(`${process.env.BACKEND_URL}/api/user/users_asking`, {
 			method: "GET",
 			headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }
 		});
@@ -29,7 +26,7 @@ export const ListOfWomen = () => {
 		} else if (res.status === 401 || res.status == 422) {
 			let resp = await actions.refresh_token();
 			if (resp.error) History.push("/login");
-			else getPossibleMatches();
+			else getFriendRequests();
 		}
 	};
 
@@ -43,26 +40,25 @@ export const ListOfWomen = () => {
 		if (results.length == 0) {
 			return (
 				<div className="box-notfound">
-					<p>Tu media piña aun esta madurando ¡Intenta más tarde!</p>
+					{/* <img src={pinaNotFound} /> */}
+					<p>No tienes medias piñas pendientes. </p>
 				</div>
 			);
 		} else {
 			return (
-				<div className="swiper-container">
-					<Swiper
-						slidesPerView={"auto"}
-						centeredSlides={true}
-						spaceBetween={30}
-						grabCursor={true}
-						className="mySwiper">
+				<div className="App-box">
+					<div className="signup-header">
+						<h1 className="question-text">Piñas madurando</h1>
+						<div className="image-box">
+							<img className="piña-partida-sinnombre" src={pinaPartidaNombre} alt="dibujo piña partida" />
+						</div>
+					</div>
+
+					<div className="women-conected-list">
 						{results.map((result, i) => {
-							return (
-								<SwiperSlide key={i}>
-									<Card result={result} />
-								</SwiperSlide>
-							);
+							return <FriendRequestElement result={result} key={i} />;
 						})}
-					</Swiper>
+					</div>
 				</div>
 			);
 		}

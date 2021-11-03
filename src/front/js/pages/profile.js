@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { HashtagProfile } from "../component/hashtagProfile";
+import { ButtonType } from "../component/buttonType";
 import avatar1 from "../../img/avatar1.png";
 
 export const Profile = () => {
@@ -35,11 +36,11 @@ export const Profile = () => {
 				</div>
 				<h2 className="text-center text-prin">{user.name ? user.name : ""}</h2>
 				<p className="text-start px-md-4 py-md-2">{`${user.age} años`}</p>
-				<p className="text-description px-md-4 py-md-2 p-1">{user.description ? user.description : ""}</p>
+				{user.description ? <p className="text-description px-md-4 py-md-2 p-1">{user.description}</p> : ""}
 
 				<div className="row justify-content-end">
 					<div className="col-12 d-flex flex-wrap justify-content-center">
-						{user.abortion_num ? <HashtagProfile text={`${user.abortion_num} pérdida(s)`} /> : ""}
+						{user.abortion_num ? <HashtagProfile text={`${user.abortion_num} muerte gestacional`} /> : ""}
 						{user.center ? <HashtagProfile text={`Centro ${user.center}`} /> : ""}
 
 						{user.process ? <HashtagProfile text={`${user.process} año(s) en búsqueda`} /> : ""}
@@ -54,7 +55,9 @@ export const Profile = () => {
 			<div className="card-footer p-4">
 				<div className="row justify-content-center">
 					<div className="col-12 col-md-6">
-						<button className="button primary">Editar perfil</button>
+						<Link to={"/editProfile"}>
+							<ButtonType classN="button primary" type="button" value="Edit Profile" />
+						</Link>
 					</div>
 				</div>
 			</div>

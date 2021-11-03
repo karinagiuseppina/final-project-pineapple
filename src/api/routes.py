@@ -93,8 +93,6 @@ def find_possible_matches():
        
     result_filter_by_centers = User.filter_by_center(actual_user)
     append_user(users, result_filter_by_centers)
-
-    print(users)
     
     sort_users = sorted(users.items(), key=lambda x: x[1], reverse= True )
 
@@ -102,9 +100,6 @@ def find_possible_matches():
         if user[0] not in actual_user.users_connected:
             array_users.append(user[0])
 
-    print(array_users)
-
-    
     posibles_matches_users = list(map (lambda user: user.serialize_to_show(), array_users))
     
     return jsonify(posibles_matches_users), 200
@@ -156,7 +151,7 @@ def edit_profile():
         hashed_password = bcrypt.hashpw(password, salt)
         decoded_password = hashed_password.decode('utf8')
 
-        user.password: decoded_password
+        user.password = decoded_password
 
 
     User.commit()
@@ -423,6 +418,23 @@ def get_users_pending():
 
     return jsonify(users_pending), 200
 
+@api.route('user/users_asking', methods=['GET'])
+@jwt_required()
+def get_users_asking():
+    current_user = User.get_user_by_id(get_jwt_identity())
+
+    users = User.get_all_users()
+
+    users_asking = []
+
+    for user in users:
+        if current_user in user.users_connected and user not in current_user.users_connected:
+            users_asking.append(user)
+
+    users_asking = list(map(lambda user: user.serialize_to_show(), users_asking))
+
+    return jsonify(users_asking), 200
+
 @api.route('user/<id>/notifications', methods=['GET'])
 def get_user_notifications(id):
     user = User.get_user_by_id(id)
@@ -466,8 +478,7 @@ def get_chat_info(id):
 @api.route('/delete_chat/<id>', methods=['PUT'])
 @jwt_required()
 def delete_chat(id):
-    user_requesting = get_jwt_identity()
-    user_requesting = User.get_user_by_id(user_requesting)
+    user_requesting = User.get_user_by_id(get_jwt_identity())
     chat = Chat.get_chat_by_id(id)
 
     users = chat.get_chat_users()
@@ -476,5 +487,28 @@ def delete_chat(id):
     chat.is_active = False
     Chat.commit()
 
-    # user_requesting.remove()
+    user_requesting.users_connected.remove(user_to_be_deleted)
+    user_to_be_deleted.users_connected.remove(user_requesting)
+    User.commit()
+    return jsonify({"msg": "ok"}), 200
+
+
+@api.route('/decline_user_connected/<user_requesting>', methods=['PUT'])
+@jwt_required()
+def decline_user_connected(user_requesting):
+    user_listening = get_jwt_identity()
+    user_requesting = User.get_user_by_id(user_requesting)
+
+    user_requesting.users_connected.remove(user_listening)
+    User.commit()
+    return jsonify({"msg": "ok"}), 200
+
+@api.route('/delete_user_connected/<user_id>', methods=['PUT'])
+@jwt_required()
+def delete_user_connected(user_id):
+    user = User.get_user_by_id(get_jwt_identity())
+    user_to_delete = User.get_user_by_id(user_id)
+
+    user.users_connected.remove(user_to_delete)
+    User.commit()
     return jsonify({"msg": "ok"}), 200
