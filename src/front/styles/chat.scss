@@ -70,6 +70,7 @@
 }
 
 
+
 /************************************************
 	************************************************
 											Users
@@ -221,6 +222,7 @@
 .chat-container {
     position: relative;
     padding: 1rem;
+    background-color: var(--secondary);
 }
 
 .chat-container li.chat-left,
@@ -282,8 +284,13 @@
 }
 
 .chat-container li .chat-hour > span {
+    font-family: var(--general-font);
     font-size: 16px;
     color: #9ec94a;
+}
+
+.chatContainerScroll {
+    background-color: #fff;
 }
 
 .chat-box {
@@ -332,6 +339,8 @@
     }
 }
 
+
+
 .chat-form {
     padding: 15px;
     width: 100%;
@@ -348,11 +357,12 @@ ul {
     padding: 0;
 }
 .card {
-    border: 0;
+    border: 1px solid var(--details);
     background: #f4f5fb;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
-    border-radius: 2px;
+    border-radius: 5px;
     margin-bottom: 2rem;
     box-shadow: none;
+    transform: translateY(2vh);
 }

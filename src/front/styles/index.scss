@@ -98,7 +98,7 @@ body{
   .App-box{
     width:60%;
     margin: 20px auto;
-  }
+  
 
 }
 
@@ -455,5 +455,27 @@ img{
   padding: 8px;
 }
 
+.notifications-wrapper {
+  height: 200px;
+  width: 350px;
+  display: flex;
+  background-color: #f9f9f9;
+  border: 1px solid var(--details);
+  transform: translateY(13.5vh);
+  z-index: 10;
+  border-radius: 5px 5px;
+
+}
+
+.notifications-ul {
+  
+  font-family: var(--general-font);
+  font-size: 0.9rem;
+  
+}
+
+.notifications-li {
+  list-style: none;
+}
 /*List of friend requests*/
 

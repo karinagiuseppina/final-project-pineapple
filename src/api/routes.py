@@ -448,8 +448,14 @@ def get_user_notifications(id):
     user = User.get_user_by_id(id)
 
     notifications = user.notifications
+    notifications_seen = user.notifications
 
     notifications = list(map(lambda notification: notification.serialize(), notifications))
+
+    for notification_seen in notifications_seen:
+        print(notification_seen.is_new)
+        notification_seen.is_new = False
+    User.commit()
 
     return jsonify({"notification": notifications}), 200
 

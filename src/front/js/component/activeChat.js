@@ -10,6 +10,7 @@ export const ActiveChat = ({ activeChat }) => {
 	const [message, setMessage] = useState("");
 	const [messagesInHTML, setMessagesInHTML] = useState([]);
 	const [counter, setCounter] = useState(0);
+	const matches = useMediaQuery("(min-width: 767px)");
 
 	useEffect(() => {
 		if (activeChat) getMessages();
@@ -104,7 +105,9 @@ export const ActiveChat = ({ activeChat }) => {
 						onChange={e => setMessage(e.target.value)}
 						value={message}
 					/>
-					<button onClick={sendMessage}>Enviar</button>
+					<button className="button-small" onClick={sendMessage}>
+						Enviar
+					</button>
 				</div>
 			</div>
 		</div>

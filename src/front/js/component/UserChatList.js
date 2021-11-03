@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router";
+import useMediaQuery from "../useMediaQuery";
 
 export const UserChatList = ({ setActiveChat }) => {
 	const { store, actions } = useContext(Context);
@@ -12,6 +13,7 @@ export const UserChatList = ({ setActiveChat }) => {
 	const [chatsInHTML, setChatsInHTML] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
 	let History = useHistory();
+	const matches = useMediaQuery("(min-width: 767px)");
 
 	const confirmDelete = chat => {
 		Swal.fire({
@@ -108,21 +110,25 @@ export const UserChatList = ({ setActiveChat }) => {
 	}, [chats, chatsSelected]);
 
 	return (
-		<div className="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
-			<div className="users-container">
-				<div className="chat-search-box">
-					<div className="input-group">
-						<input
-							className="form-control"
-							placeholder="Buscar piña"
-							value={searchInput}
-							onChange={e => setSearchInput(e.target.value)}
-						/>
+		<>
+			{!matches ? null : (
+				<div className="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
+					<div className="users-container">
+						<div className="chat-search-box">
+							<div className="input-group">
+								<input
+									className="form-control"
+									placeholder="Buscar piña"
+									value={searchInput}
+									onChange={e => setSearchInput(e.target.value)}
+								/>
+							</div>
+						</div>
+						<ul className="users">{chatsInHTML}</ul>
 					</div>
 				</div>
-				<ul className="users">{chatsInHTML}</ul>
-			</div>
-		</div>
+			)}
+		</>
 	);
 };
 
