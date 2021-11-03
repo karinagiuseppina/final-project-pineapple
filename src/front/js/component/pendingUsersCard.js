@@ -39,7 +39,7 @@ export const PendingUsersCard = ({ result }) => {
 			</div>
 			<div className="box col-8 flex-column flex-md-row align-items-center">
 				<Link to={`/moreUserInfo/${result.id}`} className="text-decoration-none">
-					<h3 className="text-center text-prin">{result.name ? result.name : ""}</h3>
+					<h3 className="text-center text-prin">{result.name ? result.name : "."}</h3>
 				</Link>
 				<button onClick={deleteFriendRequest} className="button alert">
 					Cancelar
