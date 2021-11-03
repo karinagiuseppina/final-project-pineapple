@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { HashtagProfile } from "./hashtagProfile";
 import avatar1 from "../../img/avatar1.png";
 
-export const Card = ({ result }) => {
+export const Card = ({ result, deleteElementFromList }) => {
 	const { store, actions } = useContext(Context);
 	const [buttonText, setButtonText] = useState("Conectar");
 
@@ -17,6 +17,7 @@ export const Card = ({ result }) => {
 		});
 		if (res.ok) {
 			const data = await res.json();
+			deleteElementFromList(result.id);
 			if (data.chat) {
 				actions.notificationAlert(
 					"¡Has encontrado una media piña!",
@@ -74,5 +75,6 @@ export const Card = ({ result }) => {
 };
 
 Card.propTypes = {
-	result: propTypes.object
+	result: propTypes.object,
+	deleteElementFromList: propTypes.func
 };

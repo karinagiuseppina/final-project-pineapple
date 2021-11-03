@@ -4,7 +4,7 @@ import propTypes from "prop-types";
 import { Link } from "react-router-dom";
 import avatar1 from "../../img/avatar1.png";
 
-export const FriendRequestElement = ({ result }) => {
+export const FriendRequestElement = ({ result, deleteElementFromList }) => {
 	const { store, actions } = useContext(Context);
 
 	const acceptFriendRequest = async () => {
@@ -22,6 +22,7 @@ export const FriendRequestElement = ({ result }) => {
 					"success",
 					"cerrar"
 				);
+				deleteElementFromList(result.id);
 			}
 		} else if (res.status === 401 || res.status == 422) {
 			let resp = await actions.refresh_token();
@@ -37,15 +38,13 @@ export const FriendRequestElement = ({ result }) => {
 			headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }
 		});
 		if (res.ok) {
-			const data = await res.json();
-			if (data.chat) {
-				actions.notificationAlert(
-					"¡Media piña rechazada!",
-					`Has rechazado la solicitud de ${result.name}.`,
-					"success",
-					"cerrar"
-				);
-			}
+			actions.notificationAlert(
+				"¡Media piña rechazada!",
+				`Has rechazado la solicitud de ${result.name}.`,
+				"success",
+				"cerrar"
+			);
+			deleteElementFromList(result.id);
 		} else if (res.status === 401 || res.status == 422) {
 			let resp = await actions.refresh_token();
 			if (resp.error) History.push("/login");
@@ -77,5 +76,6 @@ export const FriendRequestElement = ({ result }) => {
 };
 
 FriendRequestElement.propTypes = {
-	result: propTypes.object
+	result: propTypes.object,
+	deleteElementFromList: propTypes.func
 };

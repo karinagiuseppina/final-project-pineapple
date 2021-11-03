@@ -94,6 +94,14 @@ body{
 
 }
 
+@media (min-width: 722px) {
+  .App-box{
+    width:60%;
+    margin: 20px auto;
+  }
+
+}
+
 .button{
   padding: 0.8em 0.8em;
   background: var(--primary);
@@ -430,6 +438,14 @@ img{
   align-items: center;
   min-height: 370px;
   grid-gap: 16px;
+}
+
+@media (min-width: 722px) {
+  .card-result{
+    width:50%;
+    margin: 20px auto;
+  }
+
 }
 
 .text-description{

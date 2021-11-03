@@ -95,13 +95,15 @@ def find_possible_matches():
     append_user(users, result_filter_by_centers)
     
     sort_users = sorted(users.items(), key=lambda x: x[1], reverse= True )
+    print(sort_users)
 
     for user in sort_users:
         if user[0] not in actual_user.users_connected:
             array_users.append(user[0])
 
+    print(array_users)
     posibles_matches_users = list(map (lambda user: user.serialize_to_show(), array_users))
-    
+
     return jsonify(posibles_matches_users), 200
 
 
@@ -383,9 +385,15 @@ def user_connects_with_user(id_listening):
         Notification.add(noti_user_listening)
 
         Notification.commit()
-
+        User.commit()
         Chat.save(new_chat)
+
         return jsonify({"chat" : True}), 200
+    else:
+        noti_user_listening = Notification(name = "{0} quiere conectar contigo.".format(user_asking.name), is_new= True)
+        user_listening.notifications.append(noti_user_listening)
+        Notification.add(noti_user_listening)
+        Notification.commit()
 
     User.commit()
 

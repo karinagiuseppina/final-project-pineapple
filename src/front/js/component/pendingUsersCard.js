@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 import { HashtagProfile } from "./hashtagProfile";
 import avatar1 from "../../img/avatar1.png";
 
-export const PendingUsersCard = ({ result }) => {
-	const [buttonText, setButtonText] = useState("Aceptar piña");
+export const PendingUsersCard = ({ result, deleteElementFromList }) => {
 	const { store, actions } = useContext(Context);
 
 	const deleteFriendRequest = async () => {
@@ -17,14 +16,13 @@ export const PendingUsersCard = ({ result }) => {
 		});
 		if (res.ok) {
 			const data = await res.json();
-			if (data.chat) {
-				actions.notificationAlert(
-					"¡Solicitud Cancelada!",
-					`Has cancelado tu solicitud con ${result.name}.`,
-					"success",
-					"cerrar"
-				);
-			}
+			actions.notificationAlert(
+				"¡Solicitud Cancelada!",
+				`Has cancelado tu solicitud con ${result.name}.`,
+				"success",
+				"cerrar"
+			);
+			deleteElementFromList(result.id);
 		} else if (res.status === 401 || res.status == 422) {
 			let resp = await actions.refresh_token();
 			if (resp.error) History.push("/login");
@@ -45,12 +43,11 @@ export const PendingUsersCard = ({ result }) => {
 					Cancelar
 				</button>
 			</div>
-
 		</div>
 	);
 };
 
 PendingUsersCard.propTypes = {
 	result: propTypes.object,
-	asking: propTypes.bool
+	deleteElementFromList: propTypes.func
 };

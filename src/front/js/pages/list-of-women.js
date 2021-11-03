@@ -5,12 +5,11 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-//import { Filter } from "../component/filter";
-
 export const ListOfWomen = () => {
 	const { store, actions } = useContext(Context);
 	const [waiting, setwaiting] = useState(0);
 	const [results, setResults] = useState([]);
+	const [resultsInHTML, setResultsInHTML] = useState([]);
 
 	useEffect(() => {
 		getPossibleMatches();
@@ -32,6 +31,27 @@ export const ListOfWomen = () => {
 			else getPossibleMatches();
 		}
 	};
+
+	const deleteElementFromList = id => {
+		let index = results.findIndex(user => id === user.id);
+		if (index !== -1) {
+			let old = [...results];
+			old.splice(index, 1);
+			setResults(old);
+		}
+	};
+
+	useEffect(() => {
+		setResultsInHTML(
+			results.map((result, i) => {
+				return (
+					<SwiperSlide key={i}>
+						<Card result={result} deleteElementFromList={deleteElementFromList} />
+					</SwiperSlide>
+				);
+			})
+		);
+	}, [results]);
 
 	if (waiting === 0) {
 		return (
@@ -55,13 +75,7 @@ export const ListOfWomen = () => {
 						spaceBetween={30}
 						grabCursor={true}
 						className="mySwiper">
-						{results.map((result, i) => {
-							return (
-								<SwiperSlide key={i}>
-									<Card result={result} />
-								</SwiperSlide>
-							);
-						})}
+						{resultsInHTML}
 					</Swiper>
 				</div>
 			);
