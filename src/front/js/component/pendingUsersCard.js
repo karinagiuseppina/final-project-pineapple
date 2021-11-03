@@ -45,7 +45,6 @@ export const PendingUsersCard = ({ result }) => {
 					Cancelar
 				</button>
 			</div>
-
 		</div>
 	);
 };
