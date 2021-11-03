@@ -35,19 +35,20 @@ export const PendingUsersCard = ({ result }) => {
 	return (
 		<div className="row list-box">
 			<div className="col-4 col-lg-2">
-				<img src={result.profile_img ? result.profile_img : avatar1} className="w-75" alt="user" />
+				<img src={result.profile_img ? result.profile_img : avatar1} className="avatar-request" alt="user" />
 			</div>
-			<div className="col-8 col-lg-6 d-flex align-items-center">
+			<div className="box col-8 col-lg-6  align-items-center">
 				<Link to={`/moreUserInfo/${result.id}`} className="text-decoration-none">
 					<h3 className="text-center text-prin">{result.name ? result.name : ""}</h3>
 				</Link>
-			</div>
-
-			<div className="col-12 col-lg-4 d-flex align-items-center">
-				<button onClick={deleteFriendRequest} className="button primary">
-					Cancelar solicitud
+				<button onClick={deleteFriendRequest} className="button alert">
+					Cancelar
 				</button>
 			</div>
+
+			{/* <div className="col-12 col-lg-4 d-flex align-items-center">
+				
+			</div> */}
 		</div>
 	);
 };

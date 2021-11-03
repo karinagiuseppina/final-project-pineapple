@@ -54,25 +54,23 @@ export const FriendRequestElement = ({ result }) => {
 	};
 
 	return (
-		<div className="row list-box">
-			<div className="col-4 col-lg-2">
-				<img src={result.profile_img ? result.profile_img : avatar1} className="w-75" alt="user" />
+		<div className="list-box">
+			<div className="pending-user-card-left-col">
+				<img src={result.profile_img ? result.profile_img : avatar1} className="avatar-request" alt="user" />
 			</div>
-			<div className="col-8 col-lg-4 d-flex align-items-center">
+			<div className="pending-user-card-right-col">
 				<Link to={`/moreUserInfo/${result.id}`} className="text-decoration-none">
 					<h3 className="text-center text-prin">{result.name ? result.name : ""}</h3>
 				</Link>
-			</div>
+				<div className="buttons-row">
+					<button onClick={acceptFriendRequest} className="button primary">
+						Aceptar
+					</button>
 
-			<div className="col-12 col-lg-3 d-flex align-items-center">
-				<button onClick={acceptFriendRequest} className="button primary">
-					Aceptar piña
-				</button>
-			</div>
-			<div className="col-12 col-lg-3 d-flex align-items-center">
-				<button onClick={declineFriendRequest} className="button secondary">
-					Rechazar piña
-				</button>
+					<button onClick={declineFriendRequest} className="button secondary">
+						Rechazar
+					</button>
+				</div>
 			</div>
 		</div>
 	);

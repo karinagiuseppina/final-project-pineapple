@@ -7,12 +7,18 @@
     --neutral: #F2F2F2;
     --neutral-ligth: #ffffff;
     --main-text : #3b3b1c;
+    --primary-shadow: #568538;
+    --primary-ligth: #C0F69D;
+    --primary-dark: #83CF52;
+    --secondary-shadow:#B79B08;
+    --secondary-light:#FFE974;
+    --secondary-dark:#FFC700;
 }
 // <'font-style'> || <'font-variant'> || <'font-weight'> ]? <'font-size'> [ / <'line-height'> ]? <'font-family'> ]
 :root{
     --general-font:'Poppins';
     --title:700 24px 'Poppins';
-    --button:400 18px 'Poppins';
+    --button:400 0.7em 'Poppins';
     --button-hover: 700 18px 'Poppins';
     --logo:700 24px 'Poppins';
     --text:400 16px 'poppins';

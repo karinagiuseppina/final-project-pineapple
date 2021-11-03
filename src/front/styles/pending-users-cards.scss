@@ -1,0 +1,56 @@
+.avatar-request{
+    object-fit: cover;
+    /* background-size: cover; */
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    border: 4px solid var(--details)
+  }
+
+  .list-box {
+    display: flex;
+    padding: 8px;
+      margin: 16px 0px 16px 0;
+      background-color: var(--neutral-ligth);
+      border-radius: 8px;
+      border: 1px solid var(--details);
+      flex-direction: row;
+      align-items: center;
+      grid-gap: 8px;
+      flex-wrap: nowrap;
+  }
+
+  .box{
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  .pending-user-card-left-col{
+    width: 100%;
+  }
+.pending-user-card-right-col{  
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.buttons-row{
+  display: flex;
+}
+  .women-conected-list{
+    width: 100%;
+  }
+
+  .row-user-card{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    max-width:50%;
+  }
+  .head{
+    align-items: left;
+    
+  ;
+  }

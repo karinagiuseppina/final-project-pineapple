@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import "../../styles/home.scss";
 import { FriendRequestElement } from "../component/friendRequestElement";
 import { Context } from "../store/appContext";
+import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
 
 export const FriendRequestList = () => {
 	const { store, actions } = useContext(Context);
@@ -46,12 +47,17 @@ export const FriendRequestList = () => {
 		} else {
 			return (
 				<div className="App-box">
-					<div className="row">
-						<div className="col">
-							{results.map((result, i) => {
-								return <FriendRequestElement result={result} key={i} />;
-							})}
+					<div className="signup-header">
+						<h1 className="question-text">Piñas madurando</h1>
+						<div className="image-box">
+							<img className="piña-partida-sinnombre" src={pinaPartidaNombre} alt="dibujo piña partida" />
 						</div>
+					</div>
+
+					<div className="women-conected-list">
+						{results.map((result, i) => {
+							return <FriendRequestElement result={result} key={i} />;
+						})}
 					</div>
 				</div>
 			);
