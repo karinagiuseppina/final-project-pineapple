@@ -4,7 +4,7 @@ import propTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { AvatarImage } from "./avataImage";
 
-export const PendingUsersCard = ({ result }) => {
+export const PendingUsersCard = ({ result, deleteElementFromList }) => {
 	const { store, actions } = useContext(Context);
 
 	const deleteFriendRequest = async () => {
@@ -15,14 +15,13 @@ export const PendingUsersCard = ({ result }) => {
 		});
 		if (res.ok) {
 			const data = await res.json();
-			if (data.chat) {
-				actions.notificationAlert(
-					"¡Solicitud Cancelada!",
-					`Has cancelado tu solicitud con ${result.name}.`,
-					"success",
-					"cerrar"
-				);
-			}
+			actions.notificationAlert(
+				"¡Solicitud Cancelada!",
+				`Has cancelado tu solicitud con ${result.name}.`,
+				"success",
+				"cerrar"
+			);
+			deleteElementFromList(result.id);
 		} else if (res.status === 401 || res.status == 422) {
 			let resp = await actions.refresh_token();
 			if (resp.error) History.push("/login");
@@ -43,15 +42,11 @@ export const PendingUsersCard = ({ result }) => {
 					Cancelar
 				</button>
 			</div>
-
-			{/* <div className="col-12 col-lg-4 d-flex align-items-center">
-				
-			</div> */}
 		</div>
 	);
 };
 
 PendingUsersCard.propTypes = {
 	result: propTypes.object,
-	asking: propTypes.bool
+	deleteElementFromList: propTypes.func
 };

@@ -37,9 +37,6 @@ to {
 }            
 
 
-
-
-
 .logo{
   font: var(--logo);
   color: var(--primary);
@@ -94,6 +91,14 @@ body{
   background-color: var(--neutral-ligth);
   border-radius: 8px;
   border: 1px solid var(--details)
+
+}
+
+@media (min-width: 722px) {
+  .App-box{
+    width:60%;
+    margin: 20px auto;
+  }
 
 }
 
@@ -200,17 +205,17 @@ body{
 }
 /*General classes*/
 .bg-lightgray{
-    background-color: #f9f9f9;
-  }
-  .border-orange{
-    border: 1px solid var(--details);
-  }
-  .bg-prin{
-    background-color: var(--main-text);
-  }
-  .text-prin{
-    color: var(--main-text);
-  }
+  background-color: #f9f9f9;
+}
+.border-orange{
+  border: 1px solid var(--details);
+}
+.bg-prin{
+  background-color: var(--main-text);
+}
+.text-prin{
+  color: var(--main-text);
+}
 /*Form*/
 form{
   display: grid;
@@ -245,13 +250,6 @@ select, .form-control, .input-group-text{
   font-size: 17px;
   color: var(--main-text);
 }
-
-/* input[type="radio"] + label,
-input[type="checkbox"] + label:before, input,
-select option,
-select, .input-group-text{
-text-transform: uppercase;
-} */
 
 input:focus {
   outline: 0;
@@ -440,6 +438,14 @@ img{
   align-items: center;
   min-height: 370px;
   grid-gap: 16px;
+}
+
+@media (min-width: 722px) {
+  .card-result{
+    width:50%;
+    margin: 20px auto;
+  }
+
 }
 
 .text-description{
