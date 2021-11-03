@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import { ChatMessage } from "./chatMessage";
+import { AvatarImage } from "./avataImage";
 
 export const ActiveChat = ({ activeChat }) => {
 	const { store, actions } = useContext(Context);
@@ -83,14 +84,13 @@ export const ActiveChat = ({ activeChat }) => {
 	}
 
 	return (
-		<div className="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+		<div className="col-md-8 col-9">
 			<div className="selected-user">
 				<span>
-					<img
-						src={
-							activeChat.user.profile_img ? activeChat.user.profile_img : "https://via.placeholder.com/48"
-						}
-						alt={`profile image of ${activeChat.user.name}`}
+					<AvatarImage
+						profileImg={activeChat.user.profile_img}
+						classN={"avatar-request"}
+						Atl={"avatar small image"}
 					/>
 					<span className="name">{activeChat.user.name}</span>
 				</span>
