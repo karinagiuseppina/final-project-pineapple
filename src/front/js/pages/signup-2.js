@@ -82,7 +82,7 @@ export const Signup2 = () => {
 						icon={<FontAwesomeIcon icon={faEye} />}
 					/>
 				</div>
-				<div className="row">
+				<div className="row justify-content-center">
 					<div className="col-12 col-md-4">
 						<ButtonType classN="button primary" type="submit" value="Guardar" />
 					</div>

@@ -60,7 +60,7 @@ export const EditProfile = () => {
 			email: user.email,
 			password: "",
 			age: user.age,
-			abortion_num: user.abortion_num || "",
+			abortion_num: user.abortion_num ? user.abortion_num : 0,
 			description: user.description ? user.description : "",
 			treatment_id: user.treatment_id,
 			process_id: user.process_id,
@@ -248,21 +248,9 @@ export const EditProfile = () => {
 						<h1>Datos Generales</h1>
 						<input type="file" onChange={e => setFile(e.target.files)} />
 						<FormTitle title="Nombre" />
-						<NormalInput
-							type="text"
-							// placeholder="Nombre"
-							value={user.name}
-							set={handleUpdateUser}
-							attr="name"
-						/>
+						<NormalInput type="text" value={user.name} set={handleUpdateUser} attr="name" />
 						<FormTitle title="email" />
-						<NormalInput
-							type="email"
-							// placeholder="example@example.com"
-							value={user.email}
-							set={handleUpdateUser}
-							attr="email"
-						/>
+						<NormalInput type="email" value={user.email} set={handleUpdateUser} attr="email" />
 						<FormTitle title="Nueva contarseña" />
 						<NormalInputPassword
 							type={passwordShown ? "text" : "password"}

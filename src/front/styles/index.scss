@@ -37,9 +37,6 @@ to {
 }            
 
 
-
-
-
 .logo{
   font: var(--logo);
   color: var(--primary);
@@ -200,17 +197,17 @@ body{
 }
 /*General classes*/
 .bg-lightgray{
-    background-color: #f9f9f9;
-  }
-  .border-orange{
-    border: 1px solid var(--details);
-  }
-  .bg-prin{
-    background-color: var(--main-text);
-  }
-  .text-prin{
-    color: var(--main-text);
-  }
+  background-color: #f9f9f9;
+}
+.border-orange{
+  border: 1px solid var(--details);
+}
+.bg-prin{
+  background-color: var(--main-text);
+}
+.text-prin{
+  color: var(--main-text);
+}
 /*Form*/
 form{
   display: grid;
@@ -245,13 +242,6 @@ select, .form-control, .input-group-text{
   font-size: 17px;
   color: var(--main-text);
 }
-
-/* input[type="radio"] + label,
-input[type="checkbox"] + label:before, input,
-select option,
-select, .input-group-text{
-text-transform: uppercase;
-} */
 
 input:focus {
   outline: 0;

@@ -53,7 +53,7 @@ export const Signup7 = () => {
 					user_id: userId
 				})
 			});
-			History.push("/signup-8");
+			history.push("/signup-8");
 		}
 	}
 

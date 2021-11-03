@@ -43,8 +43,7 @@ export const ListOfWomen = () => {
 		if (results.length == 0) {
 			return (
 				<div className="box-notfound">
-					{/* <img src={pinaNotFound} /> */}
-					<p>Tu media piña aun esta madurando, puedes probar ha cambiar algunas opciones en el filtro.</p>
+					<p>Tu media piña aun esta madurando ¡Intenta más tarde!</p>
 				</div>
 			);
 		} else {

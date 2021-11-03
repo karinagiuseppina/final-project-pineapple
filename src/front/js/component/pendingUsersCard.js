@@ -37,7 +37,7 @@ export const PendingUsersCard = ({ result }) => {
 			<div className="col-4 col-lg-2">
 				<img src={result.profile_img ? result.profile_img : avatar1} className="avatar-request" alt="user" />
 			</div>
-			<div className="box col-8 col-lg-6  align-items-center">
+			<div className="box col-8 flex-column flex-md-row align-items-center">
 				<Link to={`/moreUserInfo/${result.id}`} className="text-decoration-none">
 					<h3 className="text-center text-prin">{result.name ? result.name : ""}</h3>
 				</Link>
@@ -45,10 +45,6 @@ export const PendingUsersCard = ({ result }) => {
 					Cancelar
 				</button>
 			</div>
-
-			{/* <div className="col-12 col-lg-4 d-flex align-items-center">
-				
-			</div> */}
 		</div>
 	);
 };
