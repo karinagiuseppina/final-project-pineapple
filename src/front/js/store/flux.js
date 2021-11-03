@@ -7,8 +7,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			treatments: [],
 			centers: [],
 			couples: [],
-			processes: [],
-			notifications: []
+			processes: []
 		},
 		actions: {
 			updateInitialUser: updateUser => {
@@ -112,16 +111,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					icon: icon,
 					confirmButtonText: confirmButtonText
 				});
-			},
-			getNotifications: async (id, setFn) => {
-				const response = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/notifications`, {
-					method: "GET",
-					headers: { "Content-Type": "application/json" }
-				});
-				if (response.ok) {
-					const data = await response.json();
-					setFn(data);
-				}
 			}
 		}
 	};

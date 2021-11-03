@@ -3,8 +3,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 //include bootstrap npm library into the bundle
+import jQ from "jquery";
+import "bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
+import "bootstrap-jquery/dist/js/bootstrap.js";
 import "swiper/swiper-bundle.min.css";
 import "swiper/swiper.min.css";
 

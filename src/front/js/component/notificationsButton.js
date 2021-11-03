@@ -1,26 +1,24 @@
 import React, { useContext, useState } from "react";
+import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { Context } from "../store/appContext";
-import NotificationsList from "../pages/notificationsList";
 
-const NotificationsButton = () => {
-	const { store, actions } = useContext(Context);
-	const [show, setShow] = useState(false);
-	const token = store.access_token;
-	const user_id = store.user_id;
-
-	if (show) {
-		return <NotificationsList />;
-	}
-
+const NotificationsButton = ({ displayNotifications, setDisplayNotifications }) => {
 	return (
 		<div>
-			{token && user_id ? (
-				<button className="nav-links-mobile alert" onClick={setShow(true)}>
-					Notificaciones
-				</button>
-			) : null}
+			<button
+				type="button"
+				className="button primary"
+				onClick={() => setDisplayNotifications(!displayNotifications)}>
+				<FontAwesomeIcon icon={solid("user-secret")} />
+			</button>
 		</div>
 	);
 };
 
+NotificationsButton.propTypes = {
+	displayNotifications: PropTypes.bool,
+	setDisplayNotifications: PropTypes.func
+};
 export default NotificationsButton;

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import LogoutButton from "./LogoutButton.jsx";
 import NotificationsButton from "./notificationsButton";
+import NotificationsList from "../pages/notificationsList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -36,6 +37,8 @@ export const Navbar = () => {
 
 	const { store, actions } = useContext(Context);
 	const [isClicked, setIsClicked] = useState(false);
+	const [displayNotifications, setDisplayNotifications] = useState(false);
+
 	const handleClicked = () => {
 		setIsClicked(isClicked ? false : true);
 		console.log(isClicked);
@@ -64,7 +67,11 @@ export const Navbar = () => {
 				<div className="menu-icon" onClick={handleClicked}>
 					{isClicked ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
 				</div>
-				<NotificationsButton />
+				<NotificationsButton
+					displayNotifications={displayNotifications}
+					setDisplayNotifications={setDisplayNotifications}
+				/>
+				{displayNotifications ? <NotificationsList /> : null}
 				<ul className={isClicked ? "nav-menu active App-box" : "nav-menu"}>
 					{MenuItems.map((Item, index) => {
 						return (

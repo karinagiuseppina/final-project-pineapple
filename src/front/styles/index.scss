@@ -97,17 +97,28 @@ body{
 
 }
 
-.button{
-    padding: 8px 16px;
+.button, .button-small{
+    
     background: var(--primary);
     border-radius: 8px;
     font: var(--button);
     color: var(--main-text);
     text-decoration: none!important;
-    margin: 8px 4px;
+    
     text-align: center;
     border: 0px;
-    width: 100%;
+    
+    }
+    .button {
+      padding: 8px 16px;
+      margin: 8px 4px;
+      width: 100%;
+    }
+
+    .button-small {
+      padding: 2px 4px;
+      margin: 4px 2px;
+      width: 20%;
     }
 
   .button:hover{
@@ -422,4 +433,27 @@ img{
   color: var(--main-text);
   border: 1px solid var(--details);
   padding: 8px;
+}
+
+.notifications-wrapper {
+  height: 200px;
+  width: 350px;
+  display: flex;
+  background-color: #f9f9f9;
+  border: 1px solid var(--details);
+  transform: translateY(13.5vh);
+  z-index: 10;
+  border-radius: 5px 5px;
+
+}
+
+.notifications-ul {
+  
+  font-family: var(--general-font);
+  font-size: 0.9rem;
+  
+}
+
+.notifications-li {
+  list-style: none;
 }
