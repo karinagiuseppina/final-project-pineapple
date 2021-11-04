@@ -6,7 +6,10 @@ import { Context } from "../store/appContext";
 
 const NotificationsButton = ({ displayNotifications, setDisplayNotifications }) => {
 	return (
-		<button type="button" className="button primary" onClick={() => setDisplayNotifications(!displayNotifications)}>
+		<button
+			type="button"
+			className="button-notifications primary"
+			onClick={() => setDisplayNotifications(!displayNotifications)}>
 			<FontAwesomeIcon icon={faBell} />
 		</button>
 	);
