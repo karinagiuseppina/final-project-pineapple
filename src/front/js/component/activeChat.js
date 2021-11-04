@@ -2,15 +2,14 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import { ChatMessage } from "./chatMessage";
-import useMediaQuery from "../useMediaQuery";
+import avatar1 from "../../img/avatar1.png";
 
-export const ActiveChat = ({ activeChat }) => {
+export const ActiveChat = ({ activeChat, showList, setShowList }) => {
 	const { store, actions } = useContext(Context);
 	const [messages, setMessages] = useState([]);
 	const [message, setMessage] = useState("");
 	const [messagesInHTML, setMessagesInHTML] = useState([]);
 	const [counter, setCounter] = useState(0);
-	const matches = useMediaQuery("(min-width: 767px)");
 
 	useEffect(() => {
 		if (activeChat) getMessages();
@@ -24,7 +23,7 @@ export const ActiveChat = ({ activeChat }) => {
 	function beginCounter() {
 		setInterval(() => {
 			setCounter(count => count + 1);
-		}, 10000);
+		}, 500000);
 	}
 
 	useEffect(() => {
@@ -85,28 +84,31 @@ export const ActiveChat = ({ activeChat }) => {
 	}
 
 	return (
-		<div className="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
-			<div className="selected-user">
-				<span>
-					<img
-						src={
-							activeChat.user.profile_img ? activeChat.user.profile_img : "https://via.placeholder.com/48"
-						}
-						alt={`profile image of ${activeChat.user.name}`}
-					/>
-					<span className="name">{activeChat.user.name}</span>
-				</span>
-			</div>
-			<div className="chat-container">
-				<ul className="chat-box chatContainerScroll">{messagesInHTML}</ul>
-				<div className="mt-3 mb-0 d-flex">
+		<div className="col-md-8 col-12 p-0">
+			<div className={`chat-active ${showList ? "active-chat" : "show-active-chat"}`}>
+				<div className="selected-user">
+					<button className="btn-chats" onClick={() => setShowList(!showList)}>
+						<i className="fas fa-chevron-left"></i> Chats
+					</button>
+					<div className="user-selected-data">
+						<img
+							src={activeChat.user.profile_img ? activeChat.user.profile_img : avatar1}
+							alt={`profile image of ${activeChat.user.name}`}
+						/>
+						<span className="name">{activeChat.user.name}</span>
+					</div>
+				</div>
+				<div className="chat-container">
+					<ul className="chat-box chatContainerScroll">{messagesInHTML}</ul>
+				</div>
+				<div className="chat-writer">
 					<input
 						type="text"
-						className="form-control"
+						className="form-control flex-grow-1"
 						onChange={e => setMessage(e.target.value)}
 						value={message}
 					/>
-					<button className="button-small" onClick={sendMessage}>
+					<button onClick={sendMessage} className="button primary">
 						Enviar
 					</button>
 				</div>
@@ -116,5 +118,7 @@ export const ActiveChat = ({ activeChat }) => {
 };
 
 ActiveChat.propTypes = {
-	activeChat: PropTypes.object
+	activeChat: PropTypes.object,
+	showList: PropTypes.bool,
+	setShowList: PropTypes.func
 };

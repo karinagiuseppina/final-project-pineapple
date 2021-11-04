@@ -3,17 +3,17 @@ import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router";
-import useMediaQuery from "../useMediaQuery";
+import avatar1 from "../../img/avatar1.png";
 
-export const UserChatList = ({ setActiveChat }) => {
+export const UserChatList = ({ setActiveChat, showList, setShowList }) => {
 	const { store, actions } = useContext(Context);
 
 	const [chats, setChats] = useState([]);
 	const [chatsSelected, setChatsSelected] = useState([]);
 	const [chatsInHTML, setChatsInHTML] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
+	const [classList, setClassList] = useState("d-block");
 	let History = useHistory();
-	const matches = useMediaQuery("(min-width: 767px)");
 
 	const confirmDelete = chat => {
 		Swal.fire({
@@ -64,7 +64,6 @@ export const UserChatList = ({ setActiveChat }) => {
 
 	const getChats = async () => {
 		let token = actions.getAccessToken();
-		console.log(token);
 
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/chats`, {
 			method: "GET",
@@ -86,23 +85,27 @@ export const UserChatList = ({ setActiveChat }) => {
 		getChats();
 	}, []);
 
+	const handleActiveChat = chat => {
+		setActiveChat(chat);
+		setShowList(!showList);
+	};
 	useEffect(() => {
 		setChatsInHTML(
 			chatsSelected.map(chat => {
 				return (
-					<li className="person" key={chat.id} onClick={() => setActiveChat(chat)}>
-						<div className="d-flex justify-content-end">
-							<i className="fas fa-times" onClick={() => confirmDelete(chat)} />
-						</div>
+					<li className="person" key={chat.id} onClick={() => handleActiveChat(chat)}>
 						<div className="user">
 							<img
-								src={chat.user.profile_img ? chat.user.profile_img : "https://via.placeholder.com/48"}
+								src={chat.user.profile_img ? chat.user.profile_img : avatar1}
 								alt={`profile image of ${chat.user.name}`}
 							/>
 						</div>
 						<p className="name-time">
 							<span className="name">{chat.user.name}</span>
 						</p>
+						<div className="d-flex justify-content-end">
+							<i className="fas fa-times" onClick={() => confirmDelete(chat)} />
+						</div>
 					</li>
 				);
 			})
@@ -110,28 +113,26 @@ export const UserChatList = ({ setActiveChat }) => {
 	}, [chats, chatsSelected]);
 
 	return (
-		<>
-			{!matches ? null : (
-				<div className="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
-					<div className="users-container">
-						<div className="chat-search-box">
-							<div className="input-group">
-								<input
-									className="form-control"
-									placeholder="Buscar piña"
-									value={searchInput}
-									onChange={e => setSearchInput(e.target.value)}
-								/>
-							</div>
-						</div>
-						<ul className="users">{chatsInHTML}</ul>
+		<div className="col-md-4 col-12 p-0">
+			<div className={`users-container ${showList ? "show-user-list" : "user-list"}`}>
+				<div className="chat-search-box">
+					<div className="input-group">
+						<input
+							className="form-control"
+							placeholder="Buscar piña"
+							value={searchInput}
+							onChange={e => setSearchInput(e.target.value)}
+						/>
 					</div>
 				</div>
-			)}
-		</>
+				<ul className="users">{chatsInHTML}</ul>
+			</div>
+		</div>
 	);
 };
 
 UserChatList.propTypes = {
-	setActiveChat: PropTypes.func
+	setActiveChat: PropTypes.func,
+	showList: PropTypes.bool,
+	setShowList: PropTypes.func
 };

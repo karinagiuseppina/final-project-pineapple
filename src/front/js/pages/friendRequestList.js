@@ -8,6 +8,7 @@ export const FriendRequestList = () => {
 	const { store, actions } = useContext(Context);
 	const [waiting, setwaiting] = useState(0);
 	const [results, setResults] = useState([]);
+	const [resultsInHTML, setResultsInHTML] = useState([]);
 
 	useEffect(() => {
 		getFriendRequests();
@@ -29,6 +30,21 @@ export const FriendRequestList = () => {
 			else getFriendRequests();
 		}
 	};
+	const deleteElementFromList = id => {
+		let index = results.findIndex(user => id === user.id);
+		if (index !== -1) {
+			let old = [...results];
+			old.splice(index, 1);
+			setResults(old);
+		}
+	};
+	useEffect(() => {
+		setResultsInHTML(
+			results.map((result, i) => {
+				return <FriendRequestElement result={result} key={i} deleteElementFromList={deleteElementFromList} />;
+			})
+		);
+	}, [results]);
 
 	if (waiting === 0) {
 		return (
@@ -40,7 +56,6 @@ export const FriendRequestList = () => {
 		if (results.length == 0) {
 			return (
 				<div className="box-notfound">
-					{/* <img src={pinaNotFound} /> */}
 					<p>No tienes medias piñas pendientes. </p>
 				</div>
 			);
@@ -54,11 +69,7 @@ export const FriendRequestList = () => {
 						</div>
 					</div>
 
-					<div className="women-conected-list">
-						{results.map((result, i) => {
-							return <FriendRequestElement result={result} key={i} />;
-						})}
-					</div>
+					<div className="women-conected-list">{resultsInHTML}</div>
 				</div>
 			);
 		}

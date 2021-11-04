@@ -8,6 +8,7 @@ export const WomenConnected = () => {
 	const { store, actions } = useContext(Context);
 	const [waiting, setwaiting] = useState(0);
 	const [results, setResults] = useState([]);
+	const [resultsInHTML, setResultsInHTML] = useState([]);
 
 	useEffect(() => {
 		getPendingUsers();
@@ -29,6 +30,22 @@ export const WomenConnected = () => {
 			else getPossibleMatches();
 		}
 	};
+	const deleteElementFromList = id => {
+		let index = results.findIndex(user => id === user.id);
+		if (index !== -1) {
+			let old = [...results];
+			old.splice(index, 1);
+			setResults(old);
+		}
+	};
+
+	useEffect(() => {
+		setResultsInHTML(
+			results.map((result, i) => {
+				return <PendingUsersCard result={result} key={i} deleteElementFromList={deleteElementFromList} />;
+			})
+		);
+	}, [results]);
 
 	if (waiting === 0) {
 		return (
@@ -53,11 +70,7 @@ export const WomenConnected = () => {
 							<img className="piña-partida-sinnombre" src={pinaPartidaNombre} alt="dibujo piña partida" />
 						</div>
 					</div>
-					<div className="women-conected-list col">
-						{results.map((result, i) => {
-							return <PendingUsersCard result={result} key={i} asking={false} />;
-						})}
-					</div>
+					<div className="women-conected-list col">{resultsInHTML}</div>
 				</div>
 			);
 		}

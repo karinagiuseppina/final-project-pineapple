@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link, useParams } from "react-router-dom";
 import { HashtagProfile } from "../component/hashtagProfile";
-import avatar1 from "../../img/avatar1.png";
+import { AvatarImage } from "../component/avataImage";
 
 export const MoreUserInfo = () => {
 	const { store, actions } = useContext(Context);
@@ -53,11 +53,11 @@ export const MoreUserInfo = () => {
 		<div className="card-result">
 			<div className="card-body">
 				<div className="pro-img text-center">
-					<img className="avatar-img" src={user.profile_img ? user.profile_img : avatar1} alt="user" />
+					<AvatarImage profileImg={user.profile_img} classN={"avatar-img"} Atl={"avatar small image"} />
 				</div>
 				<h2 className="text-center text-prin">{user.name ? user.name : ""}</h2>
 				<p className="text-start px-md-4 py-md-2">{`${user.age} años`}</p>
-				<p className="text-description px-md-4 py-md-2 p-1">{user.description ? user.description : ""}</p>
+				{user.description ? <p className="text-description px-md-4 py-md-2 p-1">{user.description}</p> : ""}
 
 				<div className="row justify-content-end">
 					<div className="col-12 d-flex flex-wrap justify-content-center">

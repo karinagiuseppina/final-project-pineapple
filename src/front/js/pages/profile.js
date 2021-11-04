@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { HashtagProfile } from "../component/hashtagProfile";
 import { ButtonType } from "../component/buttonType";
-import avatar1 from "../../img/avatar1.png";
+import { AvatarImage } from "../component/avataImage";
 
 export const Profile = () => {
 	const { store, actions } = useContext(Context);
@@ -32,7 +32,7 @@ export const Profile = () => {
 		<div className="card-result">
 			<div className="card-body">
 				<div className="pro-img text-center">
-					<img className="avatar-img" src={user.profile_img ? user.profile_img : avatar1} alt="user" />
+					<AvatarImage profileImg={user.profile_img} classN={"avatar-img"} Atl={"avatar small image"} />
 				</div>
 				<h2 className="text-center text-prin">{user.name ? user.name : ""}</h2>
 				<p className="text-start px-md-4 py-md-2">{`${user.age} años`}</p>

@@ -27,7 +27,6 @@ export const Login = () => {
 
 	const getLoginData = (attr, value) => {
 		setLoginData(prev => {
-			console.log(attr);
 			let logged_user = { ...prev };
 			logged_user[attr] = value;
 
@@ -70,13 +69,6 @@ export const Login = () => {
 
 			<form>
 				<NormalInput type="email" placeholder="email" value={loginData.email} set={getLoginData} attr="email" />
-				{/* <NormalInput
-					type="password"
-					placeholder="Contraseña"
-					value={loginData.password}
-					set={getLoginData}
-					attr="password"
-				/> */}
 				<NormalInputPassword
 					type={passwordShown ? "text" : "password"}
 					placeholder="Contraseña"
@@ -98,37 +90,5 @@ export const Login = () => {
 				</div>
 			</form>
 		</div>
-
-		// <div className="container-fluid bg-lightgray p-4">
-		// 	<div className="row justify-content-center">
-		// 		<div className="col-11 col-md-6 m-1 p-4 border border-lightgray rounded bg-white">
-		// 			<form>
-		// 				<h1>Log In</h1>
-		// 				<NormalInput
-		// 					type="email"
-		// 					placeholder="example@example.com"
-		// 					value={loginData.email}
-		// 					set={getLoginData}
-		// 					attr="email"
-		// 					icon="fa fa-envelope"
-		// 				/>
-		// 				<NormalInput
-		// 					type="password"
-		// 					placeholder="Contraseña"
-		// 					value={loginData.password}
-		// 					set={getLoginData}
-		// 					attr="password"
-		// 					icon="fas fa-key"
-		// 				/>
-
-		// 				<div className="row justify-content-center">
-		// 					<div className="col text-center">
-		// 						<ButtonType type="button" onClick={handleLogin} value="Log In" />
-		// 					</div>
-		// 				</div>
-		// 			</form>
-		// 		</div>
-		// 	</div>
-		// </div>
 	);
 };

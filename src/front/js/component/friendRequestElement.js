@@ -3,8 +3,9 @@ import { Context } from "../store/appContext";
 import propTypes from "prop-types";
 import { Link } from "react-router-dom";
 import avatar1 from "../../img/avatar1.png";
+import { AvatarImage } from "./avataImage";
 
-export const FriendRequestElement = ({ result }) => {
+export const FriendRequestElement = ({ result, deleteElementFromList }) => {
 	const { store, actions } = useContext(Context);
 
 	const acceptFriendRequest = async () => {
@@ -22,6 +23,7 @@ export const FriendRequestElement = ({ result }) => {
 					"success",
 					"cerrar"
 				);
+				deleteElementFromList(result.id);
 			}
 		} else if (res.status === 401 || res.status == 422) {
 			let resp = await actions.refresh_token();
@@ -37,15 +39,13 @@ export const FriendRequestElement = ({ result }) => {
 			headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }
 		});
 		if (res.ok) {
-			const data = await res.json();
-			if (data.chat) {
-				actions.notificationAlert(
-					"¡Media piña rechazada!",
-					`Has rechazado la solicitud de ${result.name}.`,
-					"success",
-					"cerrar"
-				);
-			}
+			actions.notificationAlert(
+				"¡Media piña rechazada!",
+				`Has rechazado la solicitud de ${result.name}.`,
+				"success",
+				"cerrar"
+			);
+			deleteElementFromList(result.id);
 		} else if (res.status === 401 || res.status == 422) {
 			let resp = await actions.refresh_token();
 			if (resp.error) History.push("/login");
@@ -56,7 +56,7 @@ export const FriendRequestElement = ({ result }) => {
 	return (
 		<div className="list-box">
 			<div className="pending-user-card-left-col">
-				<img src={result.profile_img ? result.profile_img : avatar1} className="avatar-request" alt="user" />
+				<AvatarImage profileImg={result.profile_img} classN={"avatar-request"} Atl={"avatar small image"} />
 			</div>
 			<div className="pending-user-card-right-col">
 				<Link to={`/moreUserInfo/${result.id}`} className="text-decoration-none">
@@ -77,5 +77,6 @@ export const FriendRequestElement = ({ result }) => {
 };
 
 FriendRequestElement.propTypes = {
-	result: propTypes.object
+	result: propTypes.object,
+	deleteElementFromList: propTypes.func
 };

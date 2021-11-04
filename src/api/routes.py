@@ -82,7 +82,7 @@ def find_possible_matches():
         result_filter_by_process = User.filter_by_process(actual_user)
         append_user(users, result_filter_by_process) 
 
-    result_filter_by_couples = User.query.filter(and_(User.couple_id == actual_user.couple_id, User.id != user_id)).all()
+    result_filter_by_couples = User.filter_by_couple(actual_user)
     append_user(users, result_filter_by_couples)
     
 
@@ -101,7 +101,7 @@ def find_possible_matches():
             array_users.append(user[0])
 
     posibles_matches_users = list(map (lambda user: user.serialize_to_show(), array_users))
-    
+
     return jsonify(posibles_matches_users), 200
 
 
@@ -383,9 +383,15 @@ def user_connects_with_user(id_listening):
         Notification.add(noti_user_listening)
 
         Notification.commit()
-
+        User.commit()
         Chat.save(new_chat)
+
         return jsonify({"chat" : True}), 200
+    else:
+        noti_user_listening = Notification(name = "{0} quiere conectar contigo.".format(user_asking.name), is_new= True)
+        user_listening.notifications.append(noti_user_listening)
+        Notification.add(noti_user_listening)
+        Notification.commit()
 
     User.commit()
 

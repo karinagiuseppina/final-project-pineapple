@@ -23,20 +23,17 @@ export const Navbar = () => {
 		},
 		{
 			title: "Piñas madurando",
-			// solicitudes si contestar
 			url: "/users-connected",
 			cName: "nav-links"
 		},
 		{
 			title: "Piñas esperando",
-			// solicitudes si contestar
 			url: "/friend-requests",
 			cName: "nav-links"
 		},
 		{
 			title: "Tus Piñas",
-			// lista de chats
-			url: "/chatList",
+			url: "/chat",
 			cName: "nav-links"
 		}
 	];
@@ -47,7 +44,6 @@ export const Navbar = () => {
 
 	const handleClicked = () => {
 		setIsClicked(isClicked ? false : true);
-		console.log(isClicked);
 	};
 
 	const logIn = (
@@ -59,7 +55,6 @@ export const Navbar = () => {
 	);
 
 	if (store.user_id === null && store.access_token === null) {
-		console.log(store.user_id, store.access_token);
 		return (
 			<nav className="navbarItems">
 				<AltLogo />
@@ -79,7 +74,6 @@ export const Navbar = () => {
 						setDisplayNotifications={setDisplayNotifications}
 					/>
 					{displayNotifications ? <NotificationsList /> : null}
-
 					{MenuItems.map((Item, index) => {
 						return (
 							<li key={index} onClick={handleClicked}>
