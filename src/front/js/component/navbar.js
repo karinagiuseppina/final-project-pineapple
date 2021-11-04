@@ -21,20 +21,17 @@ export const Navbar = () => {
 		},
 		{
 			title: "Piñas madurando",
-			// solicitudes si contestar
 			url: "/users-connected",
 			cName: "nav-links"
 		},
 		{
 			title: "Piñas esperando",
-			// solicitudes si contestar
 			url: "/friend-requests",
 			cName: "nav-links"
 		},
 		{
 			title: "Tus Piñas",
-			// lista de chats
-			url: "/chatList",
+			url: "/chat",
 			cName: "nav-links"
 		}
 	];

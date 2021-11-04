@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
-import ChatVictor from "./pages/ChatVictor.jsx";
 import { Home } from "./pages/home";
 import { Signup1 } from "./pages/signup-1";
 import { Login } from "./pages/login";
@@ -40,9 +39,6 @@ const Layout = () => {
 					<Switch>
 						<Route exact path="/">
 							<Home />
-						</Route>
-						<Route exact path="/chat">
-							<ChatVictor />
 						</Route>
 						<Route exact path="/login">
 							<Login />
@@ -89,7 +85,7 @@ const Layout = () => {
 						<Route exact path="/editProfile">
 							<EditProfile />
 						</Route>
-						<Route exact path="/chatList">
+						<Route exact path="/chat">
 							<ChatList />
 						</Route>
 						<Route>
