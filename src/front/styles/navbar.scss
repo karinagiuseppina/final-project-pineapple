@@ -7,8 +7,11 @@
     align-items: center;
     font-size: 1.2rem;
     flex-direction: row;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
 }
-
 
 
 .nav-menu-login{
@@ -87,7 +90,7 @@
 
 @media screen and (max-width:960px){
     .navbarItems{
-        position: relative;
+        // position: relative;
     }
     .nav-menu{
         display:flex;
