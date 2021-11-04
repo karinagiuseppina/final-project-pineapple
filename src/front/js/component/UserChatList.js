@@ -15,11 +15,6 @@ export const UserChatList = ({ setActiveChat, showList, setShowList }) => {
 	const [classList, setClassList] = useState("d-block");
 	let History = useHistory();
 
-	function handleClick(element) {
-		setActiveChat(element);
-		setClassactiveChat(true);
-	}
-
 	const confirmDelete = chat => {
 		Swal.fire({
 			title: `¿Seguro que quieres eliminar a ${chat.user.name} de tus piñas?`,
@@ -79,6 +74,7 @@ export const UserChatList = ({ setActiveChat, showList, setShowList }) => {
 			const data = await resp.json();
 			setChats(data);
 			setChatsSelected(data);
+			if (data.length > 0) setActiveChat(data[0]);
 		} else if (resp.status === 401 || resp.status == 422) {
 			let resp = await actions.refresh_token();
 			if (resp.error) History.push("/login");
@@ -99,9 +95,6 @@ export const UserChatList = ({ setActiveChat, showList, setShowList }) => {
 			chatsSelected.map(chat => {
 				return (
 					<li className="person" key={chat.id} onClick={() => handleActiveChat(chat)}>
-						<div className="d-flex justify-content-end">
-							<i className="fas fa-times" onClick={() => confirmDelete(chat)} />
-						</div>
 						<div className="user">
 							<img
 								src={chat.user.profile_img ? chat.user.profile_img : avatar1}
@@ -111,6 +104,9 @@ export const UserChatList = ({ setActiveChat, showList, setShowList }) => {
 						<p className="name-time">
 							<span className="name">{chat.user.name}</span>
 						</p>
+						<div className="d-flex justify-content-end">
+							<i className="fas fa-times" onClick={() => confirmDelete(chat)} />
+						</div>
 					</li>
 				);
 			})
@@ -130,8 +126,8 @@ export const UserChatList = ({ setActiveChat, showList, setShowList }) => {
 						/>
 					</div>
 				</div>
+				<ul className="users">{chatsInHTML}</ul>
 			</div>
-			<ul className="users">{chatsInHTML}</ul>
 		</div>
 	);
 };

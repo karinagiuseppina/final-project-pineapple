@@ -2,8 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import { ChatMessage } from "./chatMessage";
-import { AvatarImage } from "./avataImage";
-
+import avatar1 from "../../img/avatar1.png";
 
 export const ActiveChat = ({ activeChat, showList, setShowList }) => {
 	const { store, actions } = useContext(Context);
