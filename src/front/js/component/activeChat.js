@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import { ChatMessage } from "./chatMessage";
 import { AvatarImage } from "./avataImage";
 
-export const ActiveChat = ({ activeChat, classActiveChat, setClassActiveChat }) => {
+
+export const ActiveChat = ({ activeChat, showList, setShowList }) => {
 	const { store, actions } = useContext(Context);
 	const [messages, setMessages] = useState([]);
 	const [message, setMessage] = useState("");
@@ -23,7 +24,7 @@ export const ActiveChat = ({ activeChat, classActiveChat, setClassActiveChat }) 
 	function beginCounter() {
 		setInterval(() => {
 			setCounter(count => count + 1);
-		}, 10000);
+		}, 500000);
 	}
 
 	useEffect(() => {
@@ -84,27 +85,31 @@ export const ActiveChat = ({ activeChat, classActiveChat, setClassActiveChat }) 
 	}
 
 	return (
-		<div className={classActiveChat ? "col-8  chat-container active" : "col-8  chat-container"}>
-			<div className="selected-user">
-				<span>
-					<AvatarImage
-						profileImg={activeChat.user.profile_img}
-						classN={"avatar-request"}
-						Atl={"avatar small image"}
-					/>
-					<span className="name">{activeChat.user.name}</span>
-				</span>
-			</div>
-			<div className="chat-container">
-				<ul className="chat-box chatContainerScroll">{messagesInHTML}</ul>
-				<div className="mt-3 mb-0 d-flex">
+		<div className="col-md-8 col-12 p-0">
+			<div className={`chat-active ${showList ? "active-chat" : "show-active-chat"}`}>
+				<div className="selected-user">
+					<button className="btn-chats" onClick={() => setShowList(!showList)}>
+						<i className="fas fa-chevron-left"></i> Chats
+					</button>
+					<div className="user-selected-data">
+						<img
+							src={activeChat.user.profile_img ? activeChat.user.profile_img : avatar1}
+							alt={`profile image of ${activeChat.user.name}`}
+						/>
+						<span className="name">{activeChat.user.name}</span>
+					</div>
+				</div>
+				<div className="chat-container">
+					<ul className="chat-box chatContainerScroll">{messagesInHTML}</ul>
+				</div>
+				<div className="chat-writer">
 					<input
 						type="text"
-						className="form-control"
+						className="form-control flex-grow-1"
 						onChange={e => setMessage(e.target.value)}
 						value={message}
 					/>
-					<button className="button-small" onClick={sendMessage}>
+					<button onClick={sendMessage} className="button primary">
 						Enviar
 					</button>
 				</div>
@@ -115,6 +120,6 @@ export const ActiveChat = ({ activeChat, classActiveChat, setClassActiveChat }) 
 
 ActiveChat.propTypes = {
 	activeChat: PropTypes.object,
-	classActiveChat: PropTypes.bool,
-	setClassActiveChat: PropTypes.func
+	showList: PropTypes.bool,
+	setShowList: PropTypes.func
 };
