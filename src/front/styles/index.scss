@@ -3,10 +3,6 @@
 */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-.m-t-64{
-  margin-top: 64px;
-}
-
 .loading {
   position: fixed;
   top: 0;
@@ -444,6 +440,29 @@ img{
   color: var(--main-text);
   border: 1px solid var(--details);
   padding: 8px;
+}
+
+.notifications-wrapper {
+  height: 200px;
+  width: 350px;
+  display: flex;
+  background-color: #f9f9f9;
+  border: 1px solid var(--details);
+  transform: translateY(13.5vh);
+  z-index: 10;
+  border-radius: 5px 5px;
+
+}
+
+.notifications-ul {
+  
+  font-family: var(--general-font);
+  font-size: 0.9rem;
+  
+}
+
+.notifications-li {
+  list-style: none;
 }
 
 

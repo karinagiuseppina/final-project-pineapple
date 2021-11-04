@@ -133,6 +133,9 @@ class User(db.Model, GeneralModel):
     def filter_by_center(self):
         return User.query.filter(and_(User.center_id == self.center_id, User.id != self.id)).all()
 
+    def filter_by_couple(self):
+        return User.query.filter(and_(User.couple_id == self.couple_id, User.id != self.id)).all()
+
 class Couple(db.Model, GeneralModel):
     id = db.Column(db.Integer, primary_key=True)
     option = db.Column(db.String(50), unique=True, nullable=False) 

@@ -2,8 +2,7 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import propTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { HashtagProfile } from "./hashtagProfile";
-import avatar1 from "../../img/avatar1.png";
+import { AvatarImage } from "./avataImage";
 
 export const PendingUsersCard = ({ result, deleteElementFromList }) => {
 	const { store, actions } = useContext(Context);
@@ -33,7 +32,7 @@ export const PendingUsersCard = ({ result, deleteElementFromList }) => {
 	return (
 		<div className="row list-box">
 			<div className="col-4 col-lg-2">
-				<img src={result.profile_img ? result.profile_img : avatar1} className="avatar-request" alt="user" />
+				<AvatarImage profileImg={result.profile_img} classN={"avatar-request"} Atl={"avatar small image"} />
 			</div>
 			<div className="box col-8 col-lg-6  align-items-center">
 				<Link to={`/moreUserInfo/${result.id}`} className="text-decoration-none">

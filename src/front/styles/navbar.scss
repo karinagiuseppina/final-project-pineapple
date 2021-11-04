@@ -25,7 +25,7 @@
 
 .nav-menu{
     display: grid;
-    grid-template-columns: repeat(6, auto);
+    grid-template-columns: repeat(7, auto);
     list-style: none;
     grid-gap: 10px;
     text-align: center;
@@ -35,7 +35,7 @@
 }
 .nav-menu.active{
     display: grid;
-    grid-template-columns: repeat(6, auto);
+    grid-template-columns: repeat(7, auto);
     list-style: none;
     grid-gap: 10px;
     text-align: center;
@@ -156,12 +156,7 @@
         text-decoration: none !important;
     }
     
-    // .nav-links-mobile:hover{
-    //     color: var(--main-text);
-    //     font: var(--button-hover);
-    //     border: 2px solid var(--main-text);
-    //     transition: 250ms ease-out;
-    // }
+  
 }
 
 

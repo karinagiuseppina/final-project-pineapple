@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import LogoutButton from "./LogoutButton.jsx";
+import NotificationsButton from "./notificationsButton";
+import NotificationsList from "../pages/notificationsList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -38,9 +40,10 @@ export const Navbar = () => {
 
 	const { store, actions } = useContext(Context);
 	const [isClicked, setIsClicked] = useState(false);
+	const [displayNotifications, setDisplayNotifications] = useState(false);
+
 	const handleClicked = () => {
 		setIsClicked(isClicked ? false : true);
-		console.log(isClicked);
 	};
 
 	const logIn = (
@@ -52,7 +55,6 @@ export const Navbar = () => {
 	);
 
 	if (store.user_id === null && store.access_token === null) {
-		console.log(store.user_id, store.access_token);
 		return (
 			<nav className="navbarItems">
 				<AltLogo />
@@ -68,6 +70,11 @@ export const Navbar = () => {
 				</div>
 
 				<ul className={isClicked ? "nav-menu active" : "nav-menu"}>
+					<NotificationsButton
+						displayNotifications={displayNotifications}
+						setDisplayNotifications={setDisplayNotifications}
+					/>
+					{displayNotifications ? <NotificationsList /> : null}
 					{MenuItems.map((Item, index) => {
 						return (
 							<li key={index} onClick={handleClicked}>
@@ -77,6 +84,7 @@ export const Navbar = () => {
 							</li>
 						);
 					})}
+
 					<LogoutButton />
 				</ul>
 			</nav>

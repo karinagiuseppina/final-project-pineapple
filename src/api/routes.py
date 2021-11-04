@@ -82,7 +82,7 @@ def find_possible_matches():
         result_filter_by_process = User.filter_by_process(actual_user)
         append_user(users, result_filter_by_process) 
 
-    result_filter_by_couples = User.query.filter(and_(User.couple_id == actual_user.couple_id, User.id != user_id)).all()
+    result_filter_by_couples = User.filter_by_couple(actual_user)
     append_user(users, result_filter_by_couples)
     
 
@@ -95,13 +95,11 @@ def find_possible_matches():
     append_user(users, result_filter_by_centers)
     
     sort_users = sorted(users.items(), key=lambda x: x[1], reverse= True )
-    print(sort_users)
 
     for user in sort_users:
         if user[0] not in actual_user.users_connected:
             array_users.append(user[0])
 
-    print(array_users)
     posibles_matches_users = list(map (lambda user: user.serialize_to_show(), array_users))
 
     return jsonify(posibles_matches_users), 200
@@ -448,8 +446,14 @@ def get_user_notifications(id):
     user = User.get_user_by_id(id)
 
     notifications = user.notifications
+    notifications_seen = user.notifications
 
     notifications = list(map(lambda notification: notification.serialize(), notifications))
+
+    for notification_seen in notifications_seen:
+        print(notification_seen.is_new)
+        notification_seen.is_new = False
+    User.commit()
 
     return jsonify({"notification": notifications}), 200
 

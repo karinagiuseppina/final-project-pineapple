@@ -6,13 +6,7 @@ const ChatList = () => {
 	const [activeChat, setActiveChat] = useState(null);
 	const [showList, setShowList] = useState(true);
 	return (
-		<div className="container m-t-64">
-			<div className="page-title">
-				<div className="row gutters">
-					<div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12"> </div>
-				</div>
-			</div>
-
+		<div className="container-chat">
 			<div className="content-wrapper">
 				<div className="row gutters">
 					<div className="col-12 p-0">

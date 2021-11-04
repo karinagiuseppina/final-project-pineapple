@@ -64,7 +64,6 @@ export const UserChatList = ({ setActiveChat, showList, setShowList }) => {
 
 	const getChats = async () => {
 		let token = actions.getAccessToken();
-		console.log(token);
 
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/chats`, {
 			method: "GET",
@@ -95,9 +94,6 @@ export const UserChatList = ({ setActiveChat, showList, setShowList }) => {
 			chatsSelected.map(chat => {
 				return (
 					<li className="person" key={chat.id} onClick={() => handleActiveChat(chat)}>
-						<div className="d-flex justify-content-end">
-							<i className="fas fa-times" onClick={() => confirmDelete(chat)} />
-						</div>
 						<div className="user">
 							<img
 								src={chat.user.profile_img ? chat.user.profile_img : avatar1}
@@ -107,6 +103,9 @@ export const UserChatList = ({ setActiveChat, showList, setShowList }) => {
 						<p className="name-time">
 							<span className="name">{chat.user.name}</span>
 						</p>
+						<div className="d-flex justify-content-end">
+							<i className="fas fa-times" onClick={() => confirmDelete(chat)} />
+						</div>
 					</li>
 				);
 			})

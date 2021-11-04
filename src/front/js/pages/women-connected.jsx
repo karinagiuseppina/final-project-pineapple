@@ -42,7 +42,6 @@ export const WomenConnected = () => {
 	useEffect(() => {
 		setResultsInHTML(
 			results.map((result, i) => {
-				console.log(result);
 				return <PendingUsersCard result={result} key={i} deleteElementFromList={deleteElementFromList} />;
 			})
 		);

@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import propTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { HashtagProfile } from "./hashtagProfile";
-import avatar1 from "../../img/avatar1.png";
+import { AvatarImage } from "./avataImage";
 
 export const Card = ({ result, deleteElementFromList }) => {
 	const { store, actions } = useContext(Context);
@@ -37,7 +37,7 @@ export const Card = ({ result, deleteElementFromList }) => {
 		<div className="card-result">
 			<div className="card-body">
 				<div className="pro-img text-center">
-					<img className="avatar-img" src={result.profile_img ? result.profile_img : avatar1} alt="user" />
+					<AvatarImage profileImg={result.profile_img} classN={"avatar-img"} Atl={"avatar small image"} />
 				</div>
 				<h2 className="text-center text-prin">{result.name ? result.name : ""}</h2>
 				<p className="text-start px-md-4 py-md-2 p-1">{`${result.age} años`}</p>
