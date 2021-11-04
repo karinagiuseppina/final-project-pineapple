@@ -445,8 +445,8 @@ def get_user_notifications(id):
     notifications = list(map(lambda notification: notification.serialize(), notifications))
 
     for notification_seen in notifications_seen:
-        print(notification_seen.is_new)
-        notification_seen.is_new = False
+        if notification_seen.is_new == True:
+            notification_seen.is_new = False
     User.commit()
 
     return jsonify({"notification": notifications}), 200

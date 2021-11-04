@@ -73,14 +73,13 @@ export const Navbar = () => {
 				<div className="menu-icon" onClick={handleClicked}>
 					{isClicked ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
 				</div>
-				<NotificationsButton
-					displayNotifications={displayNotifications}
-					setDisplayNotifications={setDisplayNotifications}
-				/>
-				{displayNotifications ? <NotificationsList /> : null}
-				<ul className={isClicked ? "nav-menu active App-box" : "nav-menu"}>
-
 				<ul className={isClicked ? "nav-menu active" : "nav-menu"}>
+					<NotificationsButton
+						displayNotifications={displayNotifications}
+						setDisplayNotifications={setDisplayNotifications}
+					/>
+					{displayNotifications ? <NotificationsList /> : null}
+
 					{MenuItems.map((Item, index) => {
 						return (
 							<li key={index} onClick={handleClicked}>
