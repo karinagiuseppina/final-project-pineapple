@@ -3,14 +3,16 @@ import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router";
+import avatar1 from "../../img/avatar1.png";
 
-export const UserChatList = ({ setActiveChat }) => {
+export const UserChatList = ({ setActiveChat, showList, setShowList }) => {
 	const { store, actions } = useContext(Context);
 
 	const [chats, setChats] = useState([]);
 	const [chatsSelected, setChatsSelected] = useState([]);
 	const [chatsInHTML, setChatsInHTML] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
+	const [classList, setClassList] = useState("d-block");
 	let History = useHistory();
 
 	const confirmDelete = chat => {
@@ -84,17 +86,21 @@ export const UserChatList = ({ setActiveChat }) => {
 		getChats();
 	}, []);
 
+	const handleActiveChat = chat => {
+		setActiveChat(chat);
+		setShowList(!showList);
+	};
 	useEffect(() => {
 		setChatsInHTML(
 			chatsSelected.map(chat => {
 				return (
-					<li className="person" key={chat.id} onClick={() => setActiveChat(chat)}>
+					<li className="person" key={chat.id} onClick={() => handleActiveChat(chat)}>
 						<div className="d-flex justify-content-end">
 							<i className="fas fa-times" onClick={() => confirmDelete(chat)} />
 						</div>
 						<div className="user">
 							<img
-								src={chat.user.profile_img ? chat.user.profile_img : "https://via.placeholder.com/48"}
+								src={chat.user.profile_img ? chat.user.profile_img : avatar1}
 								alt={`profile image of ${chat.user.name}`}
 							/>
 						</div>
@@ -108,8 +114,8 @@ export const UserChatList = ({ setActiveChat }) => {
 	}, [chats, chatsSelected]);
 
 	return (
-		<div className="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
-			<div className="users-container">
+		<div className="col-md-4 col-12 p-0">
+			<div className={`users-container ${showList ? "show-user-list" : "user-list"}`}>
 				<div className="chat-search-box">
 					<div className="input-group">
 						<input
@@ -127,5 +133,7 @@ export const UserChatList = ({ setActiveChat }) => {
 };
 
 UserChatList.propTypes = {
-	setActiveChat: PropTypes.func
+	setActiveChat: PropTypes.func,
+	showList: PropTypes.bool,
+	setShowList: PropTypes.func
 };
