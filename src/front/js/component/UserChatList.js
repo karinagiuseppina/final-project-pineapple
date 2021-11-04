@@ -3,17 +3,21 @@ import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router";
-import useMediaQuery from "../useMediaQuery";
 
-export const UserChatList = ({ setActiveChat }) => {
+export const UserChatList = ({ setActiveChat, setClassactiveChat }) => {
 	const { store, actions } = useContext(Context);
 
 	const [chats, setChats] = useState([]);
 	const [chatsSelected, setChatsSelected] = useState([]);
 	const [chatsInHTML, setChatsInHTML] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
+
 	let History = useHistory();
-	const matches = useMediaQuery("(min-width: 767px)");
+
+	function handleClick(element) {
+		setActiveChat(element);
+		setClassactiveChat(true);
+	}
 
 	const confirmDelete = chat => {
 		Swal.fire({
@@ -74,7 +78,6 @@ export const UserChatList = ({ setActiveChat }) => {
 			const data = await resp.json();
 			setChats(data);
 			setChatsSelected(data);
-			if (data.length > 0) setActiveChat(data[0]);
 		} else if (resp.status === 401 || resp.status == 422) {
 			let resp = await actions.refresh_token();
 			if (resp.error) History.push("/login");
@@ -90,7 +93,7 @@ export const UserChatList = ({ setActiveChat }) => {
 		setChatsInHTML(
 			chatsSelected.map(chat => {
 				return (
-					<li className="person" key={chat.id} onClick={() => setActiveChat(chat)}>
+					<li className="person" key={chat.id} onClick={handleClick}>
 						<div className="d-flex justify-content-end">
 							<i className="fas fa-times" onClick={() => confirmDelete(chat)} />
 						</div>
@@ -110,28 +113,23 @@ export const UserChatList = ({ setActiveChat }) => {
 	}, [chats, chatsSelected]);
 
 	return (
-		<>
-			{!matches ? null : (
-				<div className="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
-					<div className="users-container">
-						<div className="chat-search-box">
-							<div className="input-group">
-								<input
-									className="form-control"
-									placeholder="Buscar piña"
-									value={searchInput}
-									onChange={e => setSearchInput(e.target.value)}
-								/>
-							</div>
-						</div>
-						<ul className="users">{chatsInHTML}</ul>
-					</div>
+		<div className="users-container col-md-4 col-sm-3">
+			<div className="chat-search-box">
+				<div className="input-group">
+					<input
+						className="form-control"
+						placeholder="Buscar piña"
+						value={searchInput}
+						onChange={e => setSearchInput(e.target.value)}
+					/>
 				</div>
-			)}
-		</>
+			</div>
+			<ul className="users">{chatsInHTML}</ul>
+		</div>
 	);
 };
 
 UserChatList.propTypes = {
-	setActiveChat: PropTypes.func
+	setActiveChat: PropTypes.func,
+	setClassactiveChat: PropTypes.func
 };

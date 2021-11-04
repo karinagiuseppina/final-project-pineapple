@@ -11,7 +11,7 @@ const NotificationsButton = ({ displayNotifications, setDisplayNotifications }) 
 				type="button"
 				className="button primary"
 				onClick={() => setDisplayNotifications(!displayNotifications)}>
-				<FontAwesomeIcon icon={solid("user-secret")} />
+				<FontAwesomeIcon icon={"user-secret"} />
 			</button>
 		</div>
 	);

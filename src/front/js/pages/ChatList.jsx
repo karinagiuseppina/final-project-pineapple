@@ -4,13 +4,16 @@ import { ActiveChat } from "../component/activeChat";
 
 const ChatList = () => {
 	const [activeChat, setActiveChat] = useState(null);
+	const [classActiveChat, setClassactiveChat] = useState(false);
 	return (
 		<div className="container">
-			<div className="row gutters">
-				<div className="row no-gutters">
-					<UserChatList setActiveChat={setActiveChat} />
-					<ActiveChat activeChat={activeChat} />
-				</div>
+			<div className="row no-gutters">
+				<UserChatList setActiveChat={setActiveChat} setClassactiveChat={setClassactiveChat} />
+				<ActiveChat
+					classActiveChat={classActiveChat}
+					activeChat={activeChat}
+					setClassactiveChat={setClassactiveChat}
+				/>
 			</div>
 		</div>
 	);

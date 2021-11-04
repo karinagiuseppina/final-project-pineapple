@@ -4,13 +4,12 @@ import PropTypes from "prop-types";
 import { ChatMessage } from "./chatMessage";
 import { AvatarImage } from "./avataImage";
 
-export const ActiveChat = ({ activeChat }) => {
+export const ActiveChat = ({ activeChat, classActiveChat, setClassActiveChat }) => {
 	const { store, actions } = useContext(Context);
 	const [messages, setMessages] = useState([]);
 	const [message, setMessage] = useState("");
 	const [messagesInHTML, setMessagesInHTML] = useState([]);
 	const [counter, setCounter] = useState(0);
-	const matches = useMediaQuery("(min-width: 767px)");
 
 	useEffect(() => {
 		if (activeChat) getMessages();
@@ -85,7 +84,7 @@ export const ActiveChat = ({ activeChat }) => {
 	}
 
 	return (
-		<div className="col-md-8 col-9">
+		<div className={classActiveChat ? "col-8  chat-container active" : "col-8  chat-container"}>
 			<div className="selected-user">
 				<span>
 					<AvatarImage
@@ -115,5 +114,7 @@ export const ActiveChat = ({ activeChat }) => {
 };
 
 ActiveChat.propTypes = {
-	activeChat: PropTypes.object
+	activeChat: PropTypes.object,
+	classActiveChat: PropTypes.bool,
+	setClassActiveChat: PropTypes.func
 };
