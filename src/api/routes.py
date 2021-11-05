@@ -228,8 +228,6 @@ def edit_profile():
     description = request.json.get("description", None) 
     profile_img = request.json.get("profile_img", None) 
 
-    print(password)
-
 
     if user_id != actual_user_id: 
         return jsonify({"msg": "Unauthorized"}), 401
@@ -251,7 +249,7 @@ def edit_profile():
         user.profile_img = profile_img
 
 
-    if password is not None:
+    if password is not None and password != "":
         password = password.encode('utf8')
         salt = bcrypt.gensalt()
         hashed_password = bcrypt.hashpw(password, salt)

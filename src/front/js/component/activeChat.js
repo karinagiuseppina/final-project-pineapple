@@ -23,7 +23,7 @@ export const ActiveChat = ({ activeChat, showList, setShowList }) => {
 	function beginCounter() {
 		setInterval(() => {
 			setCounter(count => count + 1);
-		}, 500000);
+		}, 15000);
 	}
 
 	useEffect(() => {
