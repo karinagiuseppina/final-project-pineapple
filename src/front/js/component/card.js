@@ -7,7 +7,6 @@ import { AvatarImage } from "./avataImage";
 
 export const Card = ({ result, deleteElementFromList }) => {
 	const { store, actions } = useContext(Context);
-	const [buttonText, setButtonText] = useState("Conectar");
 
 	const matchUser = async () => {
 		let token = actions.getAccessToken();
@@ -25,8 +24,7 @@ export const Card = ({ result, deleteElementFromList }) => {
 					"success",
 					"cerrar"
 				);
-				setButtonText("¡Piña conectada!");
-			} else setButtonText("¡Piña madurando!");
+			}
 		} else if (res.status === 401 || res.status == 422) {
 			let resp = await actions.refresh_token();
 			if (resp.error) History.push("/login");
@@ -60,7 +58,7 @@ export const Card = ({ result, deleteElementFromList }) => {
 				<div className="row justify-content-center">
 					<div className="col-12 col-md-6">
 						<button className="button primary" onClick={matchUser}>
-							{buttonText}
+							Conectar
 						</button>
 					</div>
 					<div className="col-12 col-md-6">
