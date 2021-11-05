@@ -23,9 +23,115 @@ api = Blueprint('api', __name__)
 # TEST DB    
 @api.route("/testdb", methods=['GET'])
 def fill_database():
-    f = open("./testDatabase.JSON", "r")
-    content = f.read()
-    jsondecoded = json.loads(content)
+    # f = open("./testDatabase.JSON", "r")
+    # content = f.read()
+    # jsondecoded = json.loads(content)
+
+    jsondecoded = { 
+    "users": [
+        {
+        "name": "Carla",
+        "email": "carla@email.com",
+        "age": 34,
+        "abortion_num": 2,
+        "password": "123"
+    
+    },
+    {
+        "name": "Maria",
+        "email": "maria@email.com",
+        "age": 50,
+        "abortion_num": 0,
+        "password": "123"
+    },
+    {
+        "name": "Johana",
+        "email": "johana@email.com",
+        "age": 28,
+        "abortion_num": 0,
+        "password": "123"
+    },
+    {
+        "name": "Juanita",
+        "email": "juanita@email.com",
+        "age": 43,
+        "abortion_num": 1,
+        "password": "123"
+    }
+    ],
+    
+    "centers": [
+        {
+            "type": "publico",
+            "weight": 1
+        },
+        {
+            "type": "privado",
+            "weight": 2
+        },
+        {
+            "type": "publico y privado",
+            "weight": 3
+        }
+    ],
+    
+    "treatments": [
+        {
+            "type": "FIV",
+            "weight": 1
+        },
+        {
+            "type": "ISIC",
+            "weight": 2
+        },
+        {
+            "type": "inseminacion artificial",
+            "weight": 3
+        }
+    ],
+    
+    "process_time_slots": [
+        {
+            "min_value": 0,
+            "max_value": 1,
+            "weight": 1
+        },
+        {
+            "min_value": 1,
+            "max_value": 2,
+            "weight": 2
+        },
+        {
+            "min_value": 2,
+            "max_value": 5,
+            "weight": 3
+        },
+        {
+            "min_value": 5,
+            "max_value": 5,
+            "weight": 4
+        }
+    ],
+    
+    "couples": [
+        {
+            "option": "No tengo", 
+            "weight": 1
+        },
+        {
+            "option": "Si tengo", 
+            "weight": 2
+        },
+        {
+            "option": "Con una mujer", 
+            "weight": 3
+        },
+        {
+            "option": "Con un hombre", 
+            "weight": 4
+        }
+    ]
+    }
 
     for center in jsondecoded['centers']:
         new_center = Center(type = center['type'], weight = center['weight'])
