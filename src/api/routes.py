@@ -23,115 +23,9 @@ api = Blueprint('api', __name__)
 # TEST DB    
 @api.route("/testdb", methods=['GET'])
 def fill_database():
-    # f = open("./testDatabase.JSON", "r")
-    # content = f.read()
-    # jsondecoded = json.loads(content)
-
-    jsondecoded = { 
-    "users": [
-        {
-        "name": "Carla",
-        "email": "carla@email.com",
-        "age": 34,
-        "abortion_num": 2,
-        "password": "123"
-    
-    },
-    {
-        "name": "Maria",
-        "email": "maria@email.com",
-        "age": 50,
-        "abortion_num": 0,
-        "password": "123"
-    },
-    {
-        "name": "Johana",
-        "email": "johana@email.com",
-        "age": 28,
-        "abortion_num": 0,
-        "password": "123"
-    },
-    {
-        "name": "Juanita",
-        "email": "juanita@email.com",
-        "age": 43,
-        "abortion_num": 1,
-        "password": "123"
-    }
-    ],
-    
-    "centers": [
-        {
-            "type": "publico",
-            "weight": 1
-        },
-        {
-            "type": "privado",
-            "weight": 2
-        },
-        {
-            "type": "publico y privado",
-            "weight": 3
-        }
-    ],
-    
-    "treatments": [
-        {
-            "type": "FIV",
-            "weight": 1
-        },
-        {
-            "type": "ISIC",
-            "weight": 2
-        },
-        {
-            "type": "inseminacion artificial",
-            "weight": 3
-        }
-    ],
-    
-    "process_time_slots": [
-        {
-            "min_value": 0,
-            "max_value": 1,
-            "weight": 1
-        },
-        {
-            "min_value": 1,
-            "max_value": 2,
-            "weight": 2
-        },
-        {
-            "min_value": 2,
-            "max_value": 5,
-            "weight": 3
-        },
-        {
-            "min_value": 5,
-            "max_value": 5,
-            "weight": 4
-        }
-    ],
-    
-    "couples": [
-        {
-            "option": "No tengo", 
-            "weight": 1
-        },
-        {
-            "option": "Si tengo", 
-            "weight": 2
-        },
-        {
-            "option": "Con una mujer", 
-            "weight": 3
-        },
-        {
-            "option": "Con un hombre", 
-            "weight": 4
-        }
-    ]
-    }
+    f = open("./testDatabase.JSON", "r")
+    content = f.read()
+    jsondecoded = json.loads(content)
 
     for center in jsondecoded['centers']:
         new_center = Center(type = center['type'], weight = center['weight'])
@@ -439,6 +333,7 @@ def refresh_token():
     return jsonify({"token": access_token})
 
 @api.route('/chat/<int:chat_id>/messages', methods=["GET"])
+@jwt_required()
 def get_conversation_messages(chat_id):
     chat = Chat.get_chat_by_id(chat_id)
     messages = chat.messages
@@ -606,9 +501,8 @@ def delete_chat(id):
 @api.route('/decline_user_connected/<user_requesting>', methods=['PUT'])
 @jwt_required()
 def decline_user_connected(user_requesting):
-    user_listening = get_jwt_identity()
+    user_listening = User.get_user_by_id(get_jwt_identity())
     user_requesting = User.get_user_by_id(user_requesting)
-
     user_requesting.users_connected.remove(user_listening)
     User.commit()
     return jsonify({"msg": "ok"}), 200

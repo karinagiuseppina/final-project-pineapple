@@ -31,7 +31,7 @@ NormalInputPassword.propTypes = {
 	placeholder: PropTypes.string,
 	value: oneOfType([PropTypes.string, PropTypes.number]),
 	set: PropTypes.func,
-	icon: PropTypes.elementType,
+	icon: PropTypes.element,
 	attr: PropTypes.string,
 	required: PropTypes.bool,
 	click: PropTypes.func

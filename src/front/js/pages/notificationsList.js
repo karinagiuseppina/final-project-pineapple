@@ -29,13 +29,11 @@ const NotificationsList = () => {
 		getNotifications(user_id, setNotificationsList);
 	}, []);
 
-	console.log(notificationsList);
 	return (
 		<div className="notifications-wrapper">
 			{notificationsList.length > 0 ? (
 				<ul className="notifications-ul list-group">
 					{notificationsList.map((notification, index) => {
-						console.log("from map: ", notification);
 						return (
 							<li
 								className={
