@@ -23,7 +23,7 @@ api = Blueprint('api', __name__)
 # TEST DB    
 @api.route("/testdb", methods=['GET'])
 def fill_database():
-    f = open("/workspace/final-project-pineapple/src/api/testDatabase.JSON", "r")
+    f = open("./testDatabase.JSON", "r")
     content = f.read()
     jsondecoded = json.loads(content)
 
