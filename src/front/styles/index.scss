@@ -100,7 +100,13 @@ body{
 
 }
 
-.button{
+.button-small {
+  padding: 2px 4px;
+  margin: 4px 2px;
+  width: 20%;
+  display: block;
+}
+.button, .button-notifications{
   padding: 0.8em 0.8em;
   background: var(--primary);
   border-radius: 8px;
@@ -111,6 +117,10 @@ body{
   text-align: center;
   border: 0px;
   width: 100%;
+}
+
+.button-notifications {
+  position: relative;
 }
    a:hover{
     color: var(--main-text);
@@ -444,14 +454,23 @@ img{
 
 .notifications-wrapper {
   height: 200px;
-  width: 350px;
-  display: flex;
+  width: 300px;
+  display: block;
+  position: absolute;
+  left: 27.7vw;
   background-color: #f9f9f9;
   border: 1px solid var(--details);
-  transform: translateY(13.5vh);
+  transform: translateY(12.5vh);
+  opacity: 0;
   z-index: 10;
   border-radius: 5px 5px;
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2);
+  //transition: opacity 300ms ease-in-out, transform 200ms ease-in-out;
+}
 
+.nav-menu >  .notifications-wrapper {
+  opacity: 1;
+  transform: translateY(14.5vh);
 }
 
 .notifications-ul {
@@ -460,9 +479,11 @@ img{
   font-size: 0.9rem;
   
 }
-
-.notifications-li {
-  list-style: none;
+.li {
+  background-color: var(--primary)
+}
+.li-seen {
+  background-color: #f9f9f9;
 }
 
 

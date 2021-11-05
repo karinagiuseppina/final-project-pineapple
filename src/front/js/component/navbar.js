@@ -68,7 +68,6 @@ export const Navbar = () => {
 				<div className="menu-icon" onClick={handleClicked}>
 					{isClicked ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
 				</div>
-
 				<ul className={isClicked ? "nav-menu active" : "nav-menu"}>
 					<NotificationsButton
 						displayNotifications={displayNotifications}
