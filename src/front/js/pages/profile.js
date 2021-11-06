@@ -56,7 +56,7 @@ export const Profile = () => {
 				<div className="row justify-content-center">
 					<div className="col-12 col-md-6">
 						<Link to={"/editProfile"}>
-							<ButtonType classN="button primary" type="button" value="Edit Profile" />
+							<ButtonType classN="button primary" type="button" value="Editar mi perfil" />
 						</Link>
 					</div>
 				</div>

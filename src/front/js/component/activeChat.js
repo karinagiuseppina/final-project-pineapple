@@ -23,7 +23,7 @@ export const ActiveChat = ({ activeChat, showList, setShowList }) => {
 	function beginCounter() {
 		setInterval(() => {
 			setCounter(count => count + 1);
-		}, 15000);
+		}, 6000);
 	}
 
 	useEffect(() => {
@@ -90,7 +90,7 @@ export const ActiveChat = ({ activeChat, showList, setShowList }) => {
 
 	if (activeChat === null) {
 		return (
-			<div className="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+			<div className="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9 p-4 text-center">
 				¡Vaya! ¡No tienes piñas añadidas, comienza a buscar!
 			</div>
 		);
