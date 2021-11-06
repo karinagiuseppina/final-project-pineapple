@@ -10,7 +10,7 @@ const NotificationsButton = ({ displayNotifications, setDisplayNotifications }) 
 			type="button"
 			className="button-notifications primary"
 			onClick={() => setDisplayNotifications(!displayNotifications)}>
-			<FontAwesomeIcon icon={faBell} />
+			<FontAwesomeIcon className="bell-icon" icon={faBell} />
 		</button>
 	);
 };

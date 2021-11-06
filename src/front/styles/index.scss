@@ -106,7 +106,7 @@ body{
   width: 20%;
   display: block;
 }
-.button, .button-notifications{
+.button{
   padding: 0.8em 0.8em;
   background: var(--primary);
   border-radius: 8px;
@@ -121,6 +121,16 @@ body{
 
 .button-notifications {
   position: relative;
+  padding: 0.6em 0.6em;
+  background: var(--primary);
+  border-radius: 8px;
+  font: var(--button);
+  border: 0px;
+  text-decoration: none !important;
+}
+
+.bell-icon {
+  color: #477c26;
 }
    a:hover{
     color: var(--main-text);

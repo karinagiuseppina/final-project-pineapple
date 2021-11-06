@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { AltLogo } from "./altLogo";
+import useMediaQuery from "../useMediaQuery";
 
 export const Navbar = () => {
 	const MenuItems = [
@@ -41,6 +42,7 @@ export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	const [isClicked, setIsClicked] = useState(false);
 	const [displayNotifications, setDisplayNotifications] = useState(false);
+	const matches = useMediaQuery("(min-width: 960px)");
 
 	const handleClicked = () => {
 		setIsClicked(isClicked ? false : true);
@@ -53,6 +55,24 @@ export const Navbar = () => {
 			</Link>
 		</li>
 	);
+	console.log(matches);
+
+	const notificationInsideUl = !matches ? null : (
+		<NotificationsButton
+			displayNotifications={displayNotifications}
+			setDisplayNotifications={setDisplayNotifications}
+		/>
+	);
+	console.log(notificationInsideUl);
+
+	const notificationOutsideUl = !matches ? (
+		<NotificationsButton
+			displayNotifications={displayNotifications}
+			setDisplayNotifications={setDisplayNotifications}
+		/>
+	) : null;
+
+	const showNotificationsBox = displayNotifications ? <NotificationsList /> : null;
 
 	if (store.user_id === null && store.access_token === null) {
 		return (
@@ -68,12 +88,12 @@ export const Navbar = () => {
 				<div className="menu-icon" onClick={handleClicked}>
 					{isClicked ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
 				</div>
+				{notificationOutsideUl}
 				<ul className={isClicked ? "nav-menu active" : "nav-menu"}>
-					<NotificationsButton
-						displayNotifications={displayNotifications}
-						setDisplayNotifications={setDisplayNotifications}
-					/>
-					{displayNotifications ? <NotificationsList /> : null}
+					{notificationInsideUl}
+					{matches ? showNotificationsBox : showNotificationsBox}
+					{!matches ? showNotificationsBox : showNotificationsBox}
+
 					{MenuItems.map((Item, index) => {
 						return (
 							<li key={index} onClick={handleClicked}>
@@ -83,10 +103,14 @@ export const Navbar = () => {
 							</li>
 						);
 					})}
-
 					<LogoutButton />
 				</ul>
 			</nav>
 		);
 	}
 };
+
+/* 
+{notificationOutsideUl}
+{!matches ? showNotificationsBox : null} 
+*/
