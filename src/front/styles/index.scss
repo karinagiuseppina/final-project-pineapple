@@ -127,6 +127,7 @@ body{
   font: var(--button);
   border: 0px;
   text-decoration: none !important;
+  margin: 0 0.6em;
 }
 
 .bell-icon {
@@ -467,15 +468,14 @@ img{
   width: 300px;
   display: block;
   position: absolute;
-  right: -0;
+  right: 10px;
   top: 57px;
   background-color: #f9f9f9;
   border: 1px solid var(--details);
-  overflow: hidden;
+  overflow: auto;
   z-index: 100;
   border-radius: 5px 5px;
   box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2);
-  //transition: opacity 300ms ease-in-out, transform 200ms ease-in-out;
 }
 
 .notifications-wrapper::-webkit-scrollbar {
