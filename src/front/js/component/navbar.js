@@ -2,11 +2,11 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import LogoutButton from "./LogoutButton.jsx";
-import NotificationsButton from "./notificationsButton";
 import NotificationsList from "../pages/notificationsList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { AltLogo } from "./altLogo";
 
 export const Navbar = () => {
@@ -41,6 +41,7 @@ export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	const [isClicked, setIsClicked] = useState(false);
 	const [displayNotifications, setDisplayNotifications] = useState(false);
+	const [insideUl, setInsideUl] = useState(true);
 
 	const handleClicked = () => {
 		setIsClicked(isClicked ? false : true);
@@ -53,6 +54,16 @@ export const Navbar = () => {
 			</Link>
 		</li>
 	);
+	const notificationsButton = (
+		<button
+			type="button"
+			className="button-notifications"
+			onClick={() => setDisplayNotifications(!displayNotifications)}>
+			<FontAwesomeIcon className="bell-icon" icon={faBell} />
+		</button>
+	);
+
+	const showNotificationsBox = displayNotifications ? <NotificationsList /> : null;
 
 	if (store.user_id === null && store.access_token === null) {
 		return (
@@ -68,24 +79,25 @@ export const Navbar = () => {
 				<div className="menu-icon" onClick={handleClicked}>
 					{isClicked ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
 				</div>
-				<ul className={isClicked ? "nav-menu active" : "nav-menu"}>
-					<NotificationsButton
-						displayNotifications={displayNotifications}
-						setDisplayNotifications={setDisplayNotifications}
-					/>
-					{displayNotifications ? <NotificationsList /> : null}
-					{MenuItems.map((Item, index) => {
-						return (
-							<li key={index} onClick={handleClicked}>
-								<Link className={Item.cName} to={Item.url}>
-									{Item.title}
-								</Link>
-							</li>
-						);
-					})}
 
-					<LogoutButton />
-				</ul>
+				<div className="navbar-items-wrapper">
+					<div className="notifications-container">
+						{notificationsButton}
+						{showNotificationsBox}
+					</div>
+					<ul className={isClicked ? "nav-menu active" : "nav-menu"}>
+						{MenuItems.map((Item, index) => {
+							return (
+								<li key={index} onClick={handleClicked}>
+									<Link className={Item.cName} to={Item.url}>
+										{Item.title}
+									</Link>
+								</li>
+							);
+						})}
+						<LogoutButton />
+					</ul>
+				</div>
 			</nav>
 		);
 	}

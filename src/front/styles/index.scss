@@ -106,7 +106,7 @@ body{
   width: 20%;
   display: block;
 }
-.button, .button-notifications{
+.button{
   padding: 0.8em 0.8em;
   background: var(--primary);
   border-radius: 8px;
@@ -121,6 +121,17 @@ body{
 
 .button-notifications {
   position: relative;
+  padding: 0.6em 0.6em;
+  background: var(--primary);
+  border-radius: 8px;
+  font: var(--button);
+  border: 0px;
+  text-decoration: none !important;
+  margin: 0 0.6em;
+}
+
+.bell-icon {
+  color: #477c26;
 }
    a:hover{
     color: var(--main-text);
@@ -457,20 +468,33 @@ img{
   width: 300px;
   display: block;
   position: absolute;
-  left: 27.7vw;
+  right: 10px;
+  top: 57px;
   background-color: #f9f9f9;
   border: 1px solid var(--details);
-  transform: translateY(12.5vh);
-  opacity: 0;
-  z-index: 10;
+  overflow: auto;
+  z-index: 100;
   border-radius: 5px 5px;
   box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2);
-  //transition: opacity 300ms ease-in-out, transform 200ms ease-in-out;
 }
 
-.nav-menu >  .notifications-wrapper {
-  opacity: 1;
-  transform: translateY(14.5vh);
+.notifications-wrapper::-webkit-scrollbar {
+  width: 1em;
+}
+
+.notifications-wrapper::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.notifications-wrapper::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  outline: var(--secondary-shadow);
+}
+
+.notifications-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .notifications-ul {
@@ -484,6 +508,26 @@ img{
 }
 .li-seen {
   background-color: #f9f9f9;
+}
+
+.inside-ul {
+  display: block;
+}
+
+.outside-ul {
+  display: none;
+}
+
+@media screen and (max-width:960px) {
+  .inside-ul {
+      display: none;
+
+  }
+
+  .outside-ul {
+    display: block;
+
+  } 
 }
 
 
