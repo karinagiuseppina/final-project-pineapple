@@ -12,7 +12,15 @@
     width: 100%;
     z-index: 999;
 }
+ .navbar-items-wrapper {
+     display: flex;
+     flex-direction: row-reverse;
+     
 
+     @media screen and (min-width: 960px) {
+         flex-direction: row;
+     }
+ }
 
 .nav-menu-login{
     display:flex;
