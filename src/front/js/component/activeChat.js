@@ -117,7 +117,7 @@ export const ActiveChat = ({ activeChat, showList, setShowList }) => {
 				<div className="chat-writer">
 					<input
 						type="text"
-						className="form-control flex-grow-1"
+						className="form-control flex-grow-1 border-0"
 						onChange={e => setMessage(e.target.value)}
 						value={message}
 						onKeyDown={e => {

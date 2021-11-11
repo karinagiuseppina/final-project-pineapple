@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import LogoutButton from "./LogoutButton.jsx";
@@ -46,6 +46,9 @@ export const Navbar = () => {
 	const handleClicked = () => {
 		setIsClicked(isClicked ? false : true);
 	};
+	useEffect(() => {
+		setIsClicked(false);
+	}, []);
 
 	const logIn = (
 		<li>

@@ -9,6 +9,7 @@ export const MoreUserInfo = () => {
 	const [user, setUser] = useState({});
 	const { id } = useParams();
 	const [buttonText, setButtonText] = useState("Conectar");
+	const [waiting, setwaiting] = useState(0);
 
 	const matchUser = async () => {
 		let token = actions.getAccessToken();
@@ -42,53 +43,80 @@ export const MoreUserInfo = () => {
 		if (resp.ok) {
 			const user_data = await resp.json();
 			setUser(user_data);
+			setwaiting(1);
 		}
 	};
 
 	useEffect(() => {
 		getUserData(id);
 	}, []);
+	if (waiting === 0) {
+		return (
+			<div className="card-result">
+				<div className="card-body"></div>
 
-	return (
-		<div className="card-result">
-			<div className="card-body">
-				<div className="pro-img text-center">
-					<AvatarImage profileImg={user.profile_img} classN={"avatar-img"} Atl={"avatar small image"} />
-				</div>
-				<h2 className="text-center text-prin">{user.name ? user.name : ""}</h2>
-				<p className="text-start px-md-4 py-md-2">{`${user.age} años`}</p>
-				{user.description ? <p className="text-description px-md-4 py-md-2 p-1">{user.description}</p> : ""}
-
-				<div className="row justify-content-end">
-					<div className="col-12 d-flex flex-wrap justify-content-center">
-						{user.abortion_num ? <HashtagProfile text={`${user.abortion_num} muerte(s) gestacional(es)`} /> : ""}
-						{user.center ? <HashtagProfile text={`Centro ${user.center}`} /> : ""}
-
-						{user.process ? <HashtagProfile text={`${user.process} año(s) en búsqueda`} /> : ""}
-
-						{user.treatment ? <HashtagProfile text={user.treatment} /> : ""}
-
-						{user.couple ? <HashtagProfile text={user.couple} /> : ""}
+				<div className="card-footer p-4">
+					<div className="row justify-content-center">
+						<div className="col-12 col-md-6">
+							<button className="button primary " onClick={matchUser}>
+								{buttonText}
+							</button>
+						</div>
+						<div className="col-12 col-md-6">
+							<Link to={`/list-of-women`}>
+								<button className="button secondary">Ver otras piñas</button>
+							</Link>
+						</div>
 					</div>
 				</div>
 			</div>
-
-			<div className="card-footer p-4">
-				<div className="row justify-content-center">
-					<div className="col-12 col-md-6">
-						<button className="button primary " onClick={matchUser}>
-							{buttonText}
-						</button>
+		);
+	} else {
+		return (
+			<div className="card-result">
+				<div className="card-body">
+					<div className="pro-img text-center">
+						<AvatarImage profileImg={user.profile_img} classN={"avatar-img"} Atl={"avatar small image"} />
 					</div>
-					<div className="col-12 col-md-6">
-						<Link to={`/list-of-women`}>
-							<button className="button secondary">Ver otras piñas</button>
-						</Link>
+					<h2 className="text-center text-prin">{user.name ? user.name : ""}</h2>
+					<p className="text-start px-md-4 py-md-2">{`${user.age} años`}</p>
+					{user.description ? <p className="text-description px-md-4 py-md-2 p-1">{user.description}</p> : ""}
+
+					<div className="row justify-content-end">
+						<div className="col-12 d-flex flex-wrap justify-content-center">
+							{user.abortion_num ? (
+								<HashtagProfile text={`${user.abortion_num} muerte(s) gestacional(es)`} />
+							) : (
+								""
+							)}
+							{user.center ? <HashtagProfile text={`Centro ${user.center}`} /> : ""}
+
+							{user.process ? <HashtagProfile text={`${user.process} año(s) en búsqueda`} /> : ""}
+
+							{user.treatment ? <HashtagProfile text={user.treatment} /> : ""}
+
+							{user.couple ? <HashtagProfile text={user.couple} /> : ""}
+						</div>
+					</div>
+				</div>
+
+				<div className="card-footer p-4">
+					<div className="row justify-content-center">
+						<div className="col-12 col-md-6">
+							<button className="button primary " onClick={matchUser}>
+								{buttonText}
+							</button>
+						</div>
+						<div className="col-12 col-md-6">
+							<Link to={`/list-of-women`}>
+								<button className="button secondary">Ver otras piñas</button>
+							</Link>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	);
+		);
+	}
 };
 
 // <div className="container-fluid bg-light p-md-4 p-0">

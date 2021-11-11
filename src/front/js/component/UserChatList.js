@@ -116,7 +116,7 @@ export const UserChatList = ({ setActiveChat, showList, setShowList }) => {
 		<div className="col-md-4 col-12 p-0">
 			<div className={`users-container ${showList ? "show-user-list" : "user-list"}`}>
 				<div className="chat-search-box">
-					<div className="input-group">
+					<div className="input-group m-0">
 						<input
 							className="form-control"
 							placeholder="Buscar piña"
