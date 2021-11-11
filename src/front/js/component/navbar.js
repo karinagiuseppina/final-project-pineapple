@@ -43,6 +43,7 @@ export const Navbar = () => {
 	const [displayNotifications, setDisplayNotifications] = useState(false);
 	const [insideUl, setInsideUl] = useState(true);
 
+	console.log(isClicked);
 	const handleClicked = () => {
 		setIsClicked(isClicked ? false : true);
 	};
@@ -95,7 +96,7 @@ export const Navbar = () => {
 								</li>
 							);
 						})}
-						<LogoutButton />
+						<LogoutButton setIsClicked={setIsClicked} isClicked={isClicked} />
 					</ul>
 				</div>
 			</nav>
