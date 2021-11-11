@@ -32,7 +32,11 @@ export const Profile = () => {
 		<div className="card-result">
 			<div className="card-body">
 				<div className="pro-img text-center">
-					<AvatarImage profileImg={user.profile_img} classN={"avatar-img"} Atl={"avatar small image"} />
+					<img
+						className="avatar-img"
+						src={user.profile_img ? user.profile_img : ""}
+						alt="avatar small image"
+					/>
 				</div>
 				<h2 className="text-center text-prin">{user.name ? user.name : ""}</h2>
 				<p className="text-start px-md-4 py-md-2">{`${user.age} años`}</p>

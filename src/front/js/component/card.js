@@ -4,9 +4,32 @@ import propTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { HashtagProfile } from "./hashtagProfile";
 import { AvatarImage } from "./avataImage";
+import avatar1 from "../../img/avatar1.png";
+import avatar2 from "../../img/avatar2.png";
+import avatar3 from "../../img/avatar3.png";
 
 export const Card = ({ result, deleteElementFromList }) => {
 	const { store, actions } = useContext(Context);
+
+	const avatars = [avatar1, avatar2, avatar3];
+
+	function avatarRandomImage(array) {
+		const randomIndex = Math.floor(Math.random() * array.length);
+		const avatar = array[randomIndex];
+		return avatar;
+	}
+
+	async function setImage() {
+		const userId = result.id;
+		await fetch(`${process.env.BACKEND_URL}/api/set-image`, {
+			method: "PUT",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				profile_img: avatarRandomImage(avatars),
+				user_id: userId
+			})
+		});
+	}
 
 	const matchUser = async () => {
 		let token = actions.getAccessToken();
@@ -35,7 +58,11 @@ export const Card = ({ result, deleteElementFromList }) => {
 		<div className="card-result">
 			<div className="card-body">
 				<div className="pro-img text-center">
-					<AvatarImage profileImg={result.profile_img} classN={"avatar-img"} Atl={"avatar small image"} />
+					<img
+						className="avatar-img"
+						src={result.profile_img ? result.profile_img : setImage()}
+						alt="samll avatar image"
+					/>
 				</div>
 				<h2 className="text-center text-prin">{result.name ? result.name : ""}</h2>
 				<p className="text-start px-md-4 py-md-2 p-1">{`${result.age} años`}</p>

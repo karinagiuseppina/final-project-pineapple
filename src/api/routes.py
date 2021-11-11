@@ -205,16 +205,29 @@ def get_centers():
     centers = list(map(lambda center: center.serialize(), centers))
     return jsonify(centers), 200
 
+@api.route("/set-image", methods=["PUT"])
+def set_image():
+    
+    profile_img = request.json.get("profile_img") 
+    user_id = request.json.get("user_id")
+    user= User.get_user_by_id(user_id)
+    user.profile_img = profile_img
+    User.commit()
+    print(profile_img)
+
+    return jsonify(user.id), 200
+
 @api.route("/create-user", methods=["POST"])
 def create_user():
     name = request.json.get("name")
     email =request.json.get("email")
     age = request.json.get("age")
+    profile_img = request.json.get("profileImage")
     password = request.json.get("password").encode('utf8')
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
     decoded_password = hashed_password.decode('utf8')
-    user = User(name=name, email=email, age=age, password=decoded_password)
+    user = User(name=name, email=email, age=age, profile_img=profile_img, password=decoded_password)
 
     User.save(user)
 

@@ -7,9 +7,11 @@ import { NormalInput } from "../component/normalInput";
 import { ButtonType } from "../component/buttonType";
 import { NormalInputPassword } from "../component/normalInputPassword";
 import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
+import avatar1 from "../../img/avatar1.png";
+import avatar2 from "../../img/avatar2.png";
+import avatar3 from "../../img/avatar3.png";
 
 export const Signup2 = () => {
-	const eye = <FontAwesomeIcon icon={faEye} />;
 	const History = useHistory();
 	const { store, actions } = useContext(Context);
 	const name = store.initialUser.name;
@@ -20,6 +22,13 @@ export const Signup2 = () => {
 	const togglePasswordVisiblity = () => {
 		setPasswordShown(passwordShown ? false : true);
 	};
+	const avatars = [avatar1, avatar2, avatar3];
+
+	function avatarRandomImage(array) {
+		const randomIndex = Math.floor(Math.random() * array.length);
+		const avatar = array[randomIndex];
+		return avatar;
+	}
 
 	async function createUser(event) {
 		event.preventDefault();
@@ -31,7 +40,8 @@ export const Signup2 = () => {
 				name: name,
 				age: age,
 				email: email,
-				password: password
+				password: password,
+				profileImage: avatarRandomImage(avatars)
 			})
 		});
 

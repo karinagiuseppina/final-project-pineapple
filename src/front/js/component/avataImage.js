@@ -12,7 +12,7 @@ export const AvatarImage = ({ classN, Alt, profileImg }) => {
 		const avatar = array[randomIndex];
 		return avatar;
 	}
-	return <img className={classN} src={profileImg ? profileImg : avatarRandomImage(avatars)} alt={Alt} />;
+	return <img className={classN} src={profileImg ? profileImg : ""} alt={Alt} />;
 };
 
 AvatarImage.propTypes = {
