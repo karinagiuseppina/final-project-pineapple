@@ -258,16 +258,18 @@ ul {
 
 
   @media (max-width: 767px) {
-    .container-chat{
-          display: flex;
-          flex-direction: column;
-          align-content: center;
-          justify-content: center;
-          align-items: center;
-          background-color: var(--neutral-ligth);
-          border-radius: 8px;
-          border: 1px solid var(--details)
-        }
+    .container-chat {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15px;
+        border: 0;
+        background: none;
+        padding: 0;
+        margin: 84px 30px 20px;
+    }
     .btn-chats {
         display: block;
         border: 0;
@@ -275,7 +277,7 @@ ul {
         color: var(--accents);
     }
     .chat-writer{
-        margin: 3px 0 3px 3px;
+        margin: 0;
     }
     .card-chat{
         margin:0;
@@ -292,6 +294,8 @@ ul {
     }
     .show-active-chat, .show-user-list{
         display:flex;
+        border: 1px solid var(--details);
+        border-radius:8px
     }
     .active-chat, .user-list {
         display: none;
