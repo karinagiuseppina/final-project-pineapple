@@ -23,7 +23,7 @@ export const ActiveChat = ({ activeChat, showList, setShowList }) => {
 	function beginCounter() {
 		setInterval(() => {
 			setCounter(count => count + 1);
-		}, 500000);
+		}, 6000);
 	}
 
 	useEffect(() => {
@@ -34,11 +34,18 @@ export const ActiveChat = ({ activeChat, showList, setShowList }) => {
 		let token = actions.getAccessToken();
 		const response = await fetch(`${process.env.BACKEND_URL}/api/chat/${activeChat.id}/messages`, {
 			headers: {
-				"Content-Type": "application/json"
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + token
 			}
 		});
-		const responseJson = await response.json();
-		setMessages(responseJson);
+		if (response.ok) {
+			const responseJson = await response.json();
+			setMessages(responseJson);
+		} else if (res.status === 401 || res.status == 422) {
+			let resp = await actions.refresh_token();
+			if (resp.error) History.push("/login");
+			else sendMessage();
+		}
 	};
 
 	async function sendMessage() {
@@ -53,9 +60,15 @@ export const ActiveChat = ({ activeChat, showList, setShowList }) => {
 				message: message
 			})
 		});
-		const responseJson = await response.json();
-		setMessages([...messages, responseJson]);
-		setMessage("");
+		if (response.ok) {
+			const responseJson = await response.json();
+			setMessages([...messages, responseJson]);
+			setMessage("");
+		} else if (res.status === 401 || res.status == 422) {
+			let resp = await actions.refresh_token();
+			if (resp.error) History.push("/login");
+			else sendMessage();
+		}
 	}
 
 	useEffect(() => {
@@ -77,7 +90,7 @@ export const ActiveChat = ({ activeChat, showList, setShowList }) => {
 
 	if (activeChat === null) {
 		return (
-			<div className="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+			<div className="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9 p-4 text-center">
 				¡Vaya! ¡No tienes piñas añadidas, comienza a buscar!
 			</div>
 		);
@@ -107,6 +120,9 @@ export const ActiveChat = ({ activeChat, showList, setShowList }) => {
 						className="form-control flex-grow-1"
 						onChange={e => setMessage(e.target.value)}
 						value={message}
+						onKeyDown={e => {
+							if (e.keyCode === 13) sendMessage();
+						}}
 					/>
 					<button onClick={sendMessage} className="button primary">
 						Enviar

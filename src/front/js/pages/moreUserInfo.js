@@ -61,7 +61,11 @@ export const MoreUserInfo = () => {
 
 				<div className="row justify-content-end">
 					<div className="col-12 d-flex flex-wrap justify-content-center">
-						{user.abortion_num ? <HashtagProfile text={`${user.abortion_num} pérdida(s)`} /> : ""}
+						{user.abortion_num ? (
+							<HashtagProfile text={`${user.abortion_num} muerte(s) gestacional(es)`} />
+						) : (
+							""
+						)}
 						{user.center ? <HashtagProfile text={`Centro ${user.center}`} /> : ""}
 
 						{user.process ? <HashtagProfile text={`${user.process} año(s) en búsqueda`} /> : ""}

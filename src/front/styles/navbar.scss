@@ -7,9 +7,20 @@
     align-items: center;
     font-size: 1.2rem;
     flex-direction: row;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
 }
+ .navbar-items-wrapper {
+     display: flex;
+     flex-direction: row-reverse;
+     
 
-
+     @media screen and (min-width: 960px) {
+         flex-direction: row;
+     }
+ }
 
 .nav-menu-login{
     display:flex;
@@ -22,7 +33,7 @@
 
 .nav-menu{
     display: grid;
-    grid-template-columns: repeat(6, auto);
+    grid-template-columns: repeat(7, auto);
     list-style: none;
     grid-gap: 10px;
     text-align: center;
@@ -32,7 +43,7 @@
 }
 .nav-menu.active{
     display: grid;
-    grid-template-columns: repeat(6, auto);
+    grid-template-columns: repeat(7, auto);
     list-style: none;
     grid-gap: 10px;
     text-align: center;
@@ -87,7 +98,7 @@
 
 @media screen and (max-width:960px){
     .navbarItems{
-        position: relative;
+        // position: relative;
     }
     .nav-menu{
         display:flex;

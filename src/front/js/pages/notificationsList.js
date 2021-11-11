@@ -4,43 +4,54 @@ import { Context } from "../store/appContext";
 const NotificationsList = () => {
 	const { store, actions } = useContext(Context);
 	const [notificationsList, setNotificationsList] = useState([]);
+	const [hovered, setHovered] = useState(false);
 
 	const user_id = store.user_id;
+	const notificationSeen = "li-seen";
+
+	const isHovered = listItem => {
+		listItem.is_new = false;
+	};
 
 	const getNotifications = async (id, setFn) => {
-		let extractedData = [];
 		const response = await fetch(`${process.env.BACKEND_URL}/api/user/${id}/notifications`, {
 			method: "GET",
 			headers: { "Content-Type": "application/json" }
 		});
 		if (response.ok) {
 			const data = await response.json();
-			console.log(data.notification);
 
 			setFn(data.notification);
 		}
 	};
+
 	useEffect(() => {
 		getNotifications(user_id, setNotificationsList);
 	}, []);
 
-	console.log(notificationsList);
 	return (
 		<div className="notifications-wrapper">
-			{notificationsList >= 0 ? (
-				<ul className="notifications-ul">
+			{notificationsList.length > 0 ? (
+				<ul className="notifications-ul list-group">
 					{notificationsList.map((notification, index) => {
-						console.log("from map: ", notification);
 						return (
-							<li className="notifications-li" key={index}>
+							<li
+								className={
+									notification.is_new === false
+										? `list-group-item ${notificationSeen}`
+										: "list-group-item li"
+								}
+								li
+								onMouseOver={isHovered(notification)}
+								key={index}>
 								{notification.name}
 							</li>
 						);
 					})}
 				</ul>
 			) : (
-				<ul className="notifications-ul">
-					<li className="notifications-li">No tienes notificaciones de momento..</li>
+				<ul className="notifications-ul list-group">
+					<li className="list-group-item">No tienes notificaciones de momento..</li>
 				</ul>
 			)}
 		</div>

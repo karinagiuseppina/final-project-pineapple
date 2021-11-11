@@ -21,7 +21,6 @@ import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
-import { FilterUsers } from "./pages/filterUsers";
 import { WomenConnected } from "./pages/women-connected.jsx";
 import { FriendRequestList } from "./pages/friendRequestList";
 

@@ -47,17 +47,6 @@ export const Signup2 = () => {
 			let data = await response.json();
 			actions.setUserSession(data.token, data.user_id);
 		}
-
-		// const responseJson = await response.json();
-
-		// if (responseJson.access_token) {
-		// 	localStorage.setItem("access_token", responseJson.access_token);
-		// }
-		// const resJson = await res.json();
-		// if (resJson) {
-		// 	localStorage.setItem("user_id", resJson);
-		// }
-		console.log(store.access_token);
 		actions.updateInitialUser({});
 		History.push("/signup-3");
 	}

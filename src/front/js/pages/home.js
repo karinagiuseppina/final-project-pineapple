@@ -1,12 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import pinaPartidaNombre from "../../img/pina-partida-nombre.jpg";
 import "../../styles/home.scss";
 import { Link } from "react-router-dom";
 import { AltLogo } from "../component/altLogo";
+import { useHistory } from "react-router";
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);
+	const history = useHistory();
+
+	useEffect(() => {
+		const token = actions.getAccessToken();
+		if (token) {
+			history.push("/list-of-women");
+		}
+	}, []);
 
 	return (
 		<div className="App-box">

@@ -23,7 +23,7 @@ api = Blueprint('api', __name__)
 # TEST DB    
 @api.route("/testdb", methods=['GET'])
 def fill_database():
-    f = open("/workspace/final-project-pineapple/src/api/testDatabase.JSON", "r")
+    f = open("./testDatabase.JSON", "r")
     content = f.read()
     jsondecoded = json.loads(content)
 
@@ -82,7 +82,7 @@ def find_possible_matches():
         result_filter_by_process = User.filter_by_process(actual_user)
         append_user(users, result_filter_by_process) 
 
-    result_filter_by_couples = User.query.filter(and_(User.couple_id == actual_user.couple_id, User.id != user_id)).all()
+    result_filter_by_couples = User.filter_by_couple(actual_user)
     append_user(users, result_filter_by_couples)
     
 
@@ -95,13 +95,11 @@ def find_possible_matches():
     append_user(users, result_filter_by_centers)
     
     sort_users = sorted(users.items(), key=lambda x: x[1], reverse= True )
-    print(sort_users)
 
     for user in sort_users:
         if user[0] not in actual_user.users_connected:
             array_users.append(user[0])
 
-    print(array_users)
     posibles_matches_users = list(map (lambda user: user.serialize_to_show(), array_users))
 
     return jsonify(posibles_matches_users), 200
@@ -124,8 +122,6 @@ def edit_profile():
     description = request.json.get("description", None) 
     profile_img = request.json.get("profile_img", None) 
 
-    print(password)
-
 
     if user_id != actual_user_id: 
         return jsonify({"msg": "Unauthorized"}), 401
@@ -147,7 +143,7 @@ def edit_profile():
         user.profile_img = profile_img
 
 
-    if password is not None:
+    if password is not None and password != "":
         password = password.encode('utf8')
         salt = bcrypt.gensalt()
         hashed_password = bcrypt.hashpw(password, salt)
@@ -337,6 +333,7 @@ def refresh_token():
     return jsonify({"token": access_token})
 
 @api.route('/chat/<int:chat_id>/messages', methods=["GET"])
+@jwt_required()
 def get_conversation_messages(chat_id):
     chat = Chat.get_chat_by_id(chat_id)
     messages = chat.messages
@@ -453,8 +450,8 @@ def get_user_notifications(id):
     notifications = list(map(lambda notification: notification.serialize(), notifications))
 
     for notification_seen in notifications_seen:
-        print(notification_seen.is_new)
-        notification_seen.is_new = False
+        if notification_seen.is_new == True:
+            notification_seen.is_new = False
     User.commit()
 
     return jsonify({"notification": notifications}), 200
@@ -504,9 +501,8 @@ def delete_chat(id):
 @api.route('/decline_user_connected/<user_requesting>', methods=['PUT'])
 @jwt_required()
 def decline_user_connected(user_requesting):
-    user_listening = get_jwt_identity()
+    user_listening = User.get_user_by_id(get_jwt_identity())
     user_requesting = User.get_user_by_id(user_requesting)
-
     user_requesting.users_connected.remove(user_listening)
     User.commit()
     return jsonify({"msg": "ok"}), 200

@@ -9,9 +9,7 @@ export const AvatarImage = ({ classN, Alt, profileImg }) => {
 
 	function avatarRandomImage(array) {
 		const randomIndex = Math.floor(Math.random() * array.length);
-		console.log(randomIndex);
 		const avatar = array[randomIndex];
-		console.log(avatar);
 		return avatar;
 	}
 	return <img className={classN} src={profileImg ? profileImg : avatarRandomImage(avatars)} alt={Alt} />;

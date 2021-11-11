@@ -41,7 +41,6 @@ export const FriendRequestList = () => {
 	useEffect(() => {
 		setResultsInHTML(
 			results.map((result, i) => {
-				console.log(result);
 				return <FriendRequestElement result={result} key={i} deleteElementFromList={deleteElementFromList} />;
 			})
 		);

@@ -64,7 +64,6 @@ export const UserChatList = ({ setActiveChat, showList, setShowList }) => {
 
 	const getChats = async () => {
 		let token = actions.getAccessToken();
-		console.log(token);
 
 		const resp = await fetch(`${process.env.BACKEND_URL}/api/user/chats`, {
 			method: "GET",
