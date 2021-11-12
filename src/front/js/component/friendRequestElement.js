@@ -51,7 +51,7 @@ export const FriendRequestElement = ({ result, deleteElementFromList }) => {
 		} else if (res.status === 401 || res.status == 422) {
 			let resp = await actions.refresh_token();
 			if (resp.error) History.push("/login");
-			else deleteFriendRequest();
+			else declineFriendRequest();
 		}
 	};
 
