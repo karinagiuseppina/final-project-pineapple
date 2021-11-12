@@ -119,18 +119,33 @@ body{
   width: 100%;
 }
 
-.button-notifications {
+.button-notifications-on, .button-notifications-off {
   position: relative;
   padding: 0.6em 0.6em;
-  background: var(--primary);
+ 
   border-radius: 8px;
   font: var(--button);
   border: 0px;
   text-decoration: none !important;
+  margin-right: 12px;
 }
 
-.bell-icon {
-  color: #477c26;
+.button-notifications-on {
+  background: var(--primary);
+}
+
+.button-notifications-off {
+  background: rgb(179, 178, 178);
+}
+
+.bell-icon-on {
+  color: var(--secondary-light);
+  font-size: 19px;
+}
+
+.bell-icon-off {
+  color: #f9f9f9;
+  font-size: 15px;
 }
    a:hover{
     color: var(--main-text);

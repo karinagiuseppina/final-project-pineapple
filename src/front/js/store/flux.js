@@ -7,9 +7,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 			treatments: [],
 			centers: [],
 			couples: [],
-			processes: []
+			processes: [],
+			notifications: []
 		},
 		actions: {
+			setNotificationsList: data => {
+				const store = getStore();
+				setStore({ notifications: data });
+			},
+
+			getNotifications: async () => {
+				const store = getStore();
+				const actions = getActions();
+				const response = await fetch(`${process.env.BACKEND_URL}/api/user/${store.user_id}/notifications`, {
+					method: "GET",
+					headers: { "Content-Type": "application/json" }
+				});
+				if (response.ok) {
+					const data = await response.json();
+
+					actions.setNotificationsList(data.notification);
+				}
+			},
 			updateInitialUser: updateUser => {
 				const store = getStore();
 				setStore({ initialUser: updateUser });
