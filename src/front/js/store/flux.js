@@ -128,6 +128,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					title: title,
 					text: text,
 					icon: icon,
+					buttonsStyling: false,
+					customClass: {
+						confirmButton: "button primary swal"
+					},
+					// buttonsStyling: "false",
+					// confirmButtonColor: "#A5DD81",
 					confirmButtonText: confirmButtonText
 				});
 			}

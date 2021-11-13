@@ -32,7 +32,11 @@ export const PendingUsersCard = ({ result, deleteElementFromList }) => {
 	return (
 		<div className="row list-box">
 			<div className="col-4 col-lg-2">
-				<AvatarImage profileImg={result.profile_img} classN={"avatar-request"} Atl={"avatar small image"} />
+				<img
+					className="avatar-request"
+					src={user.profile_img ? user.profile_img : ""}
+					alt="avatar small image"
+				/>
 			</div>
 			<div className="box col-8 col-lg-6  align-items-center">
 				<Link to={`/moreUserInfo/${result.id}`} className="text-decoration-none">

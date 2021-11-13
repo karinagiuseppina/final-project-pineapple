@@ -10,15 +10,16 @@
   .list-box {
     display: flex;
     padding: 8px;
-      margin: 16px 0px 16px 0;
-      background-color: var(--neutral-ligth);
-      border-radius: 8px;
-      border: 1px solid var(--details);
-      flex-direction: row;
-      align-items: center;
-      grid-gap: 8px;
-      flex-wrap: nowrap;
-      justify-content: center;
+    margin: 16px 0px 16px 0;
+    background-color: var(--neutral-ligth);
+    border-radius: 8px;
+    
+    flex-direction: row;
+    align-items: center;
+    grid-gap: 8px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   }
 
   .box{
