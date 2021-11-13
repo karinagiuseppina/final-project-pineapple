@@ -20,7 +20,7 @@ export const Login = () => {
 
 	const badLogin = {
 		title: "Atención",
-		text: "El usuarion o contraseña ingresados son incorrectos",
+		text: "El usuario o contraseña ingresados son incorrectos",
 		icon: "warning",
 		confirmButtonText: "cerrar"
 	};
