@@ -34,7 +34,7 @@ export const PendingUsersCard = ({ result, deleteElementFromList }) => {
 			<div className="col-4 col-lg-2">
 				<img
 					className="avatar-request"
-					src={user.profile_img ? user.profile_img : ""}
+					src={result.profile_img ? result.profile_img : ""}
 					alt="avatar small image"
 				/>
 			</div>
