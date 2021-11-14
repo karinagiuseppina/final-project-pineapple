@@ -58,7 +58,7 @@ export const Navbar = () => {
 			</Link>
 		</li>
 	);
-	
+
 	const notificationsButton = (
 		<button
 			type="button"
