@@ -26,7 +26,7 @@ export const MoreUserInfo = () => {
 					"cerrar"
 				);
 				setButtonText("¡Piña conectada!");
-				actions.getNotifications()
+				actions.getNotifications();
 			} else setButtonText("¡Piña madurando!");
 		} else if (res.status === 401 || res.status == 422) {
 			let resp = await actions.refresh_token();
