@@ -25,6 +25,7 @@ export const ListOfWomen = () => {
 			const data = await res.json();
 			setResults(data);
 			setwaiting(waiting + 1);
+			actions.getNotifications();
 		} else if (res.status === 401 || res.status == 422) {
 			let resp = await actions.refresh_token();
 			if (resp.error) History.push("/login");

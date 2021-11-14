@@ -41,7 +41,6 @@ export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	const [isClicked, setIsClicked] = useState(false);
 	const [displayNotifications, setDisplayNotifications] = useState(false);
-	const [insideUl, setInsideUl] = useState(true);
 	const notificationsList = store.notifications;
 
 	console.log(isClicked);
@@ -59,7 +58,7 @@ export const Navbar = () => {
 			</Link>
 		</li>
 	);
-	console.log("from navbar: ", notificationsList);
+	
 	const notificationsButton = (
 		<button
 			type="button"
@@ -105,7 +104,6 @@ export const Navbar = () => {
 					<div className="notifications-container">
 						{notificationsButton}
 						{showNotificationsBox}
-						{console.log("from btn: ", notificationsList)}
 					</div>
 					<ul className={isClicked ? "nav-menu active" : "nav-menu"}>
 						{MenuItems.map((Item, index) => {

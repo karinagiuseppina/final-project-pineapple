@@ -3,7 +3,6 @@ import { Context } from "../store/appContext";
 
 const NotificationsList = () => {
 	const { store, actions } = useContext(Context);
-	//const [notificationsList, setNotificationsList] = useState(store.notifications);
 	const [hovered, setHovered] = useState(false);
 
 	const notificationsList = store.notifications;
