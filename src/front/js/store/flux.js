@@ -8,9 +8,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 			centers: [],
 			couples: [],
 			processes: [],
-			notifications: []
+			notifications: [],
+			listPosition: 0
 		},
 		actions: {
+			setListPosition: position => {
+				const store = getStore();
+				console.log(store.listPosition);
+				setStore({ listPosition: position.toString() });
+			},
+
 			setNotificationsList: data => {
 				const store = getStore();
 				setStore({ notifications: data });
