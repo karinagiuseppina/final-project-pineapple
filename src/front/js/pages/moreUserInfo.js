@@ -52,17 +52,20 @@ export const MoreUserInfo = () => {
 	}, []);
 	if (waiting === 0) {
 		return (
-			<div className="card-result">
-				<div className="card-body">
-					<div className="pro-img text-center">
-						<img
-							className="avatar-img"
-							src={user.profile_img ? user.profile_img : ""}
-							alt="avatar small image"
-						/>
-					</div>
-				</div>
+			<div className="loading show">
+				<div className="spin"></div>
 			</div>
+			// <div className="card-result">
+			// 	<div className="card-body">
+			// 		<div className="pro-img text-center">
+			// 			<img
+			// 				className="avatar-img"
+			// 				src={user.profile_img ? user.profile_img : ""}
+			// 				alt="avatar small image"
+			// 			/>
+			// 		</div>
+			// 	</div>
+			// </div>
 		);
 	} else {
 		return (
