@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link, useParams } from "react-router-dom";
 import { HashtagProfile } from "../component/hashtagProfile";
-import { AvatarImage } from "../component/avataImage";
 
 export const MoreUserInfo = () => {
 	const { store, actions } = useContext(Context);
@@ -70,10 +69,10 @@ export const MoreUserInfo = () => {
 			<div className="card-result">
 				<div className="card-body">
 					<div className="pro-img text-center">
-						<AvatarImage
-							profileImg={user.profile_img}
-							className={"avatar-img"}
-							Atl={"avatar small image"}
+						<img
+							className="avatar-img"
+							src={user.profile_img ? user.profile_img : ""}
+							alt="avatar small image"
 						/>
 					</div>
 					<h2 className="text-center text-prin">{user.name ? user.name : ""}</h2>

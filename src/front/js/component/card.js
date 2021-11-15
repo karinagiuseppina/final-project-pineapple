@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import propTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { HashtagProfile } from "./hashtagProfile";
-import { AvatarImage } from "./avataImage";
+
 import avatar1 from "../../img/avatar1.png";
 import avatar2 from "../../img/avatar2.png";
 import avatar3 from "../../img/avatar3.png";

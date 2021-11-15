@@ -3,7 +3,6 @@ import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { HashtagProfile } from "../component/hashtagProfile";
 import { ButtonType } from "../component/buttonType";
-import { AvatarImage } from "../component/avataImage";
 
 export const Profile = () => {
 	const { store, actions } = useContext(Context);

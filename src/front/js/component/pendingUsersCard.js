@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import propTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { AvatarImage } from "./avataImage";
 
 export const PendingUsersCard = ({ result, deleteElementFromList }) => {
 	const { store, actions } = useContext(Context);

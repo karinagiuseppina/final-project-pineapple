@@ -2,8 +2,6 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import propTypes from "prop-types";
 import { Link } from "react-router-dom";
-import avatar1 from "../../img/avatar1.png";
-import { AvatarImage } from "./avataImage";
 
 export const FriendRequestElement = ({ result, deleteElementFromList }) => {
 	const { store, actions } = useContext(Context);
