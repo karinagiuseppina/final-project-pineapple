@@ -97,7 +97,7 @@ export const Navbar = () => {
 			<nav className="navbarItems">
 				<AltLogo />
 
-				<div className="navbar-items-wrapper">
+				<div className="navbar-items-container">
 					<div className="menu-icon" onClick={handleClicked}>
 						{isClicked ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
 					</div>

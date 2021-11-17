@@ -3,7 +3,7 @@ import "../../styles/home.scss";
 import { Card } from "../component/card";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-import { Swiper, SwiperSlide } from "swiper/react";
+import Swiper from "react-id-swiper";
 
 export const ListOfWomen = () => {
 	const { store, actions } = useContext(Context);
@@ -46,9 +46,10 @@ export const ListOfWomen = () => {
 		setResultsInHTML(
 			results.map((result, i) => {
 				return (
-					<SwiperSlide key={i}>
-						<Card result={result} deleteElementFromList={deleteElementFromList} />
-					</SwiperSlide>
+					<div key={i}>
+						{" "}
+						<Card post={i} result={result} deleteElementFromList={deleteElementFromList} />
+					</div>
 				);
 			})
 		);
@@ -75,6 +76,7 @@ export const ListOfWomen = () => {
 						centeredSlides={true}
 						spaceBetween={30}
 						grabCursor={true}
+						activeSlideKey={store.listPosition}
 						className="mySwiper">
 						{resultsInHTML}
 					</Swiper>

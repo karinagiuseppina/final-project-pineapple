@@ -8,7 +8,7 @@ import avatar1 from "../../img/avatar1.png";
 import avatar2 from "../../img/avatar2.png";
 import avatar3 from "../../img/avatar3.png";
 
-export const Card = ({ result, deleteElementFromList }) => {
+export const Card = ({ result, deleteElementFromList, post }) => {
 	const { store, actions } = useContext(Context);
 
 	const avatars = [avatar1, avatar2, avatar3];
@@ -90,7 +90,13 @@ export const Card = ({ result, deleteElementFromList }) => {
 					</div>
 					<div className="col-12 col-md-6">
 						<Link to={`/moreUserInfo/${result.id}`}>
-							<button className="button secondary">mas info</button>
+							<button
+								className="button secondary"
+								onClick={() => {
+									actions.setListPosition(post);
+								}}>
+								mas info
+							</button>
 						</Link>
 					</div>
 				</div>
@@ -101,5 +107,6 @@ export const Card = ({ result, deleteElementFromList }) => {
 
 Card.propTypes = {
 	result: propTypes.object,
-	deleteElementFromList: propTypes.func
+	deleteElementFromList: propTypes.func,
+	post: propTypes.number
 };
