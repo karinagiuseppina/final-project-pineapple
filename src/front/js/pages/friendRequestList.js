@@ -63,7 +63,7 @@ export const FriendRequestList = () => {
 			return (
 				<div className="App-box">
 					<div className="signup-header">
-						<h1 className="question-text">Piñas madurando</h1>
+						<h1 className="question-text">Piñas esperando</h1>
 						<div className="image-box">
 							<img className="piña-partida-sinnombre" src={pinaPartidaNombre} alt="dibujo piña partida" />
 						</div>
